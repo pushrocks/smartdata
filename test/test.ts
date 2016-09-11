@@ -29,7 +29,7 @@ describe('smartdata',function(){
 
 describe('mongodb',function(){
     it('should kill mongodb',function(){
-        shelljs.exec('mongod --shutdown')
+        shelljs.exec('mongod --dbpath=./test/data --shutdown')
         mongoChildProcess.kill('SIGTERM')
     })
 })
