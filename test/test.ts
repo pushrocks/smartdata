@@ -10,9 +10,9 @@ let testDbConnection: smartdata.DbConnection
 
 describe('mongodb',function(){
     it('should start mongodb',function(done){
-        this.timeout(20000)
+        this.timeout(10000)
         mongoChildProcess = shelljs.exec('mongod --dbpath=./test/data --port 27017',{async: true})
-        setTimeout(() => { done() }, 10000) // give mongodb it some time to complete startup
+        setTimeout(() => { done() }, 5000) // give mongodb it some time to complete startup
     })
 })
 describe('smartdata',function(){
