@@ -29,10 +29,7 @@ describe('smartdata',function(){
 
 describe('mongodb',function(){
     it('should kill mongodb',function(){
-        if (process.env.CI === "true"){
-            mongoChildProcess.kill('SIGKILL')
-        } else {
-            mongoChildProcess.kill('SIGTERM')
-        }
+        shelljs.exec('mongod --shutdown')
+        mongoChildProcess.kill('SIGTERM')
     })
 })
