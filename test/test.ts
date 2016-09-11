@@ -6,6 +6,7 @@ import * as smartdata from '../dist/index'
 
 let mongoChildProcess
 let testDbConnection: smartdata.DbConnection
+let testDbCollection: smartdata.DbCollection<any>
 
 
 describe('mongodb',function(){
@@ -21,7 +22,7 @@ describe('smartdata',function(){
         testDbConnection.connect().then(() => { done() })
     })
     it('should create a collection',function(){
-
+        testDbCollection = new smartdata.DbCollection('something',testDbConnection)
     })
     it('should close the db Connection',function(){
         testDbConnection.close()
@@ -30,6 +31,7 @@ describe('smartdata',function(){
 
 describe('mongodb',function(){
     it('should kill mongodb',function(){
+        this.timeout(10000)
         shelljs.exec('mongod --dbpath=./test/data --shutdown')
         mongoChildProcess.kill('SIGTERM')
     })
