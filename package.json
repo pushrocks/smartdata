@@ -1,0 +1,19 @@
+{
+  "name": "smartdata",
+  "version": "1.0.0",
+  "description": "do more with data",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "(npmts)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/pushrocks/smartdata.git"
+  },
+  "author": "Lossless GmbH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/pushrocks/smartdata/issues"
+  },
+  "homepage": "https://gitlab.com/pushrocks/smartdata#README"
+}
