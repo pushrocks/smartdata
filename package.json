@@ -1,9 +1,9 @@
 {
   "name": "smartdata",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "do more with data",
   "main": "dist/index.js",
-  "typings":"dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "test": "(npmts)"
   },
