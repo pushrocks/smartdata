@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "do more with data",
   "main": "dist/index.js",
+  "typings":"dist/index.d.ts",
   "scripts": {
     "test": "(npmts)"
   },
@@ -15,5 +16,20 @@
   "bugs": {
     "url": "https://gitlab.com/pushrocks/smartdata/issues"
   },
-  "homepage": "https://gitlab.com/pushrocks/smartdata#README"
+  "homepage": "https://gitlab.com/pushrocks/smartdata#README",
+  "dependencies": {
+    "@types/mongodb": "^2.1.32",
+    "@types/q": "0.0.30",
+    "beautylog": "^5.0.23",
+    "mongodb": "^2.2.9",
+    "q": "^1.4.1",
+    "typings-global": "^1.0.14"
+  },
+  "devDependencies": {
+    "@types/shelljs": "^0.3.30",
+    "@types/should": "^8.1.29",
+    "shelljs": "^0.7.4",
+    "should": "^11.1.0",
+    "typings-test": "^1.0.3"
+  }
 }

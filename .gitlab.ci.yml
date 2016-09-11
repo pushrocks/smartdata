@@ -1,0 +1,43 @@
+image: hosttoday/ht-docker-node:npmts
+
+stages:
+- test
+- release
+
+before_script:
+  - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+  - echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+  - sudo apt-get update
+  - sudo apt-get install -y mongodb-org
+
+testLEGACY:
+  stage: test
+  script:
+    - npmci test legacy
+  tags:
+    - docker
+  allow_failure: true
+
+testLTS:
+  stage: test
+  script:
+    - npmci test lts
+  tags:
+    - docker
+    
+testSTABLE:
+  stage: test
+  script:
+    - npmci test stable
+  tags:
+    - docker
+
+release:
+  stage: release
+  environment: npm_registry
+  script:
+    - npmci publish
+  only:
+    - tags
+  tags:
+    - docker
