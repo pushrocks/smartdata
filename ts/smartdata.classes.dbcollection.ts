@@ -17,7 +17,7 @@ export class DbCollection<T> {
      */
     find(docMatchArg: T): plugins.q.Promise<T[]> {
         let done = plugins.q.defer<T[]>()
-        this.collection.find().toArray((err, docs) => {
+        this.collection.find(docMatchArg).toArray((err, docs) => {
             if (err) { throw err }
             done.resolve(docs)
         })
@@ -47,6 +47,7 @@ export class DbCollection<T> {
         }
         plugins.q.all(checkDocPromiseArray).then(() => {
             this.collection.insertMany(docArrayArg)
+                .then(() => { done.resolve() })
         })
         return done.promise
     }

@@ -35,15 +35,28 @@ describe('smartdata', function () {
     it('should create a collection', function () {
         testDbCollection = new smartdata.DbCollection('something', testDbConnection)
     })
-    it('should insert something into the collection', function (done) {
+    it('should insert a doc into the collection', function (done) {
         testDbCollection.insertOne({ hello: 'test' }).then(() => { done() })
     })
-    it('should find all instances of test', function (done) {
+    it('should find all docs of testDbCollection', function (done) {
         testDbCollection.find({}).then((resultArray) => {
             console.log(resultArray)
             should(resultArray[0].hello).equal('test')
             done()
         })
+    })
+    it('should insert many docs into the collection', function (done) {
+        testDbCollection.insertMany([
+            { hello: 'test' },
+            { wow: 'what is this', wow2: 3}
+        ]).then(() => { done() })
+    })
+    it('should find a specified doc', function (done) {
+        testDbCollection.find({'wow2': {'$exists': true}}).then((resultArray) => {
+            console.log(resultArray)
+            should(resultArray[0].wow2).equal(3)
+            done()
+        }).catch(console.log)
     })
     it('should close the db Connection', function () {
         testDbConnection.close()
