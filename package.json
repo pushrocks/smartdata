@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "(npmts)"
+    "test": "(npm run prepareMongo && npmts)",
+    "prepareMongo": "(rm -rf ./test/data && mkdir ./test/data/)"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "@types/should": "^8.1.29",
     "shelljs": "^0.7.4",
     "should": "^11.1.0",
+    "smartstring": "^2.0.17",
     "typings-test": "^1.0.3"
   }
 }

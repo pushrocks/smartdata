@@ -6,13 +6,17 @@ export declare class DbCollection<T> {
     /**
      * adds a validation function that all newly inserted and updated objects have to pass
      */
-    addObjectValidation(): void;
+    addObjectValidation(funcArg: any): void;
     /**
-     * inserts am object into the DbCollection
+     * finds an object in the DbCollection
      */
-    insert(objectArg: T): void;
+    find(docMatchArg: T): T[];
+    /**
+     * inserts  object into the DbCollection
+     */
+    insertOne(docArg: T): PromiseLike<void>;
     /**
      * inserts many objects at once into the DbCollection
      */
-    insertMany(objectArrayArg: T[]): void;
+    insertMany(docArrayArg: T[]): void;
 }

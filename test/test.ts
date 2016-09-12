@@ -2,6 +2,7 @@ import 'typings-test'
 
 import * as shelljs from 'shelljs'
 import * as should from 'should'
+import * as smartstring from 'smartstring'
 
 // the tested module
 import * as smartdata from '../dist/index'
@@ -16,7 +17,7 @@ describe('mongodb', function () {
         mongoChildProcess = shelljs.exec('mongod --dbpath=./test/data --port 27017', { async: true, silent: true })
         let doneCalled = false
         mongoChildProcess.stdout.on('data', function(data) {
-            console.log(data)
+            console.log(smartstring.indent.indentWithPrefix(data,"*** MongoDB Process *** : "))
             if (!doneCalled){
                 if (/waiting for connections on port 27017/.test(data)) {
                     doneCalled = true
@@ -34,6 +35,10 @@ describe('smartdata', function () {
     it('should create a collection', function () {
         testDbCollection = new smartdata.DbCollection('something', testDbConnection)
     })
+    it('should insert something into the collection',function(done){
+        testDbCollection.insertOne({hello: 'test'}).then(() => { done() })
+    })
+    it('should find all instances of test')
     it('should close the db Connection', function () {
         testDbConnection.close()
     })

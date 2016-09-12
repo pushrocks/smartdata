@@ -10,15 +10,26 @@ export class DbCollection<T> {
     /**
      * adds a validation function that all newly inserted and updated objects have to pass
      */
-    addObjectValidation(){}
+    addObjectValidation(funcArg){}
 
     /**
-     * inserts am object into the DbCollection
+     * finds an object in the DbCollection
      */
-    insert(objectArg: T) {}
+    find(docMatchArg: T): T[] {
+        return this.collection.find().toArray()
+    }
+
+    /**
+     * inserts  object into the DbCollection
+     */
+    insertOne(docArg: T): PromiseLike<void> {
+        return this.collection.insertOne(docArg)
+    }
 
     /**
      * inserts many objects at once into the DbCollection
      */
-    insertMany(objectArrayArg: T[]) {}
+    insertMany(docArrayArg: T[]): void {
+
+    }
 }
