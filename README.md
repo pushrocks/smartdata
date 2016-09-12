@@ -19,7 +19,7 @@ Document | smartdata.DbDoc
 ### class Db
 represents a Database. Naturally it has .connect() etc. methods on it.
 Since it is a class you can have multiple DBs defined.
-```TypeScript
+```typescript
 import * as smartdata from 'smartdata'
 
 let myDb1 = new smartdata.Db('someConnectionUrl')
@@ -34,7 +34,7 @@ represents a collection of objects.
 A collection is defined by the object class (that is extending smartdata.dbdoc) it respresents
 
 So to get to get access to a specific collection you document
-```
+```typescript
 class myObject extends DbDoc {
     property1:string
     property2:number
