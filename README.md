@@ -62,13 +62,13 @@ This is done for you!!!
 represents a individual document in a collection
 and thereby is ideally suited to extend the class you want to actually store.
 
-DbDoc extends you class with .save() and saveDeep() methods.
+DbDoc extends your class with .save() and saveDeep() methods.
 
 So now we can get store instances of classes to Db...
 How do we get a new class instances from a Doc in DB?
-Easy! Take a look at the constructor. When you specify a optionsArg.queryArg
+Easy! Take a look at the constructor. When you specify `optionsArg.queryArg`
 smartdata will fill in the data from the database!
-But when you specify a optionsArg.dataArg instead
-the data is for the class is taken from there instead :)
+But when you specify a `optionsArg.dataArg` instead
+the data is for the class is taken from there :)
 
 [![npm](https://push.rocks/assets/repo-header.svg)](https://push.rocks)
