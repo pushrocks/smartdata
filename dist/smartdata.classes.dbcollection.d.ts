@@ -1,9 +1,9 @@
 /// <reference types="q" />
 import * as plugins from './smartdata.plugins';
-import { DbConnection } from './smartdata.classes.dbconnection';
+import { Db } from './smartdata.classes.db';
 export declare class DbCollection<T> {
     collection: plugins.mongodb.Collection;
-    constructor(nameArg: string, dbConnectionArg: DbConnection);
+    constructor(nameArg: string, dbArg: Db);
     /**
      * adds a validation function that all newly inserted and updated objects have to pass
      */

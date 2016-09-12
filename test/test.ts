@@ -8,7 +8,7 @@ import * as smartstring from 'smartstring'
 import * as smartdata from '../dist/index'
 
 let mongoChildProcess
-let testDbConnection: smartdata.DbConnection
+let testDb: smartdata.Db
 
 interface ITestObject1 {
     value1: string
@@ -45,11 +45,11 @@ describe('mongodb', function () {
 
 describe('smartdata', function () {
     it('should establish a connection to mongodb', function (done) {
-        testDbConnection = new smartdata.DbConnection('mongodb://localhost:27017/smartdata')
-        testDbConnection.connect().then(() => { done() })
+        testDb = new smartdata.Db('mongodb://localhost:27017/smartdata')
+        testDb.connect().then(() => { done() })
     })
     it('should create a collection', function () {
-        testDbCollection = new smartdata.DbCollection<ITestObject1>('something', testDbConnection)
+        testDbCollection = new smartdata.DbCollection<ITestObject1>('something', testDb)
     })
     it('should insert a doc into the collection', function (done) {
         testDbCollection.insertOne({ value1: 'test' }).then(() => { done() })
@@ -75,7 +75,7 @@ describe('smartdata', function () {
         }).catch(console.log)
     })
     it('should close the db Connection', function () {
-        testDbConnection.close()
+        testDb.close()
     })
 })
 

@@ -1,2 +1,2 @@
 export * from './smartdata.classes.dbcollection';
-export * from './smartdata.classes.dbconnection';
+export * from './smartdata.classes.db';
