@@ -27,6 +27,8 @@ let myDb2 = new smartdata.Db('someConnectionUrl')
 
 myDb1.connect()
 myDb2.connect()
+
+// continues in next block... 
 ```
 
 ### class Collection
@@ -35,14 +37,16 @@ A collection is defined by the object class (that is extending smartdata.dbdoc) 
 
 So to get to get access to a specific collection you document
 ```typescript
-class myObject extends DbDoc {
+// continues from the block before...
+
+class myObject extends smartdata.DbDoc {
     property1:string
     property2:number
     constructor(optionsArg:{
         queryArg?:any,
         dataArg?:{
             property1:string,
-            property2:string
+            property2:number
         }
     }) {
         super(this,optionsArg)
