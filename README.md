@@ -31,7 +31,7 @@ myDb2.connect()
 // continues in next block... 
 ```
 
-### class Collection
+### class DbCollection
 represents a collection of objects.
 A collection is defined by the object class (that is extending smartdata.dbdoc) it respresents
 
@@ -39,7 +39,7 @@ So to get to get access to a specific collection you document
 ```typescript
 // continues from the block before...
 
-class myObject extends smartdata.DbDoc {
+class myObject extends smartdata.DbDoc { // read the next block about DbDoc
     property1:string
     property2:number
     constructor(optionsArg:{
@@ -59,9 +59,16 @@ let myCollection = myDb1.getCollection(myObject)
 This is done for you!!!
 
 ### class DbDoc
-represents a individual document in a collection.
+represents a individual document in a collection
+and thereby is ideally suited to extend the class you want to actually store.
 
+DbDoc extends you class with .save() and saveDeep() methods.
 
-
+So now we can get store instances of classes to Db...
+How do we get a new class instances from a Doc in DB?
+Easy! Take a look at the constructor. When you specify a optionsArg.queryArg
+smartdata will fill in the data from the database!
+But when you specify a optionsArg.dataArg instead
+the data is for the class is taken from there instead :)
 
 [![npm](https://push.rocks/assets/repo-header.svg)](https://push.rocks)
