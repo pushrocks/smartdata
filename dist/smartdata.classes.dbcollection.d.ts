@@ -11,7 +11,7 @@ export declare class DbCollection<T> {
     /**
      * finds an object in the DbCollection
      */
-    find(docMatchArg: T): plugins.q.Promise<T[]>;
+    find(docMatchArg: T | any): plugins.q.Promise<T[]>;
     /**
      * inserts  object into the DbCollection
      */

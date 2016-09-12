@@ -9,7 +9,22 @@ import * as smartdata from '../dist/index'
 
 let mongoChildProcess
 let testDbConnection: smartdata.DbConnection
-let testDbCollection: smartdata.DbCollection<any>
+
+interface ITestObject1 {
+    value1: string
+    value2?: number
+    value3?: string
+}
+
+let testDbCollection: smartdata.DbCollection<ITestObject1>
+
+class testCar {
+    color: string
+    constructor(colorArg:string) {
+        this.color = colorArg
+    }
+}
+
 
 describe('mongodb', function () {
     it('should start mongodb', function (done) {
@@ -27,34 +42,35 @@ describe('mongodb', function () {
         })
     })
 })
+
 describe('smartdata', function () {
     it('should establish a connection to mongodb', function (done) {
         testDbConnection = new smartdata.DbConnection('mongodb://localhost:27017/smartdata')
         testDbConnection.connect().then(() => { done() })
     })
     it('should create a collection', function () {
-        testDbCollection = new smartdata.DbCollection('something', testDbConnection)
+        testDbCollection = new smartdata.DbCollection<ITestObject1>('something', testDbConnection)
     })
     it('should insert a doc into the collection', function (done) {
-        testDbCollection.insertOne({ hello: 'test' }).then(() => { done() })
+        testDbCollection.insertOne({ value1: 'test' }).then(() => { done() })
     })
     it('should find all docs of testDbCollection', function (done) {
         testDbCollection.find({}).then((resultArray) => {
             console.log(resultArray)
-            should(resultArray[0].hello).equal('test')
+            should(resultArray[0].value1).equal('test')
             done()
         })
     })
     it('should insert many docs into the collection', function (done) {
         testDbCollection.insertMany([
-            { hello: 'test' },
-            { wow: 'what is this', wow2: 3}
+            { value1: 'test2' },
+            { value1: 'test', value2: 3, value3: 'hi' }
         ]).then(() => { done() })
     })
     it('should find a specified doc', function (done) {
-        testDbCollection.find({'wow2': {'$exists': true}}).then((resultArray) => {
+        testDbCollection.find({'value3': {'$exists': true}}).then((resultArray) => {
             console.log(resultArray)
-            should(resultArray[0].wow2).equal(3)
+            should(resultArray[0].value3).equal('hi')
             done()
         }).catch(console.log)
     })

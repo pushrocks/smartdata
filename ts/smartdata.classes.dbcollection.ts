@@ -15,7 +15,7 @@ export class DbCollection<T> {
     /**
      * finds an object in the DbCollection
      */
-    find(docMatchArg: T): plugins.q.Promise<T[]> {
+    find(docMatchArg: T | any): plugins.q.Promise<T[]> {
         let done = plugins.q.defer<T[]>()
         this.collection.find(docMatchArg).toArray((err, docs) => {
             if (err) { throw err }
