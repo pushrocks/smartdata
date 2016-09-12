@@ -12,8 +12,52 @@ How MongoDB terms map to smartdata classes
 
 MongoDB term | smartdata class
 --- | ---
-Database | smartdata.DbConnection
+Database | smartdata.Db
 Collection | smartdata.DbCollection
 Document | smartdata.DbDoc
+
+### class Db
+represents a Database. Naturally it has .connect() etc. methods on it.
+Since it is a class you can have multiple DBs defined.
+```TypeScript
+import * as smartdata from 'smartdata'
+
+let myDb1 = new smartdata.Db('someConnectionUrl')
+let myDb2 = new smartdata.Db('someConnectionUrl')
+
+myDb1.connect()
+myDb2.connect()
+```
+
+### class Collection
+represents a collection of objects.
+A collection is defined by the object class (that is extending smartdata.dbdoc) it respresents
+
+So to get to get access to a specific collection you document
+```
+class myObject extends DbDoc {
+    property1:string
+    property2:number
+    constructor(optionsArg:{
+        queryArg?:any,
+        dataArg?:{
+            property1:string,
+            property2:string
+        }
+    }) {
+        super(this,optionsArg)
+    }
+} 
+let myCollection = myDb1.getCollection(myObject)
+``` 
+
+> Alert: You NEVER instantiate a collection.
+This is done for you!!!
+
+### class DbDoc
+represents a individual document in a collection.
+
+
+
 
 [![npm](https://push.rocks/assets/repo-header.svg)](https://push.rocks)

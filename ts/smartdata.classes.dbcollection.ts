@@ -1,10 +1,10 @@
 import * as plugins from './smartdata.plugins'
-import { DbConnection } from './smartdata.classes.dbconnection'
+import { Db } from './smartdata.classes.db'
 
 export class DbCollection<T> {
     collection: plugins.mongodb.Collection
-    constructor(nameArg: string, dbConnectionArg: DbConnection) {
-        this.collection = dbConnectionArg.db.collection(nameArg)
+    constructor(nameArg: string, dbArg: Db) {
+        this.collection = dbArg.db.collection(nameArg)
     }
 
     /**

@@ -1,11 +1,11 @@
 import * as plugins from './smartdata.plugins'
 
-export type TDbConnectionStatus = 'disconnected' | 'connected' | 'failed'
+export type TConnectionStatus = 'disconnected' | 'connected' | 'failed'
 
-export class DbConnection {
+export class Db {
     dbUrl: string
     db: plugins.mongodb.Db
-    status: TDbConnectionStatus
+    status: TConnectionStatus
 
     constructor(dbUrl: string) {
         this.dbUrl = dbUrl
