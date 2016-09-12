@@ -10,26 +10,50 @@ export class DbCollection<T> {
     /**
      * adds a validation function that all newly inserted and updated objects have to pass
      */
-    addObjectValidation(funcArg){}
+    addObjectValidation(funcArg) { }
 
     /**
      * finds an object in the DbCollection
      */
-    find(docMatchArg: T): T[] {
-        return this.collection.find().toArray()
+    find(docMatchArg: T): plugins.q.Promise<T[]> {
+        let done = plugins.q.defer<T[]>()
+        this.collection.find().toArray((err, docs) => {
+            if (err) { throw err }
+            done.resolve(docs)
+        })
+        return done.promise
     }
 
     /**
      * inserts  object into the DbCollection
      */
-    insertOne(docArg: T): PromiseLike<void> {
-        return this.collection.insertOne(docArg)
+    insertOne(docArg: T): plugins.q.Promise<void> {
+        let done = plugins.q.defer<void>()
+        this.checkDoc(docArg).then(() => {
+            this.collection.insertOne(docArg)
+                .then(() => { done.resolve() })
+        })
+        return done.promise
     }
 
     /**
      * inserts many objects at once into the DbCollection
      */
-    insertMany(docArrayArg: T[]): void {
+    insertMany(docArrayArg: T[]): plugins.q.Promise<void> {
+        let done = plugins.q.defer<void>()
+        let checkDocPromiseArray: plugins.q.Promise<void>[] = []
+        for (let docArg of docArrayArg){
+            checkDocPromiseArray.push(this.checkDoc(docArg))
+        }
+        plugins.q.all(checkDocPromiseArray).then(() => {
+            this.collection.insertMany(docArrayArg)
+        })
+        return done.promise
+    }
 
+    private checkDoc(doc: T): plugins.q.Promise<void> {
+        let done = plugins.q.defer<void>()
+        done.resolve()
+        return done.promise
     }
 }

@@ -1,3 +1,4 @@
+/// <reference types="q" />
 import * as plugins from './smartdata.plugins';
 import { DbConnection } from './smartdata.classes.dbconnection';
 export declare class DbCollection<T> {
@@ -10,13 +11,14 @@ export declare class DbCollection<T> {
     /**
      * finds an object in the DbCollection
      */
-    find(docMatchArg: T): T[];
+    find(docMatchArg: T): plugins.q.Promise<T[]>;
     /**
      * inserts  object into the DbCollection
      */
-    insertOne(docArg: T): PromiseLike<void>;
+    insertOne(docArg: T): plugins.q.Promise<void>;
     /**
      * inserts many objects at once into the DbCollection
      */
-    insertMany(docArrayArg: T[]): void;
+    insertMany(docArrayArg: T[]): plugins.q.Promise<void>;
+    private checkDoc(doc);
 }

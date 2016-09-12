@@ -13,12 +13,12 @@ let testDbCollection: smartdata.DbCollection<any>
 
 describe('mongodb', function () {
     it('should start mongodb', function (done) {
-        this.timeout(10000)
+        this.timeout(30000)
         mongoChildProcess = shelljs.exec('mongod --dbpath=./test/data --port 27017', { async: true, silent: true })
         let doneCalled = false
-        mongoChildProcess.stdout.on('data', function(data) {
-            console.log(smartstring.indent.indentWithPrefix(data,"*** MongoDB Process *** : "))
-            if (!doneCalled){
+        mongoChildProcess.stdout.on('data', function (data) {
+            console.log(smartstring.indent.indentWithPrefix(data, "*** MongoDB Process *** : "))
+            if (!doneCalled) {
                 if (/waiting for connections on port 27017/.test(data)) {
                     doneCalled = true
                     done()
@@ -35,18 +35,29 @@ describe('smartdata', function () {
     it('should create a collection', function () {
         testDbCollection = new smartdata.DbCollection('something', testDbConnection)
     })
-    it('should insert something into the collection',function(done){
-        testDbCollection.insertOne({hello: 'test'}).then(() => { done() })
+    it('should insert something into the collection', function (done) {
+        testDbCollection.insertOne({ hello: 'test' }).then(() => { done() })
     })
-    it('should find all instances of test')
+    it('should find all instances of test', function (done) {
+        testDbCollection.find({}).then((resultArray) => {
+            console.log(resultArray)
+            should(resultArray[0].hello).equal('test')
+            done()
+        })
+    })
     it('should close the db Connection', function () {
         testDbConnection.close()
     })
 })
 
 describe('mongodb', function () {
-    it('should kill mongodb', function () {
-        this.timeout(10000)
+    it('should kill mongodb', function (done) {
+        this.timeout(30000)
+        mongoChildProcess.stdout.on('data', function (data) {
+            if (/dbexit:  rc: 0/.test(data)) {
+                done()
+            }
+        })
         shelljs.exec('mongod --dbpath=./test/data --shutdown')
         mongoChildProcess.kill('SIGTERM')
     })
