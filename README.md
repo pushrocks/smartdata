@@ -6,9 +6,9 @@ smartdata is an ODM that adheres to TypeScript practices and uses classes to org
 It uses MongoDB as persistent storage.
 
 ## Intention
-There are many ODMs out there, however when we searched for a ODM that uses TypeScript,
-acts smart while still embracing an easy the NoSQL idea we didn't find a matching solution.
-This is why we started smartdata
+There are many ODMs out there, however when we searched for an ODM that uses TypeScript,
+acts smart while still embracing an the NoSQL idea... we didn't find a matching solution.
+This is why we started smartdata.
 
 How MongoDB terms map to smartdata classes
 
