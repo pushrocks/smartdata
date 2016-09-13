@@ -2,7 +2,7 @@
 
 > Note: Still in Beta
 
-smartdata is a ODM that adheres to TypeScript practices and uses classes to organize data.
+smartdata is an ODM that adheres to TypeScript practices and uses classes to organize data.
 It uses MongoDB as persistent storage.
 
 ## Intention
@@ -81,9 +81,9 @@ the data for the class is taken from there :)
 
 ## TypeScript
 How does TypeScript play into this?
-Since you define your classes in TapeScript and types flow through smartdata in a generic way
+Since you define your classes in TypeScript and types flow through smartdata in a generic way
 you should get all the Intellisense and type checking you love when using smartdata.
 smartdata itself also bundles typings.
-So you don't need to install any additional types whenimporting smartdata. 
+So you don't need to install any additional types when importing smartdata. 
 
 [![npm](https://push.rocks/assets/repo-header.svg)](https://push.rocks)
