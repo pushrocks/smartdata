@@ -1,5 +1,7 @@
 # smartdata
 
+> Note: Still in Beta
+
 smartdata is a ODM that adheres to TypeScript practices and uses classes to organize data.
 It uses MongoDB as persistent storage.
 
@@ -62,7 +64,13 @@ This is done for you!!!
 represents a individual document in a collection
 and thereby is ideally suited to extend the class you want to actually store.
 
-DbDoc extends your class with .save() and saveDeep() methods.
+DbDoc extends your class with the following methods:
+
+* `.save()` will save (or update) the object you call it on only. Any referenced non-savable objects will not get stored.
+* `.saveDeep()` does the same like `.save()`.
+  In addition it will look for properties that reference an object
+  that extends DbDoc as well and call .saveDeep() on them as well.
+  Loops are prevented
 
 So now we can get store instances of classes to Db...
 How do we get a new class instances from a Doc in DB?
