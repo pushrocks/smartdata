@@ -18,12 +18,6 @@ interface ITestObject1 {
 
 let testDbCollection: smartdata.DbCollection<ITestObject1>
 
-class testCar {
-    color: string
-    constructor(colorArg:string) {
-        this.color = colorArg
-    }
-}
 
 
 describe('mongodb', function () {
@@ -32,7 +26,7 @@ describe('mongodb', function () {
         mongoChildProcess = shelljs.exec('mongod --dbpath=./test/data --port 27017', { async: true, silent: true })
         let doneCalled = false
         mongoChildProcess.stdout.on('data', function (data) {
-            console.log(smartstring.indent.indentWithPrefix(data, "*** MongoDB Process *** : "))
+            console.log(smartstring.indent.indentWithPrefix(data, '*** MongoDB Process *** : '))
             if (!doneCalled) {
                 if (/waiting for connections on port 27017/.test(data)) {
                     doneCalled = true
@@ -68,7 +62,7 @@ describe('smartdata', function () {
         ]).then(() => { done() })
     })
     it('should find a specified doc', function (done) {
-        testDbCollection.find({'value3': {'$exists': true}}).then((resultArray) => {
+        testDbCollection.find({ 'value3': { '$exists': true } }).then((resultArray) => {
             console.log(resultArray)
             should(resultArray[0].value3).equal('hi')
             done()
@@ -76,6 +70,25 @@ describe('smartdata', function () {
     })
     it('should close the db Connection', function () {
         testDb.close()
+    })
+    it('should create an extended class', function () {
+        class TestCar extends smartdata.DbDoc<TestCar> {
+            color: string
+            constructor(optionsArg: {
+                color: string,
+                property2: number
+            }) {
+                super('testCar',testDb)
+            }
+        };
+        let testCarInstance = new TestCar({
+            color: 'red',
+            property2: 2
+        })
+        should(testCarInstance).be.instanceof(smartdata.DbDoc)
+        testCarInstance.save()
+        it('should get a collection for testCar',function() {
+        })
     })
 })
 

@@ -22,6 +22,7 @@
     "@types/mongodb": "^2.1.32",
     "@types/q": "0.0.30",
     "beautylog": "^5.0.23",
+    "lik": "^1.0.15",
     "mongodb": "^2.2.9",
     "q": "^1.4.1",
     "typings-global": "^1.0.14"

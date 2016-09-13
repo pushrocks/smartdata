@@ -45,16 +45,13 @@ class myObject extends smartdata.DbDoc { // read the next block about DbDoc
     property1:string
     property2:number
     constructor(optionsArg:{
-        queryArg?:any,
-        dataArg?:{
-            property1:string,
-            property2:number
-        }
+        property1:string,
+        property2:number
     }) {
-        super(this,optionsArg,myDb1)
+        super(this,myDb1)
     }
 } 
-let myCollection = myDb1.getCollection<myObject>(myObject)
+let myCollection = myDb1.getCollectionByName<myObject>(myObject)
 ``` 
 
 > Alert: You NEVER instantiate a collection.

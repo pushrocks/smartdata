@@ -1,9 +1,15 @@
 import * as plugins from './smartdata.plugins'
 import { Db } from './smartdata.classes.db'
 
+export interface IFindOptions {
+    limit?: number
+}
+
 export class DbCollection<T> {
     collection: plugins.mongodb.Collection
+    name: string
     constructor(nameArg: string, dbArg: Db) {
+        this.name = nameArg
         this.collection = dbArg.db.collection(nameArg)
     }
 
@@ -15,9 +21,13 @@ export class DbCollection<T> {
     /**
      * finds an object in the DbCollection
      */
-    find(docMatchArg: T | any): plugins.q.Promise<T[]> {
+    find(docMatchArg: T | any, optionsArg?: IFindOptions): plugins.q.Promise<T[]> {
         let done = plugins.q.defer<T[]>()
-        this.collection.find(docMatchArg).toArray((err, docs) => {
+        let findCursor = this.collection.find(docMatchArg)
+        if (optionsArg) {
+            if ( optionsArg.limit ) { findCursor = findCursor.limit(1) }
+        }
+        findCursor.toArray((err, docs) => {
             if (err) { throw err }
             done.resolve(docs)
         })
