@@ -41,6 +41,7 @@ So to get to get access to a specific collection you document
 ```typescript
 // continues from the block before...
 
+@Collection(myDb1)
 class myObject extends smartdata.DbDoc { // read the next block about DbDoc
     property1:string
     property2:number
@@ -48,7 +49,7 @@ class myObject extends smartdata.DbDoc { // read the next block about DbDoc
         property1:string,
         property2:number
     }) {
-        super(this,myDb1)
+        super()
     }
 } 
 let myCollection = myDb1.getCollectionByName<myObject>(myObject)
@@ -71,10 +72,6 @@ DbDoc extends your class with the following methods:
 
 So now we can **store** instances of classes to Db...
 How do we **get** a new class instance from a Doc in the DB?
-Easy! Take a look at the constructor. When you specify `optionsArg.queryArg`
-smartdata will fill in the data from the database!
-But when you specify a `optionsArg.dataArg` instead
-the data for the class is taken from there :)
 
 ## TypeScript
 How does TypeScript play into this?

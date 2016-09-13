@@ -58,4 +58,8 @@ export class Db {
         }
         return done.promise
     };
+
+    addCollection(dbCollectionArg: DbCollection<any>) {
+        this.collections.add(dbCollectionArg)
+    }
 }

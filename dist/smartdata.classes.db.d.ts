@@ -21,4 +21,5 @@ export declare class Db {
      * gets a collection by name: string
      */
     getCollectionByName<T>(nameArg: string): plugins.q.Promise<DbCollection<T>>;
+    addCollection(dbCollectionArg: DbCollection<any>): void;
 }

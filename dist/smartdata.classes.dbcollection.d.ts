@@ -4,6 +4,7 @@ import { Db } from './smartdata.classes.db';
 export interface IFindOptions {
     limit?: number;
 }
+export declare function Collection(db: Db): (constructor: any) => void;
 export declare class DbCollection<T> {
     collection: plugins.mongodb.Collection;
     name: string;

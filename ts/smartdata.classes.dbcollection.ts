@@ -5,6 +5,12 @@ export interface IFindOptions {
     limit?: number
 }
 
+export function Collection(db: Db) {
+    return function(constructor){
+        constructor['dbCollection'] = new DbCollection(constructor.name, db)
+    }
+}
+
 export class DbCollection<T> {
     collection: plugins.mongodb.Collection
     name: string

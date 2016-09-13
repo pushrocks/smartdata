@@ -18,8 +18,6 @@ interface ITestObject1 {
 
 let testDbCollection: smartdata.DbCollection<ITestObject1>
 
-
-
 describe('mongodb', function () {
     it('should start mongodb', function (done) {
         this.timeout(30000)
@@ -72,22 +70,26 @@ describe('smartdata', function () {
         testDb.close()
     })
     it('should create an extended class', function () {
+        @smartdata.Collection(testDb)
         class TestCar extends smartdata.DbDoc<TestCar> {
             color: string
             constructor(optionsArg: {
                 color: string,
                 property2: number
             }) {
-                super('testCar',testDb)
+                super()
+                this.color = optionsArg.color
             }
         };
         let testCarInstance = new TestCar({
             color: 'red',
             property2: 2
         })
+        should(testCarInstance.collection).be.instanceof(smartdata.DbCollection)
         should(testCarInstance).be.instanceof(smartdata.DbDoc)
         testCarInstance.save()
         it('should get a collection for testCar',function() {
+
         })
     })
 })
