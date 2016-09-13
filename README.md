@@ -72,11 +72,18 @@ DbDoc extends your class with the following methods:
   that extends DbDoc as well and call .saveDeep() on them as well.
   Loops are prevented
 
-So now we can get store instances of classes to Db...
-How do we get a new class instances from a Doc in DB?
+So now we can **store** instances of classes to Db...
+How do we **get** a new class instance from a Doc in the DB?
 Easy! Take a look at the constructor. When you specify `optionsArg.queryArg`
 smartdata will fill in the data from the database!
 But when you specify a `optionsArg.dataArg` instead
-the data is for the class is taken from there :)
+the data for the class is taken from there :)
+
+## TypeScript
+How does TypeScript play into this?
+Since you define your classes in TapeScript and types flow through smartdata in a generic way
+you should get all the Intellisense and type checking you love when using smartdata.
+smartdata itself also bundles typings.
+So you don't need to install any additional types whenimporting smartdata. 
 
 [![npm](https://push.rocks/assets/repo-header.svg)](https://push.rocks)
