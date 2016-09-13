@@ -54,7 +54,7 @@ class myObject extends smartdata.DbDoc { // read the next block about DbDoc
         super(this,optionsArg,myDb1)
     }
 } 
-let myCollection = myDb1.getCollection(myObject)
+let myCollection = myDb1.getCollection<myObject>(myObject)
 ``` 
 
 > Alert: You NEVER instantiate a collection.
