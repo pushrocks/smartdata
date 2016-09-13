@@ -42,7 +42,7 @@ So to get to get access to a specific collection you document
 // continues from the block before...
 
 @Collection(myDb1)
-class myObject extends smartdata.DbDoc { // read the next block about DbDoc
+class myObject extends smartdata.DbDoc<myObject> { // read the next block about DbDoc
     property1:string
     property2:number
     constructor(optionsArg:{
