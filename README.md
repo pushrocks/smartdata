@@ -51,7 +51,7 @@ class myObject extends smartdata.DbDoc { // read the next block about DbDoc
             property2:number
         }
     }) {
-        super(this,optionsArg)
+        super(this,optionsArg,myDb1)
     }
 } 
 let myCollection = myDb1.getCollection(myObject)
