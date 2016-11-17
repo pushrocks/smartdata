@@ -3,10 +3,10 @@ import * as plugins from './smartdata.plugins'
 import { Db } from './smartdata.classes.db'
 import { DbCollection } from './smartdata.classes.dbcollection'
 
-export type TDocCreation = 'db' | 'data' | 'mixed'
+export type TDocCreation = 'db' | 'new' | 'mixed'
 
 /**
- * sva - saveable decorator to be used on class properties
+ * saveable - saveable decorator to be used on class properties
  */
 export function saveable(target: DbDoc<any>, key: string) {
     console.log('called sva')
@@ -46,6 +46,13 @@ export class DbDoc<T> {
         let saveableObject = {}
         for (let propertyNameString of this.saveableProperties) {
             saveableObject[propertyNameString] = this[propertyNameString]
+        }
+        switch (this.creationType) {
+            case 'db':
+                this.collection // TODO implement collection.update()
+                break
+            case 'new':
+                this.collection.insertOne(saveableObject)
         }
     }
 

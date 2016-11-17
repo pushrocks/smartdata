@@ -1,5 +1,5 @@
 import { DbCollection } from './smartdata.classes.dbcollection';
-export declare type TDocCreation = 'db' | 'data' | 'mixed';
+export declare type TDocCreation = 'db' | 'new' | 'mixed';
 /**
  * sva - saveable decorator to be used on class properties
  */
