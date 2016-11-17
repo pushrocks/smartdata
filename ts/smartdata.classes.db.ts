@@ -3,16 +3,26 @@ import { Objectmap } from 'lik'
 
 import { DbCollection } from './smartdata.classes.dbcollection'
 
+/**
+ * interface - indicates the database type
+ */
+export type TDbType = 'mongodb' | 'nedb'
+
+/**
+ * interface - indicates the connection status of the db
+ */
 export type TConnectionStatus = 'disconnected' | 'connected' | 'failed'
 
 export class Db {
+    dbType: TDbType
     dbUrl: string
-    db: plugins.mongodb.Db
+    db: plugins.mongodb.Db | plugins.nedb
     status: TConnectionStatus
     collections = new Objectmap<DbCollection<any>>()
 
-    constructor(dbUrl: string) {
-        this.dbUrl = dbUrl
+    constructor(dbUrlArg: string, dbTypeArg: TDbType = 'mongodb') {
+        this.dbType = dbTypeArg
+        this.dbUrl = dbUrlArg
     }
 
     // basic connection stuff ----------------------------------------------
@@ -22,13 +32,17 @@ export class Db {
      */
     connect(): plugins.q.Promise<any> {
         let done = plugins.q.defer()
-        plugins.mongodb.MongoClient.connect(this.dbUrl, (err, db) => {
-            if (err) { console.log(err) }
-            plugins.assert.equal(null, err)
-            this.db = db
-            plugins.beautylog.success(`connected to database at ${this.dbUrl}`)
-            done.resolve(this.db)
-        })
+        if (this.dbType === 'mongodb') {
+            plugins.mongodb.MongoClient.connect(this.dbUrl, (err, db) => {
+                if (err) { console.log(err) }
+                plugins.assert.equal(null, err)
+                this.db = db
+                plugins.beautylog.success(`connected to database at ${this.dbUrl}`)
+                done.resolve(this.db)
+            })
+        } else if (this.dbType === 'nedb') {
+            this.db = new plugins.nedb()
+        }
         return done.promise
     }
 

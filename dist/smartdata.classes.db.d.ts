@@ -1,14 +1,23 @@
+/// <reference types="nedb" />
 /// <reference types="q" />
 import * as plugins from './smartdata.plugins';
 import { Objectmap } from 'lik';
 import { DbCollection } from './smartdata.classes.dbcollection';
+/**
+ * interface - indicates the database type
+ */
+export declare type TDbType = 'mongodb' | 'nedb';
+/**
+ * interface - indicates the connection status of the db
+ */
 export declare type TConnectionStatus = 'disconnected' | 'connected' | 'failed';
 export declare class Db {
+    dbType: TDbType;
     dbUrl: string;
-    db: plugins.mongodb.Db;
+    db: plugins.mongodb.Db | plugins.nedb;
     status: TConnectionStatus;
     collections: Objectmap<DbCollection<any>>;
-    constructor(dbUrl: string);
+    constructor(dbUrlArg: string, dbTypeArg?: TDbType);
     /**
      * connects to the database that was specified during instance creation
      */

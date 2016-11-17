@@ -12,6 +12,9 @@ export function Collection(db: Db) {
 }
 
 export class DbCollection<T> {
+    /**
+     * the collection that is used
+     */
     collection: plugins.mongodb.Collection
     name: string
     constructor(nameArg: string, dbArg: Db) {

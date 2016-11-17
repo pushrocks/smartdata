@@ -85,6 +85,7 @@ describe('smartdata', function () {
             color: 'red',
             property2: 2
         })
+        console.log(TestCar)
         should(testCarInstance.collection).be.instanceof(smartdata.DbCollection)
         should(testCarInstance).be.instanceof(smartdata.DbDoc)
         testCarInstance.save()

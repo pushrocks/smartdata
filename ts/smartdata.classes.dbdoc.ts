@@ -13,7 +13,7 @@ export class DbDoc<T> {
         this.collection = this.constructor['dbCollection']
     }
     save() {
-
+        
     }
     saveDeep() {
 

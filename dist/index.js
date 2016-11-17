@@ -2,7 +2,7 @@
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
-__export(require('./smartdata.classes.db'));
-__export(require('./smartdata.classes.dbcollection'));
-__export(require('./smartdata.classes.dbdoc'));
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi90cy9pbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBRUEsaUJBQWMsd0JBQ2QsQ0FBQyxFQURxQztBQUN0QyxpQkFBYyxrQ0FDZCxDQUFDLEVBRCtDO0FBQ2hELGlCQUFjLDJCQUNkLENBQUMsRUFEd0MifQ==
+__export(require("./smartdata.classes.db"));
+__export(require("./smartdata.classes.dbcollection"));
+__export(require("./smartdata.classes.dbdoc"));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi90cy9pbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBRUEsNENBQXNDO0FBQ3RDLHNEQUFnRDtBQUNoRCwrQ0FBeUMifQ==

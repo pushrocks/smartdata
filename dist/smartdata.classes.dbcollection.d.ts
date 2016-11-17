@@ -6,6 +6,9 @@ export interface IFindOptions {
 }
 export declare function Collection(db: Db): (constructor: any) => void;
 export declare class DbCollection<T> {
+    /**
+     * the collection that is used
+     */
     collection: plugins.mongodb.Collection;
     name: string;
     constructor(nameArg: string, dbArg: Db);

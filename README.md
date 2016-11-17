@@ -51,7 +51,7 @@ class myObject extends smartdata.DbDoc<myObject> { // read the next block about 
     }) {
         super()
     }
-} 
+}
 let myCollection = myDb1.getCollectionByName<myObject>(myObject)
 ``` 
 
