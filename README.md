@@ -2,12 +2,28 @@
 
 > Note: Still in Beta
 
+## Availabililty
+[![npm](https://push.rocks/assets/repo-button-npm.svg)](https://www.npmjs.com/package/smartdata)
+[![git](https://push.rocks/assets/repo-button-git.svg)](https://gitlab.com/pushrocks/smartdata)
+[![git](https://push.rocks/assets/repo-button-mirror.svg)](https://github.com/pushrocks/smartdata)
+[![docs](https://push.rocks/assets/repo-button-docs.svg)](https://pushrocks.gitlab.io/smartdata/)
+
+## Status for master
+[![build status](https://gitlab.com/pushrocks/smartdata/badges/master/build.svg)](https://gitlab.com/pushrocks/smartdata/commits/master)
+[![coverage report](https://gitlab.com/pushrocks/smartdata/badges/master/coverage.svg)](https://gitlab.com/pushrocks/smartdata/commits/master)
+[![Dependency Status](https://david-dm.org/pushrocks/smartdata.svg)](https://david-dm.org/pushrocks/smartdata)
+[![bitHound Dependencies](https://www.bithound.io/github/pushrocks/smartdata/badges/dependencies.svg)](https://www.bithound.io/github/pushrocks/smartdata/master/dependencies/npm)
+[![bitHound Code](https://www.bithound.io/github/pushrocks/smartdata/badges/code.svg)](https://www.bithound.io/github/pushrocks/smartdata)
+[![TypeScript](https://img.shields.io/badge/TypeScript-2.x-blue.svg)](https://nodejs.org/dist/latest-v6.x/docs/api/)
+[![node](https://img.shields.io/badge/node->=%206.x.x-blue.svg)](https://nodejs.org/dist/latest-v6.x/docs/api/)
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+
 smartdata is an ODM that adheres to TypeScript practices and uses classes to organize data.
 It uses MongoDB or NeDb as persistent storage.
 
 ## Intention
 There are many ODMs out there, however when we searched for an ODM that uses TypeScript,
-acts smart while still embracing an the NoSQL idea... we didn't find a matching solution.
+acts smart while still embracing the NoSQL idea we didn't find a matching solution.
 This is why we started smartdata.
 
 How MongoDB terms map to smartdata classes
