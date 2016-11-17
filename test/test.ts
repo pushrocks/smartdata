@@ -72,6 +72,7 @@ describe('smartdata', function () {
     it('should create an extended class', function () {
         @smartdata.Collection(testDb)
         class TestCar extends smartdata.DbDoc<TestCar> {
+            @smartdata.saveable
             color: string
             constructor(optionsArg: {
                 color: string,
@@ -85,6 +86,8 @@ describe('smartdata', function () {
             color: 'red',
             property2: 2
         })
+
+        should(testCarInstance.saveableProperties[0]).equal('color')
         console.log(TestCar)
         should(testCarInstance.collection).be.instanceof(smartdata.DbCollection)
         should(testCarInstance).be.instanceof(smartdata.DbDoc)
