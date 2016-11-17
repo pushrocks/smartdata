@@ -1,6 +1,6 @@
 {
   "name": "smartdata",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "do more with data",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
