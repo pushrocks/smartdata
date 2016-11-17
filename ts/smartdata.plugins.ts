@@ -1,6 +1,16 @@
 import 'typings-global'
-export import assert = require('assert')
-export import beautylog = require('beautylog')
-export import mongodb = require('mongodb')
-export import q = require('q')
-export import nedb = require('nedb')
+import * as assert from 'assert'
+import * as beautylog from 'beautylog'
+import * as lodash from 'lodash'
+import * as mongodb from 'mongodb'
+import * as q from 'q'
+let nedb = require('nedb')
+
+export {
+    assert,
+    beautylog,
+    lodash,
+    mongodb,
+    q,
+    nedb
+}

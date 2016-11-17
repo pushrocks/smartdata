@@ -89,7 +89,7 @@ describe('smartdata', function () {
         should(testCarInstance.collection).be.instanceof(smartdata.DbCollection)
         should(testCarInstance).be.instanceof(smartdata.DbDoc)
         testCarInstance.save()
-        it('should get a collection for testCar',function() {
+        it('should get a collection for testCar', function () {
 
         })
     })
@@ -105,5 +105,26 @@ describe('mongodb', function () {
         })
         shelljs.exec('mongod --dbpath=./test/data --shutdown')
         mongoChildProcess.kill('SIGTERM')
+    })
+})
+
+describe('smartdata with nedb', function () {
+    let testDb: smartdata.Db
+    let testCollection: smartdata.DbCollection<ITestObject1>
+    it('should create a DB with nedb', function () {
+        testDb = new smartdata.Db('any', 'nedb')
+        testDb.connect()
+        testCollection = new smartdata.DbCollection<ITestObject1>('anyName', testDb)
+    })
+
+    it('should insert a doc', function(done){
+        testCollection.insertOne({ value1: 'hi' }).then(() => {done()})
+    })
+
+    it('should find the inserted document', function(done){
+        testCollection.find({ value1: 'hi' }).then(x => {
+            console.log(x)
+            done()
+        })
     })
 })

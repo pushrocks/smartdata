@@ -3,7 +3,7 @@
 > Note: Still in Beta
 
 smartdata is an ODM that adheres to TypeScript practices and uses classes to organize data.
-It uses MongoDB as persistent storage.
+It uses MongoDB or NeDb as persistent storage.
 
 ## Intention
 There are many ODMs out there, however when we searched for an ODM that uses TypeScript,
@@ -21,11 +21,15 @@ Document | smartdata.DbDoc
 ### class Db
 represents a Database. Naturally it has .connect() etc. methods on it.
 Since it is a class you can have multiple DBs defined.
-```typescript
+```javascript
 import * as smartdata from 'smartdata'
 
+// mongodb
 let myDb1 = new smartdata.Db('someConnectionUrl')
 let myDb2 = new smartdata.Db('someConnectionUrl')
+
+// nedb
+let myDb3 = new smartdata('/some/path/for/persistence', 'nedb') // you may set first argument to null for just in memory db
 
 myDb1.connect()
 myDb2.connect()
@@ -38,7 +42,7 @@ represents a collection of objects.
 A collection is defined by the object class (that is extending smartdata.dbdoc) it respresents
 
 So to get to get access to a specific collection you document
-```typescript
+```javascript
 // continues from the block before...
 
 @Collection(myDb1)
@@ -53,6 +57,8 @@ class myObject extends smartdata.DbDoc<myObject> { // read the next block about 
     }
 }
 let myCollection = myDb1.getCollectionByName<myObject>(myObject)
+
+// start to instantiate classes from scratch or database
 ``` 
 
 > Alert: You NEVER instantiate a collection.

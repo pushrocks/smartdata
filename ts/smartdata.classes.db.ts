@@ -16,7 +16,7 @@ export type TConnectionStatus = 'disconnected' | 'connected' | 'failed'
 export class Db {
     dbType: TDbType
     dbUrl: string
-    db: plugins.mongodb.Db | plugins.nedb
+    db: plugins.mongodb.Db
     status: TConnectionStatus
     collections = new Objectmap<DbCollection<any>>()
 
@@ -41,7 +41,7 @@ export class Db {
                 done.resolve(this.db)
             })
         } else if (this.dbType === 'nedb') {
-            this.db = new plugins.nedb()
+            this.db = null
         }
         return done.promise
     }
@@ -51,7 +51,9 @@ export class Db {
      */
     close(): plugins.q.Promise<any> {
         let done = plugins.q.defer()
-        this.db.close()
+        if (this.dbType === 'mongodb') {
+            this.db.close()
+        }
         plugins.beautylog.ok(`disconnected to database at ${this.dbUrl}`)
         done.resolve()
         return done.promise
@@ -76,4 +78,5 @@ export class Db {
     addCollection(dbCollectionArg: DbCollection<any>) {
         this.collections.add(dbCollectionArg)
     }
+    
 }

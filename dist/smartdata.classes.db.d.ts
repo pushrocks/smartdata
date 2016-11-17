@@ -1,4 +1,3 @@
-/// <reference types="nedb" />
 /// <reference types="q" />
 import * as plugins from './smartdata.plugins';
 import { Objectmap } from 'lik';
@@ -14,7 +13,7 @@ export declare type TConnectionStatus = 'disconnected' | 'connected' | 'failed';
 export declare class Db {
     dbType: TDbType;
     dbUrl: string;
-    db: plugins.mongodb.Db | plugins.nedb;
+    db: plugins.mongodb.Db;
     status: TConnectionStatus;
     collections: Objectmap<DbCollection<any>>;
     constructor(dbUrlArg: string, dbTypeArg?: TDbType);
