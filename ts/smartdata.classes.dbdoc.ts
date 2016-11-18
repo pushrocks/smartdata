@@ -8,10 +8,12 @@ export type TDocCreation = 'db' | 'new' | 'mixed'
 /**
  * saveable - saveable decorator to be used on class properties
  */
-export function saveable(target: DbDoc<any>, key: string) {
-    console.log('called sva')
-    if (!target.saveableProperties) { target.saveableProperties = [] }
-    target.saveableProperties.push(key)
+export function svDb() {
+    return (target: DbDoc<any>, key: string) => {
+        console.log('called sva')
+        if (!target.saveableProperties) { target.saveableProperties = [] }
+        target.saveableProperties.push(key)
+    }
 }
 
 export class DbDoc<T> {

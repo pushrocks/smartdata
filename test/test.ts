@@ -72,7 +72,7 @@ describe('smartdata', function () {
     it('should create an extended class', function () {
         @smartdata.Collection(testDb)
         class TestCar extends smartdata.DbDoc<TestCar> {
-            @smartdata.saveable
+            @smartdata.svDb()
             color: string
             constructor(optionsArg: {
                 color: string,

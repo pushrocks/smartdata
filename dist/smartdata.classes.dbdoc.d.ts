@@ -3,7 +3,7 @@ export declare type TDocCreation = 'db' | 'new' | 'mixed';
 /**
  * saveable - saveable decorator to be used on class properties
  */
-export declare function saveable(target: DbDoc<any>, key: string): void;
+export declare function svDb(): (target: DbDoc<any>, key: string) => void;
 export declare class DbDoc<T> {
     /**
      * the collection object an Doc belongs to

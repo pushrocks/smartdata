@@ -63,7 +63,7 @@ So to get to get access to a specific collection you document
 
 @Collection(myDb1)
 class myObject extends smartdata.DbDoc<myObject> { // read the next block about DbDoc
-    @smartdata.saveable property1: string // @smartdata.saveable marks the property for db save
+    @smartdata.svDb() property1: string // @smartdata.svDb() marks the property for db save
     property2: number // this one is not marked, so it won't be save upon calling this.save() 
     constructor(optionsArg:{
         property1: string,
