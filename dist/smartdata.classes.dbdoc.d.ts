@@ -1,7 +1,7 @@
 import { DbCollection } from './smartdata.classes.dbcollection';
 export declare type TDocCreation = 'db' | 'new' | 'mixed';
 /**
- * sva - saveable decorator to be used on class properties
+ * saveable - saveable decorator to be used on class properties
  */
 export declare function saveable(target: DbDoc<any>, key: string): void;
 export declare class DbDoc<T> {

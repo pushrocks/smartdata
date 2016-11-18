@@ -23,7 +23,7 @@ describe('mongodb', function () {
         this.timeout(30000)
         mongoChildProcess = shelljs.exec('mongod --dbpath=./test/data --port 27017', { async: true, silent: true })
         let doneCalled = false
-        mongoChildProcess.stdout.on('new', function (data) {
+        mongoChildProcess.stdout.on('data', function (data) {
             console.log(smartstring.indent.indentWithPrefix(data, '*** MongoDB Process *** : '))
             if (!doneCalled) {
                 if (/waiting for connections on port 27017/.test(data)) {
