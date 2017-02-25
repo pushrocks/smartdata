@@ -27,13 +27,19 @@ export class DbCollection<T> {
 
 
     constructor(nameArg: string, dbArg: Db) {
+        // tell the collection where it belongs
         this.name = nameArg
         this.db = dbArg
+
+        // make sure it actually exists
         if (this.db.dbType === 'mongodb') {
             this.collection = dbArg.db.collection(nameArg)
         } else {
             this.collection = new plugins.nedb()
         }
+
+        // tell the db class about it (important since Db uses different systems under the hood)
+        this.db.addCollection(this)
     }
 
     /**

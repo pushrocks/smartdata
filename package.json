@@ -6,6 +6,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "(npm run prepareMongo && npmts)",
+    "testLocal": "(npmdocker)",
     "prepareMongo": "(rm -rf ./test/data && mkdir ./test/data/)"
   },
   "repository": {
@@ -19,25 +20,25 @@
   },
   "homepage": "https://gitlab.com/pushrocks/smartdata#README",
   "dependencies": {
-    "@types/lodash": "^4.14.39",
-    "@types/mongodb": "^2.1.34",
+    "@types/lodash": "^4.14.53",
+    "@types/mongodb": "^2.1.41",
     "@types/nedb": "0.0.31",
     "@types/q": "0.0.32",
-    "beautylog": "^6.0.0",
-    "lik": "^1.0.24",
-    "lodash": "^4.17.2",
-    "mongodb": "^2.2.11",
+    "beautylog": "^6.1.1",
+    "lik": "^1.0.27",
+    "lodash": "^4.17.4",
+    "mongodb": "^2.2.24",
     "nedb": "^1.8.0",
     "q": "^1.4.1",
     "runtime-type-checks": "0.0.4",
     "typings-global": "^1.0.14"
   },
   "devDependencies": {
-    "@types/shelljs": "^0.3.32",
+    "@types/shelljs": "^0.7.0",
     "@types/should": "^8.1.30",
-    "shelljs": "^0.7.5",
-    "should": "^11.1.1",
-    "smartstring": "^2.0.22",
+    "shelljs": "^0.7.6",
+    "should": "^11.2.0",
+    "smartstring": "^2.0.24",
     "typings-test": "^1.0.3"
   }
 }

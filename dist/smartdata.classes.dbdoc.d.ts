@@ -1,3 +1,4 @@
+import { Objectmap } from 'lik';
 import { DbCollection } from './smartdata.classes.dbcollection';
 export declare type TDocCreation = 'db' | 'new' | 'mixed';
 /**
@@ -30,5 +31,5 @@ export declare class DbDoc<T> {
      * also store any referenced objects to DB
      * better for data consistency
      */
-    saveDeep(): void;
+    saveDeep(savedMapArg?: Objectmap<DbDoc<any>>): void;
 }

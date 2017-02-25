@@ -1,0 +1,7 @@
+{
+  "npmdocker": {
+    "baseImage": "hosttoday/ht-docker-node:mongo",
+    "command": "npmci test stable",
+    "dockerSock": false
+  }
+}
