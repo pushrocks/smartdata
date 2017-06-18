@@ -20,25 +20,20 @@
   },
   "homepage": "https://gitlab.com/pushrocks/smartdata#README",
   "dependencies": {
-    "@types/lodash": "^4.14.53",
-    "@types/mongodb": "^2.1.41",
-    "@types/nedb": "0.0.31",
-    "@types/q": "0.0.32",
-    "beautylog": "^6.1.1",
-    "lik": "^1.0.27",
+    "@types/lodash": "^4.14.66",
+    "@types/mongodb": "^2.2.6",
+    "beautylog": "^6.1.10",
+    "lik": "^1.0.32",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.24",
-    "nedb": "^1.8.0",
-    "q": "^1.4.1",
+    "mongodb": "^2.2.28",
     "runtime-type-checks": "0.0.4",
-    "typings-global": "^1.0.14"
+    "smartq": "^1.1.1",
+    "typings-global": "^1.0.17"
   },
   "devDependencies": {
-    "@types/shelljs": "^0.7.0",
-    "@types/should": "^8.1.30",
-    "shelljs": "^0.7.6",
-    "should": "^11.2.0",
+    "@types/shelljs": "^0.7.2",
+    "shelljs": "^0.7.8",
     "smartstring": "^2.0.24",
-    "typings-test": "^1.0.3"
+    "tapbundle": "^1.0.14"
   }
 }

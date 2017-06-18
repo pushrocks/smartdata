@@ -36,10 +36,16 @@ export class DbDoc<T> {
   saveableProperties: string[]
 
   /**
+   * name
+   */
+  name: string
+
+  /**
    * class constructor
    */
-  constructor() {
+  constructor(nameArg: string) {
     this.collection = this.constructor[ 'dbCollection' ]
+    this.name = nameArg
   }
 
   /**
@@ -47,7 +53,7 @@ export class DbDoc<T> {
    * may lead to data inconsistencies, but is faster
    */
   save() {
-    let saveableObject: any = {} // isn not exposed to outside, so any is ok here
+    let saveableObject: any = {} // is not exposed to outside, so any is ok here
     for (let propertyNameString of this.saveableProperties) {
       saveableObject[ propertyNameString ] = this[ propertyNameString ]
     }

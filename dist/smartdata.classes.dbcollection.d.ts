@@ -1,6 +1,6 @@
-/// <reference types="q" />
 import * as plugins from './smartdata.plugins';
 import { Db } from './smartdata.classes.db';
+import { DbDoc } from './smartdata.classes.dbDoc';
 export interface IFindOptions {
     limit?: number;
 }
@@ -14,10 +14,11 @@ export declare class DbCollection<T> {
      * can be nedb datastore (sub api of mongodb)
      */
     collection: plugins.mongodb.Collection;
+    collectedClass: T & DbDoc<T>;
+    objectValidation: IDocValidation<T>;
     name: string;
     db: Db;
-    objectValidation: IDocValidation<T>;
-    constructor(nameArg: string, dbArg: Db);
+    constructor(collectedClassArg: T & DbDoc<T>, dbArg: Db);
     /**
      * adds a validation function that all newly inserted and updated objects have to pass
      */
@@ -25,15 +26,15 @@ export declare class DbCollection<T> {
     /**
      * finds an object in the DbCollection
      */
-    find(docMatchArg: T | any, optionsArg?: IFindOptions): plugins.q.Promise<T[]>;
+    find(docMatchArg: T | any, optionsArg?: IFindOptions): Promise<T[]>;
     /**
      * inserts object into the DbCollection
      */
-    insertOne(docArg: T): plugins.q.Promise<void>;
+    insertOne(docArg: T): Promise<void>;
     /**
      * inserts many objects at once into the DbCollection
      */
-    insertMany(docArrayArg: T[]): plugins.q.Promise<void>;
+    insertMany(docArrayArg: T[]): Promise<void>;
     /**
      * checks a Doc for constraints
      */

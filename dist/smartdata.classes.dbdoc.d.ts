@@ -19,9 +19,13 @@ export declare class DbDoc<T> {
      */
     saveableProperties: string[];
     /**
+     * name
+     */
+    name: string;
+    /**
      * class constructor
      */
-    constructor();
+    constructor(nameArg: string);
     /**
      * saves this instance but not any connected items
      * may lead to data inconsistencies, but is faster
