@@ -1,6 +1,6 @@
 import * as plugins from './smartdata.plugins'
 import { Db } from './smartdata.classes.db'
-import { DbDoc } from './smartdata.classes.dbDoc'
+import { DbDoc } from './smartdata.classes.dbdoc'
 
 export interface IFindOptions {
   limit?: number
