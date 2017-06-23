@@ -25,7 +25,7 @@ export declare class DbDoc<T> {
     /**
      * class constructor
      */
-    constructor(nameArg: string);
+    constructor();
     /**
      * saves this instance but not any connected items
      * may lead to data inconsistencies, but is faster

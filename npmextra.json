@@ -8,5 +8,10 @@
     "globalNpmTools": [
       "npmts"
     ]
+  },
+  "npmts": {
+    "testConfig": {
+      "parallel": false
+    }
   }
 }

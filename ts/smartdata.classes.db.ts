@@ -2,6 +2,7 @@ import * as plugins from './smartdata.plugins'
 import { Objectmap } from 'lik'
 
 import { DbCollection } from './smartdata.classes.dbcollection'
+import { getObjectDoc } from './smartdata.classes.dbobjectdoc'
 
 /**
  * interface - indicates the connection status of the db
@@ -12,7 +13,8 @@ export class Db {
   dbUrl: string
   db: plugins.mongodb.Db
   status: TConnectionStatus
-  collections = new Objectmap<DbCollection<any>>()
+  classCollections = new Objectmap<DbCollection<any>>()
+  objectCollections = new Objectmap<DbCollection<any>>()
 
   constructor (dbUrlArg: string) {
     this.dbUrl = dbUrlArg
@@ -49,21 +51,32 @@ export class Db {
   // advanced communication with the database --------------------------------
 
   /**
-   * gets a collection by name: string
+   * gets a class based collection by name: string
    */
-  getCollectionByName<T>(nameArg: string): Promise<DbCollection<T>> {
-    let done = plugins.smartq.defer<DbCollection<any>>()
-    let resultCollection = this.collections.find((dbCollectionArg) => {
+  async getClassCollectionByName<T> (nameArg: string): Promise<DbCollection<T>> {
+    let resultCollection = this.classCollections.find((dbCollectionArg) => {
       return dbCollectionArg.name === nameArg
     })
-    if (resultCollection !== null) {
-      done.resolve(resultCollection)
+    return resultCollection
+  }
+
+  /**
+   * gets an object collection by name
+   */
+  async getObjectCollectionByName<T> (nameArg: string, dbArg: Db , makeNewArg: boolean = false): Promise<DbCollection<T>> {
+    let resultCollection = this.objectCollections.find((dbCollectionArg) => {
+      return dbCollectionArg.name === nameArg
+    })
+    if (!resultCollection && makeNewArg) {
+      resultCollection = getObjectDoc(nameArg, this).collection
+      return resultCollection
+    } else {
+      return resultCollection
     }
-    return done.promise
   }
 
   addCollection (dbCollectionArg: DbCollection<any>) {
-    this.collections.add(dbCollectionArg)
+    this.classCollections.add(dbCollectionArg)
   }
 
 }

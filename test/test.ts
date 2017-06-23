@@ -1,5 +1,8 @@
 import { tap, expect } from 'tapbundle'
 import * as smartq from 'smartq'
+import { Qenv } from 'qenv'
+
+let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/')
 
 // the tested module
 import * as smartdata from '../dist/index'
@@ -13,11 +16,19 @@ interface ITestObject1 {
   value3?: string
 }
 
+tap.test('should establish a connection to mongodb', async () => {
+  testDb = new smartdata.Db(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@sandbox-shard-00-00-uyw7y.mongodb.net:27017,sandbox-shard-00-01-uyw7y.mongodb.net:27017,sandbox-shard-00-02-uyw7y.mongodb.net:27017/${process.env.MONGO_DATABASE}?ssl=true&replicaSet=sandbox-shard-0&authSource=admin`)
+  await testDb.connect()
+})
+
+// =======================================
+// The actual tests
+// =======================================
+
 let testDbCollection: smartdata.DbCollection<ITestObject1>
 
-tap.test('should establish a connection to mongodb', async () => {
-  testDb = new smartdata.Db('mongodb://localhost:27017/smartdata')
-  await testDb.connect()
+tap.test('should give me a collection', async () => {
+  testDbCollection = await testDb.getObjectCollectionByName<ITestObject1>('TestValue', testDb, true)
 })
 
 tap.test('should insert a doc into the collection', async () => {
@@ -45,37 +56,10 @@ tap.test('should find a specified doc', async () => {
   })
 })
 
+
+
 tap.test('should close the db Connection', async () => {
-  testDb.close()
-})
-
-tap.test('should create an extended class', async () => {
-  @smartdata.Collection(testDb)
-  class TestCar extends smartdata.DbDoc<TestCar> {
-    @smartdata.svDb()
-    color: string
-    constructor (optionsArg: {
-      color: string,
-      property2: number
-    }) {
-      super('TestCar')
-      this.color = optionsArg.color
-    }
-  }
-  let testCarInstance = new TestCar({
-    color: 'red',
-    property2: 2
-  })
-
-  expect(testCarInstance.saveableProperties[ 0 ]).equal('color')
-  console.log(TestCar)
-  expect(testCarInstance.collection).be.instanceof(smartdata.DbCollection)
-  expect(testCarInstance).be.instanceof(smartdata.DbDoc)
-  testCarInstance.save()
-})
-
-tap.test('should get a collection for testCar', async () => {
- //
+  await testDb.close()
 })
 
 tap.start()
