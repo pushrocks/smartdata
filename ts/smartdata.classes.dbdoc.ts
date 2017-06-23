@@ -43,9 +43,9 @@ export class DbDoc<T> {
   /**
    * class constructor
    */
-  constructor(nameArg: string) {
+  constructor () {
+    this.name = this.constructor['name']
     this.collection = this.constructor[ 'dbCollection' ]
-    this.name = nameArg
   }
 
   /**

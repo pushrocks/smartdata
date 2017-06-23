@@ -9,7 +9,8 @@ export declare class Db {
     dbUrl: string;
     db: plugins.mongodb.Db;
     status: TConnectionStatus;
-    collections: Objectmap<DbCollection<any>>;
+    classCollections: Objectmap<DbCollection<any>>;
+    objectCollections: Objectmap<DbCollection<any>>;
     constructor(dbUrlArg: string);
     /**
      * connects to the database that was specified during instance creation
@@ -20,8 +21,12 @@ export declare class Db {
      */
     close(): Promise<any>;
     /**
-     * gets a collection by name: string
+     * gets a class based collection by name: string
      */
-    getCollectionByName<T>(nameArg: string): Promise<DbCollection<T>>;
+    getClassCollectionByName<T>(nameArg: string): Promise<DbCollection<T>>;
+    /**
+     * gets an object collection by name
+     */
+    getObjectCollectionByName<T>(nameArg: string, dbArg: Db, makeNewArg?: boolean): Promise<DbCollection<T>>;
     addCollection(dbCollectionArg: DbCollection<any>): void;
 }

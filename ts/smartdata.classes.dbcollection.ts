@@ -12,7 +12,7 @@ export interface IDocValidation<T> {
 
 export function Collection (db: Db) {
   return function (constructor) {
-    constructor[ 'dbCollection' ] = new DbCollection(constructor.name, db)
+    constructor[ 'dbCollection' ] = new DbCollection(constructor, db)
   }
 }
 
