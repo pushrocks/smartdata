@@ -52,7 +52,7 @@ export class DbDoc<T> {
    * saves this instance but not any connected items
    * may lead to data inconsistencies, but is faster
    */
-  save() {
+  save () {
     let saveableObject: any = {} // is not exposed to outside, so any is ok here
     for (let propertyNameString of this.saveableProperties) {
       saveableObject[ propertyNameString ] = this[ propertyNameString ]
@@ -70,14 +70,14 @@ export class DbDoc<T> {
    * also store any referenced objects to DB
    * better for data consistency
    */
-  saveDeep(savedMapArg: Objectmap<DbDoc<any>> = null) {
+  saveDeep (savedMapArg: Objectmap<DbDoc<any>> = null) {
     if (!savedMapArg) {
       savedMapArg = new Objectmap<DbDoc<any>>()
     }
     savedMapArg.add(this)
     this.save()
     for (let propertyKey in this) {
-      let property = this[ propertyKey ]
+      let property: any = this[ propertyKey ]
       if (property instanceof DbDoc && !savedMapArg.checkForObject(property)) {
         property.saveDeep(savedMapArg)
       }

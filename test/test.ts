@@ -5,7 +5,7 @@ import { Qenv } from 'qenv'
 let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/')
 
 // the tested module
-import * as smartdata from '../dist/index'
+import * as smartdata from '../ts/index'
 
 let mongoChildProcess
 let testDb: smartdata.Db
