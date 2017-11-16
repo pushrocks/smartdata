@@ -65,7 +65,7 @@ So to get to get access to a specific collection you document
 // continues from the block before...
 
 @Collection(myDb1)
-class myObject extends smartdata.DbDoc<myObject> { // read the next block about DbDoc
+class MyObject extends smartdata.DbDoc<myObject> { // read the next block about DbDoc
     @smartdata.svDb() property1: string // @smartdata.svDb() marks the property for db save
     property2: number // this one is not marked, so it won't be save upon calling this.save() 
     constructor(optionsArg:{
@@ -77,7 +77,13 @@ class myObject extends smartdata.DbDoc<myObject> { // read the next block about 
 }
 let myCollection = myDb1.getCollectionByName<myObject>(myObject)
 
-// start to instantiate classes from scratch or database
+// start to instantiate instances of classes from scratch or database
+
+let localObject = new MyObject({
+    property1: 'hi',
+    property2: 2
+})
+localObject.save() // saves the object to the database
 ``` 
 
 > Alert: You NEVER instantiate a collection.
