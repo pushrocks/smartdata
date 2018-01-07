@@ -8,13 +8,12 @@ export interface IDocValidation<T> {
     (doc: T): boolean;
 }
 export declare function Collection(db: Db): (constructor: any) => void;
-export declare class DbCollection<T> {
+export declare class DbTable<T> {
     /**
      * the collection that is used, defaults to mongodb collection,
      * can be nedb datastore (sub api of mongodb)
      */
-    collection: plugins.mongodb.Collection;
-    collectedClass: T & DbDoc<T>;
+    table: plugins.rethinkDb.Table;
     objectValidation: IDocValidation<T>;
     name: string;
     db: Db;

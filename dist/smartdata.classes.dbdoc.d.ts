@@ -1,5 +1,5 @@
 import { Objectmap } from 'lik';
-import { DbCollection } from './smartdata.classes.dbcollection';
+import { DbTable } from './smartdata.classes.dbcollection';
 export declare type TDocCreation = 'db' | 'new' | 'mixed';
 /**
  * saveable - saveable decorator to be used on class properties
@@ -9,7 +9,7 @@ export declare class DbDoc<T> {
     /**
      * the collection object an Doc belongs to
      */
-    collection: DbCollection<T>;
+    collection: DbTable<T>;
     /**
      * how the Doc in memory was created, may prove useful later.
      */

@@ -1,17 +1,18 @@
 import * as plugins from './smartdata.plugins';
 import { Objectmap } from 'lik';
-import { DbCollection } from './smartdata.classes.dbcollection';
+import { DbTable } from './smartdata.classes.dbcollection';
+import { ConnectionOptions } from 'rethinkdb';
 /**
  * interface - indicates the connection status of the db
  */
-export declare type TConnectionStatus = 'disconnected' | 'connected' | 'failed';
+export declare type TConnectionStatus = 'initial' | 'disconnected' | 'connected' | 'failed';
 export declare class Db {
-    dbUrl: string;
+    dbName: string;
+    connectionOptions: plugins.rethinkDb.ConnectionOptions;
     dbConnection: plugins.rethinkDb.Connection;
     status: TConnectionStatus;
-    classCollections: Objectmap<DbCollection<any>>;
-    objectCollections: Objectmap<DbCollection<any>>;
-    constructor(dbUrlArg: string);
+    dbTablesMap: Objectmap<DbTable<any>>;
+    constructor(connectionOptionsArg: ConnectionOptions);
     /**
      * connects to the database that was specified during instance creation
      */
@@ -21,12 +22,10 @@ export declare class Db {
      */
     close(): Promise<any>;
     /**
-     * gets a class based collection by name: string
+     * Gets a table's name and returns smartdata's DbTable class
+     * @param nameArg
+     * @returns DbTable
      */
-    getClassCollectionByName<T>(nameArg: string): Promise<DbCollection<T>>;
-    /**
-     * gets an object collection by name
-     */
-    getObjectCollectionByName<T>(nameArg: string, dbArg: Db, makeNewArg?: boolean): Promise<DbCollection<T>>;
-    addCollection(dbCollectionArg: DbCollection<any>): void;
+    getDbTableByName<T>(nameArg: string): Promise<DbTable<T>>;
+    addTable(dbCollectionArg: DbTable<any>): void;
 }
