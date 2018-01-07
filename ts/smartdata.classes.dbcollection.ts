@@ -22,19 +22,17 @@ export class DbTable<T> {
    * can be nedb datastore (sub api of mongodb)
    */
   table: plugins.rethinkDb.Table
-  collectedClass: T & DbDoc<T>
   objectValidation: IDocValidation<T> = null
   name: string
   db: Db
 
   constructor (collectedClassArg: T & DbDoc<T>, dbArg: Db) {
     // tell the collection where it belongs
-    this.collectedClass = collectedClassArg
     this.name = collectedClassArg.name
     this.db = dbArg
 
-    // make sure it actually exists
-    this.table = dbArg.dbConnection.collection(this.name)
+    // connect this instance to a RethinkDB table
+    this.table = plugins.rethinkDb.db(this.db.dbName).table(this.name)
 
     // tell the db class about it (important since Db uses different systems under the hood)
     this.db.addCollection(this)
