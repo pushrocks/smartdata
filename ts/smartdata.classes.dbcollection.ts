@@ -12,16 +12,16 @@ export interface IDocValidation<T> {
 
 export function Collection (db: Db) {
   return function (constructor) {
-    constructor[ 'dbCollection' ] = new DbCollection(constructor, db)
+    constructor[ 'dbCollection' ] = new DbTable(constructor, db)
   }
 }
 
-export class DbCollection<T> {
+export class DbTable<T> {
   /**
    * the collection that is used, defaults to mongodb collection,
    * can be nedb datastore (sub api of mongodb)
    */
-  collection: plugins.mongodb.Collection
+  table: plugins.rethinkDb.Table
   collectedClass: T & DbDoc<T>
   objectValidation: IDocValidation<T> = null
   name: string
@@ -34,7 +34,7 @@ export class DbCollection<T> {
     this.db = dbArg
 
     // make sure it actually exists
-    this.collection = dbArg.db.collection(this.name)
+    this.table = dbArg.dbConnection.collection(this.name)
 
     // tell the db class about it (important since Db uses different systems under the hood)
     this.db.addCollection(this)
@@ -52,7 +52,7 @@ export class DbCollection<T> {
    */
   find (docMatchArg: T | any, optionsArg?: IFindOptions): Promise<T[]> {
     let done = plugins.smartq.defer<T[]>()
-    let findCursor = this.collection.find(docMatchArg)
+    let findCursor = this.table.find(docMatchArg)
     if (optionsArg) {
       if (optionsArg.limit) { findCursor = findCursor.limit(1) }
     }
@@ -73,7 +73,7 @@ export class DbCollection<T> {
     let done = plugins.smartq.defer<void>()
     this.checkDoc(docArg).then(
       () => {
-        this.collection.insertOne(docArg)
+        this.table.insertOne(docArg)
           .then(() => { done.resolve() })
       },
       () => {
@@ -92,7 +92,7 @@ export class DbCollection<T> {
       checkDocPromiseArray.push(this.checkDoc(docArg))
     }
     Promise.all(checkDocPromiseArray).then(() => {
-      this.collection.insertMany(docArrayArg)
+      this.table.insertMany(docArrayArg)
         .then(() => { done.resolve() })
     })
     return done.promise

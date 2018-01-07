@@ -37,7 +37,7 @@ tap.test('should create an extended class', async () => {
   })
   expect(testCarInstance.name).to.equal('TestCar')
   expect(testCarInstance.saveableProperties[ 0 ]).equal('color')
-  expect(testCarInstance.collection).be.instanceof(smartdata.DbCollection)
+  expect(testCarInstance.collection).be.instanceof(smartdata.DbTable)
   expect(testCarInstance).be.instanceof(smartdata.DbDoc)
   if (!process.env.CI) { console.log(TestCar) }
 })

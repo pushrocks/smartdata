@@ -7,7 +7,7 @@ import { DbCollection } from './smartdata.classes.dbcollection';
 export declare type TConnectionStatus = 'disconnected' | 'connected' | 'failed';
 export declare class Db {
     dbUrl: string;
-    db: plugins.mongodb.Db;
+    dbConnection: plugins.rethinkDb.Connection;
     status: TConnectionStatus;
     classCollections: Objectmap<DbCollection<any>>;
     objectCollections: Objectmap<DbCollection<any>>;

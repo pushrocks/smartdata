@@ -21,6 +21,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.74",
     "@types/mongodb": "^2.2.11",
+    "@types/rethinkdb": "^2.3.8",
     "beautylog": "^6.1.10",
     "lik": "^1.0.40",
     "lodash": "^4.17.4",

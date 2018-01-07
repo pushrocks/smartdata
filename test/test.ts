@@ -29,7 +29,7 @@ tap.test('should establish a connection to mongodb', async () => {
 // ------
 // Collections
 // ------
-let testDbCollection: smartdata.DbCollection<ITestObject1>
+let testDbCollection: smartdata.DbTable<ITestObject1>
 
 tap.test('should give me a collection', async () => {
   testDbCollection = await testDb.getObjectCollectionByName<ITestObject1>('TestValue', testDb, true)

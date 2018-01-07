@@ -44,6 +44,12 @@
   version "8.0.53"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.53.tgz#396b35af826fa66aad472c8cb7b8d5e277f4e6d8"
 
+"@types/rethinkdb@^2.3.8":
+  version "2.3.8"
+  resolved "https://registry.yarnpkg.com/@types/rethinkdb/-/rethinkdb-2.3.8.tgz#961f78f0e731668631891bd1199722bb4a2258a8"
+  dependencies:
+    "@types/node" "*"
+
 "@types/shelljs@^0.7.4":
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/@types/shelljs/-/shelljs-0.7.6.tgz#4ac7ca01c191ba65b8e2bf50543c5560084d8d27"

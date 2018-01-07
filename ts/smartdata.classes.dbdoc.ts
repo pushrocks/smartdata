@@ -3,7 +3,7 @@ import * as plugins from './smartdata.plugins'
 import { Objectmap } from 'lik'
 
 import { Db } from './smartdata.classes.db'
-import { DbCollection } from './smartdata.classes.dbcollection'
+import { DbTable } from './smartdata.classes.dbcollection'
 
 export type TDocCreation = 'db' | 'new' | 'mixed'
 
@@ -23,7 +23,7 @@ export class DbDoc<T> {
   /**
    * the collection object an Doc belongs to
    */
-  collection: DbCollection<T>
+  collection: DbTable<T>
 
   /**
    * how the Doc in memory was created, may prove useful later.
