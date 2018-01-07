@@ -9,7 +9,7 @@ import { Connection as dbConnection, ConnectionOptions } from 'rethinkdb'
 /**
  * interface - indicates the connection status of the db
  */
-export type TConnectionStatus = 'disconnected' | 'connected' | 'failed'
+export type TConnectionStatus = 'initial' | 'disconnected' | 'connected' | 'failed'
 
 export class Db {
   dbName: string
@@ -21,6 +21,7 @@ export class Db {
   constructor(connectionOptionsArg: ConnectionOptions) {
     this.dbName = connectionOptionsArg.db
     this.connectionOptions = connectionOptionsArg
+    this.status = 'initial'
   }
 
   // basic connection stuff ----------------------------------------------
@@ -30,18 +31,17 @@ export class Db {
    */
   async connect (): Promise<any> {
     this.dbConnection = await plugins.rethinkDb.connect(this.connectionOptions)
+    this.status = 'connected'
     plugins.beautylog.ok(`Connected to database ${this.dbName}`)
   }
 
   /**
    * closes the connection to the databse
    */
-  close (): Promise<any> {
-    let done = plugins.smartq.defer()
-    this.dbConnection.close()
+  async close (): Promise<any> {
+    await this.dbConnection.close()
+    this.status = 'disconnected'
     plugins.beautylog.ok(`disconnected to database ${this.dbName}`)
-    done.resolve()
-    return done.promise
   }
 
   // handle table to class distribution
