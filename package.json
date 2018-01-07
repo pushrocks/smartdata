@@ -25,6 +25,7 @@
     "lik": "^1.0.40",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.31",
+    "rethinkdb": "^2.3.3",
     "runtime-type-checks": "0.0.4",
     "smartq": "^1.1.6",
     "typings-global": "^1.0.20"
