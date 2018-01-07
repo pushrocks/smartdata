@@ -16,8 +16,9 @@ export class Db {
   connectionOptions: plugins.rethinkDb.ConnectionOptions
   dbConnection: plugins.rethinkDb.Connection
   status: TConnectionStatus
+  dbTablesMap = new Objectmap<DbTable<any>>()
 
-  constructor (connectionOptionsArg: ConnectionOptions) {
+  constructor(connectionOptionsArg: ConnectionOptions) {
     this.dbName = connectionOptionsArg.db
     this.connectionOptions = connectionOptionsArg
   }
@@ -43,4 +44,21 @@ export class Db {
     return done.promise
   }
 
+  // handle table to class distribution
+
+  /**
+   * Gets a table's name and returns smartdata's DbTable class
+   * @param nameArg
+   * @returns DbTable
+   */
+  async getDbTableByName<T>(nameArg: string): Promise<DbTable<T>> {
+    let resultCollection = this.dbTablesMap.find((dbCollectionArg) => {
+      return dbCollectionArg.name === nameArg
+    })
+    return resultCollection
+  }
+
+  addTable (dbCollectionArg: DbTable<any>) {
+    this.dbTablesMap.add(dbCollectionArg)
+  }
 }

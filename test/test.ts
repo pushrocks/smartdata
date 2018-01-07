@@ -18,7 +18,10 @@ interface ITestObject1 {
 
 tap.test('should establish a connection to mongodb', async () => {
   // testDb = new smartdata.Db(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@sandbox-shard-00-00-uyw7y.mongodb.net:27017,sandbox-shard-00-01-uyw7y.mongodb.net:27017,sandbox-shard-00-02-uyw7y.mongodb.net:27017/${process.env.MONGO_DATABASE}?ssl=true&replicaSet=sandbox-shard-0&authSource=admin`)
-  testDb = new smartdata.Db(`mongodb://localhost:27017/${process.env.MONGO_DATABASE}`)
+  testDb = new smartdata.Db({
+    db: 'test',
+    host: ''
+  })
   await testDb.connect()
 })
 
@@ -29,32 +32,32 @@ tap.test('should establish a connection to mongodb', async () => {
 // ------
 // Collections
 // ------
-let testDbCollection: smartdata.DbTable<ITestObject1>
+let testDbTable: smartdata.DbTable<ITestObject1>
 
 tap.test('should give me a collection', async () => {
-  testDbCollection = await testDb.getObjectCollectionByName<ITestObject1>('TestValue', testDb, true)
+  testDbTable = await testDb.getTableByName<ITestObject1>('testTable')
 })
 
 tap.test('should insert a doc into the collection', async () => {
-  await testDbCollection.insertOne({ value1: 'test' })
+  await testDbTable.insertOne({ value1: 'test' })
 })
 
 tap.test('should find all docs of testDbCollection', async () => {
-  await testDbCollection.find({}).then(async (resultArray) => {
+  await testDbTable.find({}).then(async (resultArray) => {
     console.log(resultArray)
     expect(resultArray[ 0 ].value1).equal('test')
   })
 })
 
 tap.test('should insert many docs into the collection', async () => {
-  await testDbCollection.insertMany([
+  await testDbTable.insertMany([
     { value1: 'test2' },
     { value1: 'test', value2: 3, value3: 'hi' }
   ])
 })
 
 tap.test('should find a specified doc', async () => {
-  await testDbCollection.find({ 'value3': { '$exists': true } }).then((resultArray) => {
+  await testDbTable.find({ 'value3': { '$exists': true } }).then((resultArray) => {
     console.log(resultArray)
     expect(resultArray[ 0 ].value3).equal('hi')
   })

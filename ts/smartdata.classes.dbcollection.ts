@@ -35,7 +35,7 @@ export class DbTable<T> {
     this.table = plugins.rethinkDb.db(this.db.dbName).table(this.name)
 
     // tell the db class about it (important since Db uses different systems under the hood)
-    this.db.addCollection(this)
+    this.db.addTable(this)
   }
 
   /**
@@ -48,36 +48,15 @@ export class DbTable<T> {
   /**
    * finds an object in the DbCollection
    */
-  find (docMatchArg: T | any, optionsArg?: IFindOptions): Promise<T[]> {
-    let done = plugins.smartq.defer<T[]>()
-    let findCursor = this.table.find(docMatchArg)
-    if (optionsArg) {
-      if (optionsArg.limit) { findCursor = findCursor.limit(1) }
-    }
-    findCursor.toArray((err, docs) => {
-      if (err) {
-        done.reject(err)
-        throw err
-      }
-      done.resolve(docs)
-    })
-    return done.promise
+  async find (docMatchArg: T | any, optionsArg?: IFindOptions): Promise<T[]> {
+    
   }
 
   /**
    * inserts object into the DbCollection
    */
-  insertOne (docArg: T): Promise<void> {
-    let done = plugins.smartq.defer<void>()
-    this.checkDoc(docArg).then(
-      () => {
-        this.table.insertOne(docArg)
-          .then(() => { done.resolve() })
-      },
-      () => {
-        done.reject(new Error('one the docs did not pass validation'))
-      })
-    return done.promise
+  async insertOne (docArg: T): Promise<void> {
+    await this.checkDoc(docArg)
   }
 
   /**
