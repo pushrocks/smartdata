@@ -14,6 +14,10 @@ export declare class Db {
     dbTablesMap: Objectmap<DbTable<any>>;
     constructor(connectionOptionsArg: ConnectionOptions);
     /**
+     * supply additional SSl options
+     */
+    setSsl(certificateStringArg: string, formatArg: 'base64' | 'clearText'): void;
+    /**
      * connects to the database that was specified during instance creation
      */
     connect(): Promise<any>;

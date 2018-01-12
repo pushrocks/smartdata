@@ -28,7 +28,7 @@ export class DbDoc<T> {
   /**
    * how the Doc in memory was created, may prove useful later.
    */
-  creationType: TDocCreation
+  creationStatus: TDocCreation = 'new'
 
   /**
    * an array of saveable properties of a doc
@@ -39,6 +39,11 @@ export class DbDoc<T> {
    * name
    */
   name: string
+
+  /**
+   * primary id in the database
+   */
+  dbId: string 
 
   /**
    * class constructor
@@ -52,17 +57,18 @@ export class DbDoc<T> {
    * saves this instance but not any connected items
    * may lead to data inconsistencies, but is faster
    */
-  save () {
-    let saveableObject: any = {} // is not exposed to outside, so any is ok here
-    for (let propertyNameString of this.saveableProperties) {
-      saveableObject[ propertyNameString ] = this[ propertyNameString ]
-    }
-    switch (this.creationType) {
+  async save () {
+    let self: any = this
+    switch (this.creationStatus) {
       case 'db':
-        this.collection // TODO implement collection.update()
+        await this.collection.update(self)
         break
       case 'new':
-        this.collection.insertOne(saveableObject)
+        let writeResult = await this.collection.insert(self)
+        this.creationStatus = 'db'
+        break;
+      default:
+        console.error('neither new nor in db?')
     }
   }
 
@@ -82,5 +88,13 @@ export class DbDoc<T> {
         property.saveDeep(savedMapArg)
       }
     }
+  }
+
+  createSavableObject () {
+    let saveableObject: any = {} // is not exposed to outside, so any is ok here
+    for (let propertyNameString of this.saveableProperties) {
+      saveableObject[ propertyNameString ] = this[ propertyNameString ]
+    }
+    return saveableObject
   }
 }

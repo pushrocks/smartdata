@@ -2,6 +2,9 @@ import * as plugins from './smartdata.plugins'
 import { Db } from './smartdata.classes.db'
 import { DbDoc } from './smartdata.classes.dbdoc'
 
+// RethinkDb Interfaces
+import { WriteResult, Cursor } from 'rethinkdb'
+
 export interface IFindOptions {
   limit?: number
 }
@@ -23,19 +26,33 @@ export class DbTable<T> {
    */
   table: plugins.rethinkDb.Table
   objectValidation: IDocValidation<T> = null
-  name: string
+  tableName: string
   db: Db
 
   constructor (collectedClassArg: T & DbDoc<T>, dbArg: Db) {
     // tell the collection where it belongs
-    this.name = collectedClassArg.name
+    this.tableName = collectedClassArg.name
     this.db = dbArg
-
-    // connect this instance to a RethinkDB table
-    this.table = plugins.rethinkDb.db(this.db.dbName).table(this.name)
 
     // tell the db class about it (important since Db uses different systems under the hood)
     this.db.addTable(this)
+  }
+
+  async init() {
+    if(!this.table) {
+      // connect this instance to a RethinkDB table
+      const availableTables = await plugins.rethinkDb
+        .db(this.db.dbName)
+        .tableList()
+        .run(this.db.dbConnection)
+      if(availableTables.indexOf(this.tableName)) {
+        await plugins.rethinkDb
+        .db(this.db.dbName)
+        .tableCreate(this.tableName)
+        .run(this.db.dbConnection)
+      }
+    }
+    this.table = plugins.rethinkDb.table(this.tableName)
   }
 
   /**
@@ -48,35 +65,39 @@ export class DbTable<T> {
   /**
    * finds an object in the DbCollection
    */
-  async find (docMatchArg: T | any, optionsArg?: IFindOptions): Promise<T[]> {
-    
+  async find (): Promise<Cursor> {
+    await this.init()
+    return await plugins.rethinkDb.table(this.tableName).filter({
+      /* TODO: */
+    }).run(this.db.dbConnection)
+  }
+
+  /**
+   * create an object in the database
+   */
+  async insert (dbDocArg: T & DbDoc<T>): Promise<WriteResult> {
+    await this.init()
+    await this.checkDoc(dbDocArg)
+    return await plugins.rethinkDb.table(this.tableName).insert(
+      dbDocArg.createSavableObject()
+    ).run(this.db.dbConnection)
   }
 
   /**
    * inserts object into the DbCollection
    */
-  async insertOne (docArg: T): Promise<void> {
-    await this.checkDoc(docArg)
-  }
-
-  /**
-   * inserts many objects at once into the DbCollection
-   */
-  insertMany (docArrayArg: T[]): Promise<void> {
-    let done = plugins.smartq.defer<void>()
-    let checkDocPromiseArray: Promise<void>[] = []
-    for (let docArg of docArrayArg) {
-      checkDocPromiseArray.push(this.checkDoc(docArg))
-    }
-    Promise.all(checkDocPromiseArray).then(() => {
-      this.table.insertMany(docArrayArg)
-        .then(() => { done.resolve() })
-    })
-    return done.promise
+  async update (dbDocArg: T & DbDoc<T>): Promise<WriteResult> {
+    await this.init()
+    await this.checkDoc(dbDocArg)
+    console.log(this.tableName, dbDocArg.createSavableObject())
+    return await plugins.rethinkDb.table(this.tableName).update(
+      dbDocArg.createSavableObject()
+    ).run(this.db.dbConnection)
   }
 
   /**
    * checks a Doc for constraints
+   * if this.objectValidation is not set it passes.
    */
   private checkDoc (docArg: T): Promise<void> {
     let done = plugins.smartq.defer<void>()
@@ -90,5 +111,9 @@ export class DbTable<T> {
       done.reject('validation of object did not pass')
     }
     return done.promise
+  }
+
+  extractKey (writeResult: WriteResult) {
+
   }
 }

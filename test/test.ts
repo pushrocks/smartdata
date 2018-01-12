@@ -6,22 +6,23 @@ let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/')
 
 // the tested module
 import * as smartdata from '../ts/index'
+import { smartstring } from '../ts/smartdata.plugins';
 
-let mongoChildProcess
-let testDb: smartdata.Db
+// =======================================
+// Connecting to the database server
+// =======================================
 
-interface ITestObject1 {
-  value1: string
-  value2?: number
-  value3?: string
-}
+let testDb = new smartdata.Db({
+  db: process.env.RDB_DB,
+  host: process.env.RDB_HOST,
+  user: process.env.RDB_USER,
+  password: process.env.RDB_PASS,
+  port: parseInt(process.env.RDB_PORT)
+})
+testDb.setSsl(process.env.RDB_CERT, 'base64')
 
-tap.test('should establish a connection to mongodb', async () => {
-  // testDb = new smartdata.Db(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@sandbox-shard-00-00-uyw7y.mongodb.net:27017,sandbox-shard-00-01-uyw7y.mongodb.net:27017,sandbox-shard-00-02-uyw7y.mongodb.net:27017/${process.env.MONGO_DATABASE}?ssl=true&replicaSet=sandbox-shard-0&authSource=admin`)
-  testDb = new smartdata.Db({
-    db: 'test',
-    host: ''
-  })
+tap.test('should establish a connection to the rethink Db cluster', async () => {
+  
   await testDb.connect()
 })
 
@@ -32,40 +33,28 @@ tap.test('should establish a connection to mongodb', async () => {
 // ------
 // Collections
 // ------
-let testDbTable: smartdata.DbTable<ITestObject1>
 
-tap.test('should give me a collection', async () => {
-  testDbTable = await testDb.getTableByName<ITestObject1>('testTable')
-})
+@smartdata.Collection(testDb)
+class Car extends smartdata.DbDoc<Car> {
+  @smartdata.svDb() color: string
+  @smartdata.svDb() brand: string
+  constructor (colorArg: string, brandArg: string) {
+    super()
+    this.color = colorArg
+    this.brand = brandArg
+  }
+}
 
-tap.test('should insert a doc into the collection', async () => {
-  await testDbTable.insertOne({ value1: 'test' })
-})
-
-tap.test('should find all docs of testDbCollection', async () => {
-  await testDbTable.find({}).then(async (resultArray) => {
-    console.log(resultArray)
-    expect(resultArray[ 0 ].value1).equal('test')
-  })
-})
-
-tap.test('should insert many docs into the collection', async () => {
-  await testDbTable.insertMany([
-    { value1: 'test2' },
-    { value1: 'test', value2: 3, value3: 'hi' }
-  ])
-})
-
-tap.test('should find a specified doc', async () => {
-  await testDbTable.find({ 'value3': { '$exists': true } }).then((resultArray) => {
-    console.log(resultArray)
-    expect(resultArray[ 0 ].value3).equal('hi')
-  })
+tap.test('should save the car to the db', async () => {
+  const myCar = new Car('red','Volvo')
+  await myCar.save()
 })
 
 
-
-tap.test('should close the db Connection', async () => {
+// =======================================
+// close the database connection
+// =======================================
+tap.test('should close the database connection', async (tools) => {
   await testDb.close()
 })
 

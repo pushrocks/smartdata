@@ -26,7 +26,8 @@
     "lodash": "^4.17.4",
     "rethinkdb": "^2.3.3",
     "runtime-type-checks": "0.0.4",
-    "smartq": "^1.1.6"
+    "smartq": "^1.1.6",
+    "smartstring": "^2.0.28"
   },
   "devDependencies": {
     "@types/node": "^8.5.7",
@@ -34,7 +35,6 @@
     "cz-conventional-changelog": "^2.1.0",
     "qenv": "^1.1.7",
     "shelljs": "^0.7.8",
-    "smartstring": "^2.0.24",
     "tapbundle": "^1.1.1"
   },
   "config": {

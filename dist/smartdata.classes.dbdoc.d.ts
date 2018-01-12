@@ -13,7 +13,7 @@ export declare class DbDoc<T> {
     /**
      * how the Doc in memory was created, may prove useful later.
      */
-    creationType: TDocCreation;
+    creationStatus: TDocCreation;
     /**
      * an array of saveable properties of a doc
      */
@@ -23,6 +23,10 @@ export declare class DbDoc<T> {
      */
     name: string;
     /**
+     * primary id in the database
+     */
+    dbId: string;
+    /**
      * class constructor
      */
     constructor();
@@ -30,10 +34,11 @@ export declare class DbDoc<T> {
      * saves this instance but not any connected items
      * may lead to data inconsistencies, but is faster
      */
-    save(): void;
+    save(): Promise<void>;
     /**
      * also store any referenced objects to DB
      * better for data consistency
      */
     saveDeep(savedMapArg?: Objectmap<DbDoc<any>>): void;
+    createSavableObject(): any;
 }

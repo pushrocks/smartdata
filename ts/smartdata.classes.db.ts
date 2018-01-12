@@ -2,7 +2,6 @@ import * as plugins from './smartdata.plugins'
 import { Objectmap } from 'lik'
 
 import { DbTable } from './smartdata.classes.dbcollection'
-import { getObjectDoc } from './smartdata.classes.dbobjectdoc'
 
 import { Connection as dbConnection, ConnectionOptions } from 'rethinkdb'
 
@@ -24,6 +23,21 @@ export class Db {
     this.status = 'initial'
   }
 
+  /**
+   * supply additional SSl options
+   */
+  setSsl (certificateStringArg: string, formatArg: 'base64' | 'clearText') {
+    let certificateString: string
+    if(formatArg = 'base64') {
+      certificateString = plugins.smartstring.base64.decode(certificateStringArg)
+    } else {
+      certificateString = certificateStringArg
+    }
+    this.connectionOptions['ssl'] = {
+      ca: Buffer.from(certificateString)
+    }
+  }
+
   // basic connection stuff ----------------------------------------------
 
   /**
@@ -31,6 +45,7 @@ export class Db {
    */
   async connect (): Promise<any> {
     this.dbConnection = await plugins.rethinkDb.connect(this.connectionOptions)
+    this.dbConnection.use(this.dbName)
     this.status = 'connected'
     plugins.beautylog.ok(`Connected to database ${this.dbName}`)
   }
@@ -41,7 +56,7 @@ export class Db {
   async close (): Promise<any> {
     await this.dbConnection.close()
     this.status = 'disconnected'
-    plugins.beautylog.ok(`disconnected to database ${this.dbName}`)
+    plugins.beautylog.ok(`disconnected from database ${this.dbName}`)
   }
 
   // handle table to class distribution
@@ -53,7 +68,7 @@ export class Db {
    */
   async getDbTableByName<T>(nameArg: string): Promise<DbTable<T>> {
     let resultCollection = this.dbTablesMap.find((dbCollectionArg) => {
-      return dbCollectionArg.name === nameArg
+      return dbCollectionArg.tableName === nameArg
     })
     return resultCollection
   }
