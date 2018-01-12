@@ -11,28 +11,13 @@ stages:
 - release
 - trigger
 - pages
-
-testLEGACY:
-  stage: test
-  script:
-    - npmci test legacy
-  coverage: /\d+.?\d+?\%\s*coverage/
-  tags:
-    - docker
-  allow_failure: true
-
-testLTS:
-  stage: test
-  script:
-    - npmci test lts
-  coverage: /\d+.?\d+?\%\s*coverage/
-  tags:
-    - docker
     
 testSTABLE:
   stage: test
   script:
-    - npmci test stable
+    - npmci node install stable
+    - npmci npm install
+    - npmci npm test
   coverage: /\d+.?\d+?\%\s*coverage/
   tags:
     - docker
@@ -40,7 +25,8 @@ testSTABLE:
 release:
   stage: release
   script:
-    - npmci publish
+    - npmci npm prepare
+    - npmci npm publish
   only:
     - tags
   tags:
