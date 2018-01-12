@@ -5,7 +5,7 @@
     "dockerSock": false
   },
   "npmci": {
-    "globalNpmTools": [
+    "npmGlobalTools": [
       "npmts"
     ]
   },
