@@ -34,8 +34,9 @@ tap.test('should establish a connection to the rethink Db cluster', async () => 
 // Collections
 // ------
 
-@smartdata.Collection(testDb)
+@smartdata.Table(testDb)
 class Car extends smartdata.DbDoc<Car> {
+  
   @smartdata.svDb() color: string
   @smartdata.svDb() brand: string
   constructor (colorArg: string, brandArg: string) {
@@ -48,6 +49,13 @@ class Car extends smartdata.DbDoc<Car> {
 tap.test('should save the car to the db', async () => {
   const myCar = new Car('red','Volvo')
   await myCar.save()
+})
+
+tap.test('expect to get instance of Car', async () => {
+  let myCar = await Car.getInstances<Car>({
+    brand: 'Volvo'
+  })
+  expect(myCar[0].color).to.equal('red')
 })
 
 

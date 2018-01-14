@@ -1,21 +1,27 @@
-import * as plugins from './smartdata.plugins';
-import { Db } from './smartdata.classes.db';
-import { DbDoc } from './smartdata.classes.dbdoc';
-import { WriteResult, Cursor } from 'rethinkdb';
+import * as plugins from "./smartdata.plugins";
+import { Db } from "./smartdata.classes.db";
+import { DbDoc } from "./smartdata.classes.dbdoc";
+import { WriteResult } from "rethinkdb";
 export interface IFindOptions {
     limit?: number;
 }
-export interface IDocValidation<T> {
+/**
+ *
+ */
+export interface IDocValidationFunc<T> {
     (doc: T): boolean;
 }
-export declare function Collection(db: Db): (constructor: any) => void;
+/**
+ * This is a decorator that will tell the decorated class what dbTable to use
+ * @param db
+ */
+export declare function Table(db: Db): (constructor: any) => void;
 export declare class DbTable<T> {
     /**
-     * the collection that is used, defaults to mongodb collection,
-     * can be nedb datastore (sub api of mongodb)
+     * the collection that is used
      */
     table: plugins.rethinkDb.Table;
-    objectValidation: IDocValidation<T>;
+    objectValidation: IDocValidationFunc<T>;
     tableName: string;
     db: Db;
     constructor(collectedClassArg: T & DbDoc<T>, dbArg: Db);
@@ -23,11 +29,11 @@ export declare class DbTable<T> {
     /**
      * adds a validation function that all newly inserted and updated objects have to pass
      */
-    addDocValidation(funcArg: IDocValidation<T>): void;
+    addDocValidation(funcArg: IDocValidationFunc<T>): void;
     /**
      * finds an object in the DbCollection
      */
-    find(): Promise<Cursor>;
+    find(filterObject: any): Promise<any>;
     /**
      * create an object in the database
      */

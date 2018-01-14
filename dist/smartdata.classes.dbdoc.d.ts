@@ -1,6 +1,6 @@
-import { Objectmap } from 'lik';
-import { DbTable } from './smartdata.classes.dbcollection';
-export declare type TDocCreation = 'db' | 'new' | 'mixed';
+import { Objectmap } from "lik";
+import { DbTable } from "./smartdata.classes.dbtable";
+export declare type TDocCreation = "db" | "new" | "mixed";
 /**
  * saveable - saveable decorator to be used on class properties
  */
@@ -30,6 +30,7 @@ export declare class DbDoc<T> {
      * class constructor
      */
     constructor();
+    static getInstances<T>(filterArg: any): Promise<T[]>;
     /**
      * saves this instance but not any connected items
      * may lead to data inconsistencies, but is faster

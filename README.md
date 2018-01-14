@@ -1,13 +1,16 @@
 # smartdata
+
 do more with data and RethinkDB
 
 ## Availabililty
+
 [![npm](https://pushrocks.gitlab.io/assets/repo-button-npm.svg)](https://www.npmjs.com/package/smartdata)
 [![git](https://pushrocks.gitlab.io/assets/repo-button-git.svg)](https://GitLab.com/pushrocks/smartdata)
 [![git](https://pushrocks.gitlab.io/assets/repo-button-mirror.svg)](https://github.com/pushrocks/smartdata)
 [![docs](https://pushrocks.gitlab.io/assets/repo-button-docs.svg)](https://pushrocks.gitlab.io/smartdata/)
 
 ## Status for master
+
 [![build status](https://GitLab.com/pushrocks/smartdata/badges/master/build.svg)](https://GitLab.com/pushrocks/smartdata/commits/master)
 [![coverage report](https://GitLab.com/pushrocks/smartdata/badges/master/coverage.svg)](https://GitLab.com/pushrocks/smartdata/commits/master)
 [![npm downloads per month](https://img.shields.io/npm/dm/smartdata.svg)](https://www.npmjs.com/package/smartdata)
@@ -20,37 +23,42 @@ do more with data and RethinkDB
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 ## Usage
+
 Use TypeScript for best in class instellisense.
 
 smartdata is an ODM that adheres to TypeScript practices and uses classes to organize data.
 It uses RethinkDB as persistent storage.
 
 ## Intention
+
 There are many ODMs out there, however when we searched for an ODM that uses TypeScript,
 acts smart while still embracing the NoSQL idea we didn't find a matching solution.
 This is why we started smartdata.
 
 How RethinkDB's terms map to the ones of smartdata:
 
-RethinkDB term | smartdata class
---- | ---
-Database | smartdata.Db
-Table | smartdata.DbTable
-Document | smartdata.DbDoc
+| RethinkDB term | smartdata class   |
+| -------------- | ----------------- |
+| Database       | smartdata.Db      |
+| Table          | smartdata.DbTable |
+| Document       | smartdata.DbDoc   |
 
 ### class Db
+
 represents a Database. Naturally it has .connect() etc. methods on it.
+
 ```javascript
-import * as smartdata from 'smartdata'
+import * as smartdata from "smartdata";
 
 let myRethinkDb1 = new smartdata.Db({
   // rethinkDb connection options here
-})
+});
 
-myDb1.connect()
+myDb1.connect();
 ```
 
 ### class DbCollection
+
 represents a collection of objects.
 A collection is defined by the object class (that is extending smartdata.dbdoc) it respresents
 
@@ -60,31 +68,30 @@ So to get to get access to a specific collection you document
 // continues from the block before...
 
 @Collection(myRethinkDb1)
-class MyObject extends smartdata.DbDoc<myObject> { // read the next block about DbDoc
-    @smartdata.svDb() property1: string // @smartdata.svDb() marks the property for db save
-    property2: number // this one is not marked, so it won't be save upon calling this.save() 
-    constructor(optionsArg:{
-        property1: string,
-        property2: number
-    }) {
-        super()
-    }
+class MyObject extends smartdata.DbDoc<myObject> {
+  // read the next block about DbDoc
+  @smartdata.svDb() property1: string; // @smartdata.svDb() marks the property for db save
+  property2: number; // this one is not marked, so it won't be save upon calling this.save()
+  constructor(optionsArg: { property1: string, property2: number }) {
+    super();
+  }
 }
-let myCollection = myRethinkDb1.getCollectionByName<myObject>(myObject)
+let myCollection = myRethinkDb1.getCollectionByName < myObject > myObject;
 
 // start to instantiate instances of classes from scratch or database
 
 let localObject = new MyObject({
-    property1: 'hi',
-    property2: 2
-})
-localObject.save() // saves the object to the database
-``` 
+  property1: "hi",
+  property2: 2
+});
+localObject.save(); // saves the object to the database
+```
 
 > Alert: You NEVER instantiate a collection.
-This is done for you!!!
+> This is done for you!!!
 
 ### class DbDoc
+
 represents a individual document in a collection
 and thereby is ideally suited to extend the class you want to actually store.
 
@@ -100,6 +107,7 @@ So now we can **store** instances of classes to Db...
 How do we **get** a new class instance from a Doc in the DB?
 
 ## TypeScript
+
 How does TypeScript play into this?
 Since you define your classes in TypeScript and types flow through smartdata in a generic way
 you should get all the Intellisense and type checking you love when using smartdata.
@@ -109,6 +117,6 @@ So you don't need to install any additional types when importing smartdata.
 For further information read the linked docs at the top of this README.
 
 > MIT licensed | **&copy;** [Lossless GmbH](https://lossless.gmbh)
-| By using this npm module you agree to our [privacy policy](https://lossless.gmbH/privacy.html)
+> | By using this npm module you agree to our [privacy policy](https://lossless.gmbH/privacy.html)
 
 [![repo-footer](https://pushrocks.gitlab.io/assets/repo-footer.svg)](https://push.rocks)
