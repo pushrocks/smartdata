@@ -47,7 +47,7 @@ How RethinkDB's terms map to the ones of smartdata:
 
 represents a Database. Naturally it has .connect() etc. methods on it.
 
-```javascript
+```typescript
 import * as smartdata from "smartdata";
 
 let myRethinkDb1 = new smartdata.Db({
@@ -64,19 +64,18 @@ A collection is defined by the object class (that is extending smartdata.dbdoc) 
 
 So to get to get access to a specific collection you document
 
-```javascript
+```typescript
 // continues from the block before...
 
-@Collection(myRethinkDb1)
+@smartdata.Table(myRethinkDb1)
 class MyObject extends smartdata.DbDoc<myObject> {
   // read the next block about DbDoc
   @smartdata.svDb() property1: string; // @smartdata.svDb() marks the property for db save
   property2: number; // this one is not marked, so it won't be save upon calling this.save()
-  constructor(optionsArg: { property1: string, property2: number }) {
+  constructor(optionsArg: { property1: string; property2: number }) {
     super();
   }
 }
-let myCollection = myRethinkDb1.getCollectionByName < myObject > myObject;
 
 // start to instantiate instances of classes from scratch or database
 
@@ -85,10 +84,13 @@ let localObject = new MyObject({
   property2: 2
 });
 localObject.save(); // saves the object to the database
-```
 
-> Alert: You NEVER instantiate a collection.
-> This is done for you!!!
+// start retrieving instances
+
+MyObject.getInstance<MyObject>({
+  property: "hi"
+}); // outputs a new instance of MyObject with the values from db assigned
+```
 
 ### class DbDoc
 
