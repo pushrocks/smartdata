@@ -97,6 +97,7 @@ MyObject.getInstance<MyObject>({
 represents a individual document in a collection
 and thereby is ideally suited to extend the class you want to actually store.
 
+**sStore** instances of classes to Db:
 DbDoc extends your class with the following methods:
 
 * `.save()` will save (or update) the object you call it on only. Any referenced non-savable objects will not get stored.
@@ -105,8 +106,10 @@ DbDoc extends your class with the following methods:
   that extends DbDoc as well and call .saveDeep() on them as well.
   Loops are prevented
 
-So now we can **store** instances of classes to Db...
-How do we **get** a new class instance from a Doc in the DB?
+**Get** a new class instance from a Doc in the DB:
+DbDoc exposes a static method that allows you specify a filter to retrieve a cloned class of the one you used to that doc at some point later in time. Yes, let that sink in a minute :)
+
+So you can just call `.getInstance({ /* filter props here */ })`.
 
 ## TypeScript
 
