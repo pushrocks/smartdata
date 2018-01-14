@@ -51,8 +51,15 @@ represents a Database. Naturally it has .connect() etc. methods on it.
 import * as smartdata from "smartdata";
 
 let myRethinkDb1 = new smartdata.Db({
-  // rethinkDb connection options here
+  db: "test",
+  host: "https://some",
+  user: "testuser",
+  password: "testpass",
+  port: 1234
 });
+
+// in case you need to support a proprietory ssl cert (e.g. compose.com):
+myRethinkDb1.setSsl(process.env.RDB_CERT, "base64");
 
 myDb1.connect();
 ```
