@@ -3,7 +3,11 @@ import { Objectmap } from "lik";
 
 import { DbTable } from "./smartdata.classes.dbtable";
 
-import { Connection as dbConnection, ConnectionOptions } from "rethinkdb";
+import { Connection as dbConnection, ConnectionOptions as IConnectionOptions } from "rethinkdb";
+
+export {
+  IConnectionOptions
+}
 
 /**
  * interface - indicates the connection status of the db
@@ -21,7 +25,7 @@ export class Db {
   status: TConnectionStatus;
   dbTablesMap = new Objectmap<DbTable<any>>();
 
-  constructor(connectionOptionsArg: ConnectionOptions) {
+  constructor(connectionOptionsArg: IConnectionOptions) {
     this.dbName = connectionOptionsArg.db;
     this.connectionOptions = connectionOptionsArg;
     this.status = "initial";

@@ -31,6 +31,7 @@ export declare class DbDoc<T> {
      */
     constructor();
     static getInstances<T>(filterArg: any): Promise<T[]>;
+    static getInstance<T>(filterArg: any): Promise<T>;
     /**
      * saves this instance but not any connected items
      * may lead to data inconsistencies, but is faster

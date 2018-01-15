@@ -1,7 +1,8 @@
 import * as plugins from "./smartdata.plugins";
 import { Objectmap } from "lik";
 import { DbTable } from "./smartdata.classes.dbtable";
-import { ConnectionOptions } from "rethinkdb";
+import { ConnectionOptions as IConnectionOptions } from "rethinkdb";
+export { IConnectionOptions };
 /**
  * interface - indicates the connection status of the db
  */
@@ -12,7 +13,7 @@ export declare class Db {
     dbConnection: plugins.rethinkDb.Connection;
     status: TConnectionStatus;
     dbTablesMap: Objectmap<DbTable<any>>;
-    constructor(connectionOptionsArg: ConnectionOptions);
+    constructor(connectionOptionsArg: IConnectionOptions);
     /**
      * supply additional SSl options needed to connect to certain Rethink DB servers (e.g. compose.io)
      */
