@@ -1,51 +1,42 @@
-import * as plugins from "./smartdata.plugins";
-import { Objectmap } from "lik";
+import * as plugins from './smartdata.plugins';
+import { Objectmap } from 'lik';
 
-import { DbTable } from "./smartdata.classes.dbtable";
+import { SmartdataCollection } from './smartdata.classes.dbtable';
 
-import { Connection as dbConnection, ConnectionOptions as IConnectionOptions } from "rethinkdb";
-
-export {
-  IConnectionOptions
-}
+import * as mongoHelpers from './smartdata.mongohelpers';
 
 /**
  * interface - indicates the connection status of the db
  */
-export type TConnectionStatus =
-  | "initial"
-  | "disconnected"
-  | "connected"
-  | "failed";
+export type TConnectionStatus = 'initial' | 'disconnected' | 'connected' | 'failed';
 
-export class Db {
-  dbName: string;
-  connectionOptions: plugins.rethinkDb.ConnectionOptions;
-  dbConnection: plugins.rethinkDb.Connection;
-  status: TConnectionStatus;
-  dbTablesMap = new Objectmap<DbTable<any>>();
-
-  constructor(connectionOptionsArg: IConnectionOptions) {
-    this.dbName = connectionOptionsArg.db;
-    this.connectionOptions = connectionOptionsArg;
-    this.status = "initial";
-  }
+export interface ISmartdataOptions {
+  /**
+   * the URL to connect to
+   */
+  mongoDbUrl: string;
 
   /**
-   * supply additional SSl options needed to connect to certain Rethink DB servers (e.g. compose.io)
+   * the db to use for the project
    */
-  setSsl(certificateStringArg: string, formatArg: "base64" | "clearText") {
-    let certificateString: string;
-    if ((formatArg = "base64")) {
-      certificateString = plugins.smartstring.base64.decode(
-        certificateStringArg
-      );
-    } else {
-      certificateString = certificateStringArg;
-    }
-    this.connectionOptions["ssl"] = {
-      ca: Buffer.from(certificateString)
-    };
+  mongoDbName: string;
+
+  /**
+   * an optional password that will be replace <PASSWORD> in the connection string
+   */
+  mongoDbPass?: string;
+}
+
+export class SmartdataDb {
+  smartdataOptions: ISmartdataOptions;
+  mongoDbClient: plugins.mongodb.MongoClient;
+  mongoDb: plugins.mongodb.Db;
+  status: TConnectionStatus;
+  smartdataCollectionMap = new Objectmap<SmartdataCollection<any>>();
+
+  constructor(smartdataOptions: ISmartdataOptions) {
+    this.smartdataOptions = smartdataOptions;
+    this.status = 'initial';
   }
 
   // basic connection stuff ----------------------------------------------
@@ -54,35 +45,49 @@ export class Db {
    * connects to the database that was specified during instance creation
    */
   async connect(): Promise<any> {
-    this.dbConnection = await plugins.rethinkDb.connect(this.connectionOptions);
-    this.dbConnection.use(this.dbName);
-    this.status = "connected";
-    plugins.beautylog.ok(`Connected to database ${this.dbName}`);
+    let finalConnectionUrl = this.smartdataOptions.mongoDbUrl;
+    if (this.smartdataOptions.mongoDbPass) {
+      finalConnectionUrl = mongoHelpers.addPassword(
+        this.smartdataOptions.mongoDbName,
+        this.smartdataOptions.mongoDbPass
+      );
+    }
+    this.mongoDbClient = await plugins.mongodb.MongoClient.connect(
+      finalConnectionUrl,
+      {}
+    );
+    this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
+    this.status = 'connected';
+    plugins.smartlog
+      .getDefaultLogger()
+      .info(`Connected to database ${this.smartdataOptions.mongoDbName}`);
   }
 
   /**
    * closes the connection to the databse
    */
   async close(): Promise<any> {
-    await this.dbConnection.close();
-    this.status = "disconnected";
-    plugins.beautylog.ok(`disconnected from database ${this.dbName}`);
+    await this.mongoDbClient.close();
+    this.status = 'disconnected';
+    plugins.smartlog
+      .getDefaultLogger()
+      .info(`disconnected from database ${this.smartdataOptions.mongoDbName}`);
   }
 
   // handle table to class distribution
 
-  addTable(dbTableArg: DbTable<any>) {
-    this.dbTablesMap.add(dbTableArg);
+  addTable(SmartdataCollectionArg: SmartdataCollection<any>) {
+    this.smartdataCollectionMap.add(SmartdataCollectionArg);
   }
 
   /**
-   * Gets a table's name and returns smartdata's DbTable class
+   * Gets a collection's name and returns a SmartdataCollection instance
    * @param nameArg
    * @returns DbTable
    */
-  async getDbTableByName<T>(nameArg: string): Promise<DbTable<T>> {
-    let resultCollection = this.dbTablesMap.find(dbTableArg => {
-      return dbTableArg.tableName === nameArg;
+  async getSmartdataCollectionByName<T>(nameArg: string): Promise<SmartdataCollection<T>> {
+    let resultCollection = this.smartdataCollectionMap.find(dbTableArg => {
+      return dbTableArg.collectionName === nameArg;
     });
     return resultCollection;
   }

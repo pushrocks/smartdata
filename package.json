@@ -1,12 +1,14 @@
 {
-  "name": "smartdata",
+  "name": "@pushrocks/smartdata",
   "version": "2.0.7",
+  "private": false,
   "description": "do more with data",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "(npmts)",
-    "testLocal": "(npmdocker)"
+    "testLocal": "(npmdocker)",
+    "build": "echo \"Not needed for now\""
   },
   "repository": {
     "type": "git",
@@ -19,23 +21,22 @@
   },
   "homepage": "https://gitlab.com/pushrocks/smartdata#README",
   "dependencies": {
-    "@types/lodash": "^4.14.92",
-    "@types/rethinkdb": "^2.3.8",
-    "beautylog": "^6.1.10",
-    "lik": "^2.0.2",
-    "lodash": "^4.17.4",
-    "rethinkdb": "^2.3.3",
+    "@pushrocks/smartlog": "^1.0.6",
+    "@pushrocks/smartpromise": "^2.0.5",
+    "@types/lodash": "^4.14.110",
+    "@types/mongodb": "^3.1.1",
+    "lik": "^2.0.5",
+    "lodash": "^4.17.10",
+    "mongodb": "^3.1.1",
     "runtime-type-checks": "0.0.4",
-    "smartq": "^1.1.6",
     "smartstring": "^2.0.28"
   },
   "devDependencies": {
-    "@types/node": "^8.5.7",
-    "@types/shelljs": "^0.7.4",
-    "cz-conventional-changelog": "^2.1.0",
+    "@types/node": "^10.5.2",
+    "@types/shelljs": "^0.8.0",
     "qenv": "^1.1.7",
-    "shelljs": "^0.7.8",
-    "tapbundle": "^1.1.1"
+    "shelljs": "^0.8.2",
+    "tapbundle": "^2.0.2"
   },
   "config": {
     "commitizen": {

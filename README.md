@@ -1,4 +1,4 @@
-# smartdata
+# @pushrocks/smartdata
 
 do more with data and RethinkDB
 
@@ -48,18 +48,18 @@ How RethinkDB's terms map to the ones of smartdata:
 represents a Database. Naturally it has .connect() etc. methods on it.
 
 ```typescript
-import * as smartdata from "smartdata";
+import * as smartdata from 'smartdata';
 
 let myRethinkDb1 = new smartdata.Db({
-  db: "test",
-  host: "https://some",
-  user: "testuser",
-  password: "testpass",
+  db: 'test',
+  host: 'https://some',
+  user: 'testuser',
+  password: 'testpass',
   port: 1234
 });
 
 // in case you need to support a proprietory ssl cert (e.g. compose.com):
-myRethinkDb1.setSsl(process.env.RDB_CERT, "base64");
+myRethinkDb1.setSsl(process.env.RDB_CERT, 'base64');
 
 myDb1.connect();
 ```
@@ -87,7 +87,7 @@ class MyObject extends smartdata.DbDoc<myObject> {
 // start to instantiate instances of classes from scratch or database
 
 let localObject = new MyObject({
-  property1: "hi",
+  property1: 'hi',
   property2: 2
 });
 localObject.save(); // saves the object to the database
@@ -95,7 +95,7 @@ localObject.save(); // saves the object to the database
 // start retrieving instances
 
 MyObject.getInstance<MyObject>({
-  property: "hi"
+  property: 'hi'
 }); // outputs a new instance of MyObject with the values from db assigned
 ```
 
@@ -107,8 +107,8 @@ and thereby is ideally suited to extend the class you want to actually store.
 **sStore** instances of classes to Db:
 DbDoc extends your class with the following methods:
 
-* `.save()` will save (or update) the object you call it on only. Any referenced non-savable objects will not get stored.
-* `.saveDeep()` does the same like `.save()`.
+- `.save()` will save (or update) the object you call it on only. Any referenced non-savable objects will not get stored.
+- `.saveDeep()` does the same like `.save()`.
   In addition it will look for properties that reference an object
   that extends DbDoc as well and call .saveDeep() on them as well.
   Loops are prevented

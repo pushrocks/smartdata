@@ -1,18 +1,18 @@
-import * as plugins from "./smartdata.plugins";
+import * as plugins from './smartdata.plugins';
 
-import { Objectmap } from "lik";
+import { Objectmap } from 'lik';
 
-import { Db } from "./smartdata.classes.db";
-import { DbTable } from "./smartdata.classes.dbtable";
+import { SmartdataDb } from './smartdata.classes.db';
+import { SmartdataCollection } from './smartdata.classes.dbtable';
 
-export type TDocCreation = "db" | "new" | "mixed";
+export type TDocCreation = 'db' | 'new' | 'mixed';
 
 /**
  * saveable - saveable decorator to be used on class properties
  */
 export function svDb() {
-  return (target: DbDoc<any>, key: string) => {
-    console.log("called sva");
+  return (target: smartDataDbDoc<any>, key: string) => {
+    console.log('called sva');
     if (!target.saveableProperties) {
       target.saveableProperties = [];
     }
@@ -20,16 +20,16 @@ export function svDb() {
   };
 }
 
-export class DbDoc<T> {
+export class smartDataDbDoc<T> {
   /**
    * the collection object an Doc belongs to
    */
-  collection: DbTable<T>;
+  collection: SmartdataCollection<T>;
 
   /**
    * how the Doc in memory was created, may prove useful later.
    */
-  creationStatus: TDocCreation = "new";
+  creationStatus: TDocCreation = 'new';
 
   /**
    * an array of saveable properties of a doc
@@ -44,25 +44,25 @@ export class DbDoc<T> {
   /**
    * primary id in the database
    */
-  dbId: string;
+  dbDocUniqueId: string;
 
   /**
    * class constructor
    */
   constructor() {
-    this.name = this.constructor["name"];
-    this.collection = this.constructor["dbTable"];
+    this.name = this.constructor['name'];
+    this.collection = this.constructor['dbTable'];
   }
 
   static async getInstances<T>(filterArg): Promise<T[]> {
     let self: any = this; // fool typesystem
-    let referenceTable: DbTable<T> = self.dbTable;
+    let referenceTable: SmartdataCollection<T> = self.dbTable;
     const foundDocs = await referenceTable.find(filterArg);
     const returnArray = [];
     for (let item of foundDocs) {
       let newInstance = new this();
       for (let key in item) {
-        if(key !== 'id') {
+        if (key !== 'id') {
           newInstance[key] = item[key];
         }
       }
@@ -72,9 +72,9 @@ export class DbDoc<T> {
   }
 
   static async getInstance<T>(filterArg): Promise<T> {
-    let result = await this.getInstances<T>(filterArg)
-    if(result && result.length > 0) {
-      return result[0]
+    let result = await this.getInstances<T>(filterArg);
+    if (result && result.length > 0) {
+      return result[0];
     }
   }
 
@@ -85,15 +85,15 @@ export class DbDoc<T> {
   async save() {
     let self: any = this;
     switch (this.creationStatus) {
-      case "db":
+      case 'db':
         await this.collection.update(self);
         break;
-      case "new":
+      case 'new':
         let writeResult = await this.collection.insert(self);
-        this.creationStatus = "db";
+        this.creationStatus = 'db';
         break;
       default:
-        console.error("neither new nor in db?");
+        console.error('neither new nor in db?');
     }
   }
 
@@ -101,21 +101,21 @@ export class DbDoc<T> {
    * also store any referenced objects to DB
    * better for data consistency
    */
-  saveDeep(savedMapArg: Objectmap<DbDoc<any>> = null) {
+  saveDeep(savedMapArg: Objectmap<smartDataDbDoc<any>> = null) {
     if (!savedMapArg) {
-      savedMapArg = new Objectmap<DbDoc<any>>();
+      savedMapArg = new Objectmap<smartDataDbDoc<any>>();
     }
     savedMapArg.add(this);
     this.save();
     for (let propertyKey in this) {
       let property: any = this[propertyKey];
-      if (property instanceof DbDoc && !savedMapArg.checkForObject(property)) {
+      if (property instanceof smartDataDbDoc && !savedMapArg.checkForObject(property)) {
         property.saveDeep(savedMapArg);
       }
     }
   }
 
-  createSavableObject() {
+  async createSavableObject() {
     let saveableObject: any = {}; // is not exposed to outside, so any is ok here
     for (let propertyNameString of this.saveableProperties) {
       saveableObject[propertyNameString] = this[propertyNameString];

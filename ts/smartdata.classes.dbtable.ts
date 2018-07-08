@@ -1,9 +1,6 @@
-import * as plugins from "./smartdata.plugins";
-import { Db } from "./smartdata.classes.db";
-import { DbDoc } from "./smartdata.classes.dbdoc";
-
-// RethinkDb Interfaces
-import { WriteResult, Cursor } from "rethinkdb";
+import * as plugins from './smartdata.plugins';
+import { SmartdataDb } from './smartdata.classes.db';
+import { smartDataDbDoc } from './smartdata.classes.dbdoc';
 
 export interface IFindOptions {
   limit?: number;
@@ -20,45 +17,45 @@ export interface IDocValidationFunc<T> {
  * This is a decorator that will tell the decorated class what dbTable to use
  * @param db
  */
-export function Table(db: Db) {
+export function Table(db: SmartdataDb) {
   return function(constructor) {
-    constructor["dbTable"] = new DbTable(constructor, db);
+    constructor['mongoDbCollection'] = new SmartdataCollection(constructor, db);
   };
 }
 
-export class DbTable<T> {
+export class SmartdataCollection<T> {
   /**
    * the collection that is used
    */
-  table: plugins.rethinkDb.Table;
+  mongoDbCollection: plugins.mongodb.Collection;
   objectValidation: IDocValidationFunc<T> = null;
-  tableName: string;
-  db: Db;
+  collectionName: string;
+  smartdataDb: SmartdataDb;
 
-  constructor(collectedClassArg: T & DbDoc<T>, dbArg: Db) {
+  constructor(collectedClassArg: T & smartDataDbDoc<T>, smartDataDbArg: SmartdataDb) {
     // tell the collection where it belongs
-    this.tableName = collectedClassArg.name;
-    this.db = dbArg;
+    this.collectionName = collectedClassArg.name;
+    this.smartdataDb = smartDataDbArg;
 
     // tell the db class about it (important since Db uses different systems under the hood)
-    this.db.addTable(this);
+    this.smartdataDb.addTable(this);
   }
 
+  /**
+   * makes sure a collection exists within MongoDb that maps to the SmartdataCollection
+   */
   async init() {
-    if (!this.table) {
-      // connect this instance to a RethinkDB table
-      const availableTables = await plugins.rethinkDb
-        .db(this.db.dbName)
-        .tableList()
-        .run(this.db.dbConnection);
-      if (availableTables.indexOf(this.tableName)) {
-        await plugins.rethinkDb
-          .db(this.db.dbName)
-          .tableCreate(this.tableName)
-          .run(this.db.dbConnection);
+    if (!this.mongoDbCollection) {
+      // connect this instance to a MongoDB collection
+      const availableMongoDbCollections = await this.smartdataDb.mongoDb.collections();
+      const wantedCollection = availableMongoDbCollections.find(collection => {
+        return collection.collectionName === this.collectionName;
+      });
+      if (!wantedCollection) {
+        await this.smartdataDb.mongoDb.createCollection(this.collectionName);
       }
+      this.mongoDbCollection = await this.smartdataDb.mongoDb.collection(this.collectionName);
     }
-    this.table = plugins.rethinkDb.table(this.tableName);
   }
 
   /**
@@ -73,36 +70,27 @@ export class DbTable<T> {
    */
   async find(filterObject: any): Promise<any> {
     await this.init();
-    let cursor = await plugins.rethinkDb
-      .table(this.tableName)
-      .filter(filterObject)
-      .run(this.db.dbConnection);
-    return await cursor.toArray();
   }
 
   /**
    * create an object in the database
    */
-  async insert(dbDocArg: T & DbDoc<T>): Promise<WriteResult> {
+  async insert(dbDocArg: T & smartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
-    return await plugins.rethinkDb
-      .table(this.tableName)
-      .insert(dbDocArg.createSavableObject())
-      .run(this.db.dbConnection);
+    const saveableObject = await dbDocArg.createSavableObject();
+    const result = await this.mongoDbCollection.insertOne(saveableObject);
+    return result;
   }
 
   /**
    * inserts object into the DbCollection
    */
-  async update(dbDocArg: T & DbDoc<T>): Promise<WriteResult> {
+  async update(dbDocArg: T & smartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
-    console.log(this.tableName, dbDocArg.createSavableObject());
-    return await plugins.rethinkDb
-      .table(this.tableName)
-      .update(dbDocArg.createSavableObject())
-      .run(this.db.dbConnection);
+    const saveableObject = await dbDocArg.createSavableObject();
+    this.mongoDbCollection.updateOne(saveableObject.dbDocUniqueId, saveableObject);
   }
 
   /**
@@ -118,10 +106,8 @@ export class DbTable<T> {
     if (validationResult) {
       done.resolve();
     } else {
-      done.reject("validation of object did not pass");
+      done.reject('validation of object did not pass');
     }
     return done.promise;
   }
-
-  extractKey(writeResult: WriteResult) {}
 }

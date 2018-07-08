@@ -7,7 +7,8 @@
   "npmci": {
     "npmGlobalTools": [
       "npmts"
-    ]
+    ],
+    "npmAccessLevel": "public"
   },
   "npmts": {
     "testConfig": {

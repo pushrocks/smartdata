@@ -1,7 +1,4 @@
 vars:
-  - RDB_DB
-  - RDB_HOST
-  - RDB_USER
-  - RDB_PASS
-  - RDB_PORT
-  - RDB_CERT
+  - MONGO_URL
+  - MONGO_DBNAME
+  - MONGO_PASS
