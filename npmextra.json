@@ -6,7 +6,7 @@
   },
   "npmci": {
     "npmGlobalTools": [
-      "npmts"
+      "@pushrocks/npmts"
     ],
     "npmAccessLevel": "public"
   },
