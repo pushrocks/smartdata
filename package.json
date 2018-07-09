@@ -1,6 +1,6 @@
 {
   "name": "@pushrocks/smartdata",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "private": false,
   "description": "do more with data",
   "main": "dist/index.js",
