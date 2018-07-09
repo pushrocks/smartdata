@@ -1,6 +1,6 @@
 import * as plugins from './smartdata.plugins';
 import { SmartdataDb } from './smartdata.classes.db';
-import { smartDataDbDoc } from './smartdata.classes.dbdoc';
+import { SmartDataDbDoc } from './smartdata.classes.doc';
 
 export interface IFindOptions {
   limit?: number;
@@ -17,9 +17,9 @@ export interface IDocValidationFunc<T> {
  * This is a decorator that will tell the decorated class what dbTable to use
  * @param db
  */
-export function Table(db: SmartdataDb) {
+export function Collection(db: SmartdataDb) {
   return function(constructor) {
-    constructor['mongoDbCollection'] = new SmartdataCollection(constructor, db);
+    constructor['smartdataCollection'] = new SmartdataCollection(constructor, db);
   };
 }
 
@@ -32,7 +32,7 @@ export class SmartdataCollection<T> {
   collectionName: string;
   smartdataDb: SmartdataDb;
 
-  constructor(collectedClassArg: T & smartDataDbDoc<T>, smartDataDbArg: SmartdataDb) {
+  constructor(collectedClassArg: T & SmartDataDbDoc<T>, smartDataDbArg: SmartdataDb) {
     // tell the collection where it belongs
     this.collectionName = collectedClassArg.name;
     this.smartdataDb = smartDataDbArg;
@@ -55,6 +55,7 @@ export class SmartdataCollection<T> {
         await this.smartdataDb.mongoDb.createCollection(this.collectionName);
       }
       this.mongoDbCollection = await this.smartdataDb.mongoDb.collection(this.collectionName);
+      console.log(`Successfully initiated Collection ${this.collectionName}`)
     }
   }
 
@@ -70,15 +71,18 @@ export class SmartdataCollection<T> {
    */
   async find(filterObject: any): Promise<any> {
     await this.init();
+    const result = await this.mongoDbCollection.find(filterObject).toArray();
+    return result;
   }
 
   /**
    * create an object in the database
    */
-  async insert(dbDocArg: T & smartDataDbDoc<T>): Promise<any> {
+  async insert(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const saveableObject = await dbDocArg.createSavableObject();
+    console.log(saveableObject);
     const result = await this.mongoDbCollection.insertOne(saveableObject);
     return result;
   }
@@ -86,7 +90,7 @@ export class SmartdataCollection<T> {
   /**
    * inserts object into the DbCollection
    */
-  async update(dbDocArg: T & smartDataDbDoc<T>): Promise<any> {
+  async update(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const saveableObject = await dbDocArg.createSavableObject();

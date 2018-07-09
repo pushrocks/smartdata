@@ -3,7 +3,7 @@ import * as plugins from './smartdata.plugins';
 import { Objectmap } from 'lik';
 
 import { SmartdataDb } from './smartdata.classes.db';
-import { SmartdataCollection } from './smartdata.classes.dbtable';
+import { SmartdataCollection } from './smartdata.classes.collection';
 
 export type TDocCreation = 'db' | 'new' | 'mixed';
 
@@ -11,7 +11,7 @@ export type TDocCreation = 'db' | 'new' | 'mixed';
  * saveable - saveable decorator to be used on class properties
  */
 export function svDb() {
-  return (target: smartDataDbDoc<any>, key: string) => {
+  return (target: SmartDataDbDoc<any>, key: string) => {
     console.log('called sva');
     if (!target.saveableProperties) {
       target.saveableProperties = [];
@@ -20,7 +20,7 @@ export function svDb() {
   };
 }
 
-export class smartDataDbDoc<T> {
+export class SmartDataDbDoc<T> {
   /**
    * the collection object an Doc belongs to
    */
@@ -51,13 +51,13 @@ export class smartDataDbDoc<T> {
    */
   constructor() {
     this.name = this.constructor['name'];
-    this.collection = this.constructor['dbTable'];
+    this.collection = this.constructor['smartdataCollection'];
   }
 
   static async getInstances<T>(filterArg): Promise<T[]> {
     let self: any = this; // fool typesystem
-    let referenceTable: SmartdataCollection<T> = self.dbTable;
-    const foundDocs = await referenceTable.find(filterArg);
+    let referenceMongoDBCollection: SmartdataCollection<T> = self.smartdataCollection;
+    const foundDocs = await referenceMongoDBCollection.find(filterArg);
     const returnArray = [];
     for (let item of foundDocs) {
       let newInstance = new this();
@@ -101,15 +101,15 @@ export class smartDataDbDoc<T> {
    * also store any referenced objects to DB
    * better for data consistency
    */
-  saveDeep(savedMapArg: Objectmap<smartDataDbDoc<any>> = null) {
+  saveDeep(savedMapArg: Objectmap<SmartDataDbDoc<any>> = null) {
     if (!savedMapArg) {
-      savedMapArg = new Objectmap<smartDataDbDoc<any>>();
+      savedMapArg = new Objectmap<SmartDataDbDoc<any>>();
     }
     savedMapArg.add(this);
     this.save();
     for (let propertyKey in this) {
       let property: any = this[propertyKey];
-      if (property instanceof smartDataDbDoc && !savedMapArg.checkForObject(property)) {
+      if (property instanceof SmartDataDbDoc && !savedMapArg.checkForObject(property)) {
         property.saveDeep(savedMapArg);
       }
     }

@@ -1,3 +1,3 @@
 export * from './smartdata.classes.db';
-export * from './smartdata.classes.dbtable';
-export * from './smartdata.classes.dbdoc';
+export * from './smartdata.classes.collection';
+export * from './smartdata.classes.doc';

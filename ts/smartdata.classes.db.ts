@@ -1,7 +1,7 @@
 import * as plugins from './smartdata.plugins';
 import { Objectmap } from 'lik';
 
-import { SmartdataCollection } from './smartdata.classes.dbtable';
+import { SmartdataCollection } from './smartdata.classes.collection';
 
 import * as mongoHelpers from './smartdata.mongohelpers';
 
@@ -48,19 +48,20 @@ export class SmartdataDb {
     let finalConnectionUrl = this.smartdataOptions.mongoDbUrl;
     if (this.smartdataOptions.mongoDbPass) {
       finalConnectionUrl = mongoHelpers.addPassword(
-        this.smartdataOptions.mongoDbName,
+        this.smartdataOptions.mongoDbUrl,
         this.smartdataOptions.mongoDbPass
       );
     }
+    console.log(finalConnectionUrl);
     this.mongoDbClient = await plugins.mongodb.MongoClient.connect(
       finalConnectionUrl,
-      {}
+      {
+        useNewUrlParser: true
+      }
     );
     this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
     this.status = 'connected';
-    plugins.smartlog
-      .getDefaultLogger()
-      .info(`Connected to database ${this.smartdataOptions.mongoDbName}`);
+    console.log(`Connected to database ${this.smartdataOptions.mongoDbName}`);
   }
 
   /**

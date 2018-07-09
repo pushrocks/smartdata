@@ -5,7 +5,7 @@ import { Qenv } from 'qenv';
 let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/');
 
 // the tested module
-import * as smartdata from '../ts/index';
+import * as smartdata from '../ts';
 import { smartstring } from '../ts/smartdata.plugins';
 
 // =======================================
@@ -15,7 +15,7 @@ import { smartstring } from '../ts/smartdata.plugins';
 let testDb = new smartdata.SmartdataDb({
   mongoDbName: process.env.MONGO_DBNAME,
   mongoDbUrl: process.env.MONGO_URL,
-  mongoPass: process.env.MONGO_PASS
+  mongoDbPass: process.env.MONGO_PASS
 });
 
 tap.test('should establish a connection to the rethink Db cluster', async () => {
@@ -30,8 +30,8 @@ tap.test('should establish a connection to the rethink Db cluster', async () => 
 // Collections
 // ------
 
-@smartdata.Table(testDb)
-class Car extends smartdata.smartDataDbDoc<Car> {
+@smartdata.Collection(testDb)
+class Car extends smartdata.SmartDataDbDoc<Car> {
   @smartdata.svDb() color: string;
   @smartdata.svDb() brand: string;
   constructor(colorArg: string, brandArg: string) {
@@ -47,10 +47,10 @@ tap.test('should save the car to the db', async () => {
 });
 
 tap.test('expect to get instance of Car', async () => {
-  let myCar = await Car.getInstances<Car>({
+  let myCars = await Car.getInstances<Car>({
     brand: 'Volvo'
   });
-  expect(myCar[0].color).to.equal('red');
+  expect(myCars[0].color).to.equal('red');
 });
 
 // =======================================
