@@ -60,4 +60,4 @@ tap.test('should close the database connection', async tools => {
   await testDb.close();
 });
 
-tap.start();
+tap.start({throwOnError: true});
