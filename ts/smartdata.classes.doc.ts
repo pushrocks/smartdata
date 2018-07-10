@@ -12,13 +12,34 @@ export type TDocCreation = 'db' | 'new' | 'mixed';
  */
 export function svDb() {
   return (target: SmartDataDbDoc<any>, key: string) => {
-    console.log('called sva');
+    console.log(`called svDb() on ${key}`);
     if (!target.saveableProperties) {
       target.saveableProperties = [];
     }
     target.saveableProperties.push(key);
   };
 }
+
+/**
+ * unique index - decorator to mark a unique index
+ */
+export function unI() {
+  return (target: SmartDataDbDoc<any>, key: string) => {
+    console.log('called unI');
+
+    // mark the index as unique
+    if (!target.uniqueIndexes) {
+      target.uniqueIndexes = [];
+    }
+    target.uniqueIndexes.push(key);
+
+    // and also save it
+    if (!target.saveableProperties) {
+      target.saveableProperties = [];
+    }
+    target.saveableProperties.push(key);
+  };
+} 
 
 export class SmartDataDbDoc<T> {
   /**
@@ -30,6 +51,11 @@ export class SmartDataDbDoc<T> {
    * how the Doc in memory was created, may prove useful later.
    */
   creationStatus: TDocCreation = 'new';
+
+  /**
+   * unique indexes
+   */
+  uniqueIndexes: string[];
 
   /**
    * an array of saveable properties of a doc

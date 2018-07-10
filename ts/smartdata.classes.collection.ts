@@ -31,6 +31,7 @@ export class SmartdataCollection<T> {
   objectValidation: IDocValidationFunc<T> = null;
   collectionName: string;
   smartdataDb: SmartdataDb;
+  uniqueIndexes: string[] = [];
 
   constructor(collectedClassArg: T & SmartDataDbDoc<T>, smartDataDbArg: SmartdataDb) {
     // tell the collection where it belongs
@@ -60,6 +61,21 @@ export class SmartdataCollection<T> {
   }
 
   /**
+   * mark unique index
+   */
+  markUniqueIndexes(keyArrayArg: string[] = []) {
+    for(let key of keyArrayArg) {
+      if(!this.uniqueIndexes.includes(key)) {
+        this.mongoDbCollection.createIndex(key, {
+          unique: true
+        });
+        // make sure we only call this once and not for every doc we create
+        this.uniqueIndexes.push(key);
+      }
+    }
+  }
+
+  /**
    * adds a validation function that all newly inserted and updated objects have to pass
    */
   addDocValidation(funcArg: IDocValidationFunc<T>) {
@@ -81,6 +97,7 @@ export class SmartdataCollection<T> {
   async insert(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
+    this.markUniqueIndexes(dbDocArg.uniqueIndexes);
     const saveableObject = await dbDocArg.createSavableObject();
     console.log(saveableObject);
     const result = await this.mongoDbCollection.insertOne(saveableObject);

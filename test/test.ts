@@ -7,6 +7,7 @@ let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/');
 // the tested module
 import * as smartdata from '../ts';
 import { smartstring } from '../ts/smartdata.plugins';
+import * as shortid from 'shortid';
 
 // =======================================
 // Connecting to the database server
@@ -32,6 +33,7 @@ tap.test('should establish a connection to the rethink Db cluster', async () => 
 
 @smartdata.Collection(testDb)
 class Car extends smartdata.SmartDataDbDoc<Car> {
+  @smartdata.unI() index: string = shortid();
   @smartdata.svDb() color: string;
   @smartdata.svDb() brand: string;
   constructor(colorArg: string, brandArg: string) {
