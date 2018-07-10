@@ -5,7 +5,7 @@ import { Qenv } from 'qenv';
 let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/');
 
 // the tested module
-import * as smartdata from '../ts';
+import * as smartdata from '../ts/index';
 import { smartstring } from '../ts/smartdata.plugins';
 import * as shortid from 'shortid';
 
