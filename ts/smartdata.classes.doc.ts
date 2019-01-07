@@ -39,7 +39,7 @@ export function unI() {
     }
     target.saveableProperties.push(key);
   };
-} 
+}
 
 export class SmartDataDbDoc<T> {
   /**

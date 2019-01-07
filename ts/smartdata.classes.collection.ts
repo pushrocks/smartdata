@@ -56,7 +56,7 @@ export class SmartdataCollection<T> {
         await this.smartdataDb.mongoDb.createCollection(this.collectionName);
       }
       this.mongoDbCollection = await this.smartdataDb.mongoDb.collection(this.collectionName);
-      console.log(`Successfully initiated Collection ${this.collectionName}`)
+      console.log(`Successfully initiated Collection ${this.collectionName}`);
     }
   }
 
@@ -64,8 +64,8 @@ export class SmartdataCollection<T> {
    * mark unique index
    */
   markUniqueIndexes(keyArrayArg: string[] = []) {
-    for(let key of keyArrayArg) {
-      if(!this.uniqueIndexes.includes(key)) {
+    for (let key of keyArrayArg) {
+      if (!this.uniqueIndexes.includes(key)) {
         this.mongoDbCollection.createIndex(key, {
           unique: true
         });

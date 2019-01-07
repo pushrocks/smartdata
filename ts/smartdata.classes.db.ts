@@ -70,9 +70,10 @@ export class SmartdataDb {
   async close(): Promise<any> {
     await this.mongoDbClient.close();
     this.status = 'disconnected';
-    plugins.smartlog
-      .defaultLogger
-      .log('info', `disconnected from database ${this.smartdataOptions.mongoDbName}`);
+    plugins.smartlog.defaultLogger.log(
+      'info',
+      `disconnected from database ${this.smartdataOptions.mongoDbName}`
+    );
   }
 
   // handle table to class distribution

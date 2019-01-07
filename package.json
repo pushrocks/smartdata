@@ -6,9 +6,9 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "tsrun test/test.ts",
+    "test": "(tstest test/)",
     "testLocal": "(npmdocker)",
-    "build": "(npmts)"
+    "build": "(tsbuild)"
   },
   "repository": {
     "type": "git",
@@ -32,12 +32,15 @@
     "runtime-type-checks": "0.0.4"
   },
   "devDependencies": {
-    "@gitzone/tsrun": "^1.1.17",
+    "@gitzone/tsbuild": "^2.1.4",
+    "@gitzone/tstest": "^1.0.18",
     "@pushrocks/qenv": "^3.0.2",
     "@pushrocks/tapbundle": "^3.0.7",
     "@types/node": "^10.12.18",
     "@types/shortid": "0.0.29",
     "mongodb-memory-server": "^2.9.1",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0"
   }
 }

@@ -37,11 +37,11 @@ This is why we started smartdata.
 
 How RethinkDB's terms map to the ones of smartdata:
 
-| MongoDb term   | smartdata class               |
-| -------------- | ------------------------------|
-| Database       | smartdata.SmartdataDb         |
-| Collection     | smartdata.SmartdataCollection |
-| Document       | smartdata.SmartadataDoc       |
+| MongoDb term | smartdata class               |
+| ------------ | ----------------------------- |
+| Database     | smartdata.SmartdataDb         |
+| Collection   | smartdata.SmartdataCollection |
+| Document     | smartdata.SmartadataDoc       |
 
 ### class Db
 

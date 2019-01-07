@@ -5,14 +5,8 @@
     "dockerSock": false
   },
   "npmci": {
-    "npmGlobalTools": [
-      "@gitzone/npmts"
-    ],
-    "npmAccessLevel": "public"
-  },
-  "npmts": {
-    "testConfig": {
-      "parallel": false
-    }
+    "npmGlobalTools": [],
+    "npmAccessLevel": "public",
+    "npmRegistryUrl": "registry.npmjs.org"
   }
 }
