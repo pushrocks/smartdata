@@ -1,6 +1,6 @@
-import { tap, expect } from 'tapbundle';
+import { tap, expect } from '@pushrocks/tapbundle';
 import * as smartpromise from '@pushrocks/smartpromise';
-import { Qenv } from 'qenv';
+import { Qenv } from '@pushrocks/qenv';
 
 let testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/');
 

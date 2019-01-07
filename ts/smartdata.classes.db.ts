@@ -1,5 +1,5 @@
 import * as plugins from './smartdata.plugins';
-import { Objectmap } from 'lik';
+import { Objectmap } from '@pushrocks/lik';
 
 import { SmartdataCollection } from './smartdata.classes.collection';
 
@@ -71,8 +71,8 @@ export class SmartdataDb {
     await this.mongoDbClient.close();
     this.status = 'disconnected';
     plugins.smartlog
-      .getDefaultLogger()
-      .info(`disconnected from database ${this.smartdataOptions.mongoDbName}`);
+      .defaultLogger
+      .log('info', `disconnected from database ${this.smartdataOptions.mongoDbName}`);
   }
 
   // handle table to class distribution

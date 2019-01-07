@@ -1,4 +1,4 @@
-vars:
+required:
   - MONGO_URL
   - MONGO_DBNAME
   - MONGO_PASS
