@@ -1,6 +1,6 @@
 import * as plugins from './smartdata.plugins';
 
-import { Objectmap } from 'lik';
+import { Objectmap } from '@pushrocks/lik';
 
 import { SmartdataDb } from './smartdata.classes.db';
 import { SmartdataCollection } from './smartdata.classes.collection';
