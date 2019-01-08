@@ -1,5 +1,5 @@
 export interface IMongoDescriptor {
-  connectionUrl: string;
-  password: string;
-  database: string;
+  mongoDbName: string;
+  mongoDbUrl: string;
+  mongoDbPass: string;
 }
