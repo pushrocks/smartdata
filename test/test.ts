@@ -20,7 +20,7 @@ let testDb = new smartdata.SmartdataDb({
 });
 
 tap.test('should establish a connection to the rethink Db cluster', async () => {
-  await testDb.connect();
+  await testDb.init();
 });
 
 // =======================================

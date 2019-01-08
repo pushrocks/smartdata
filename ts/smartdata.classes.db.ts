@@ -44,7 +44,7 @@ export class SmartdataDb {
   /**
    * connects to the database that was specified during instance creation
    */
-  async connect(): Promise<any> {
+  async init(): Promise<any> {
     let finalConnectionUrl = this.smartdataOptions.mongoDbUrl;
     if (this.smartdataOptions.mongoDbPass) {
       finalConnectionUrl = mongoHelpers.addPassword(
