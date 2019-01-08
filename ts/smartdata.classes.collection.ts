@@ -109,7 +109,6 @@ export class SmartdataCollection<T> {
     await this.checkDoc(dbDocArg);
     this.markUniqueIndexes(dbDocArg.uniqueIndexes);
     const saveableObject = await dbDocArg.createSavableObject();
-    console.log(saveableObject);
     const result = await this.mongoDbCollection.insertOne(saveableObject);
     return result;
   }
@@ -117,11 +116,19 @@ export class SmartdataCollection<T> {
   /**
    * inserts object into the DbCollection
    */
-  async update(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+  public async update(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
+    const identifiableObject = await dbDocArg.createIdentifiableObject();
     const saveableObject = await dbDocArg.createSavableObject();
-    this.mongoDbCollection.updateOne(saveableObject.dbDocUniqueId, saveableObject);
+    this.mongoDbCollection.updateOne(identifiableObject, saveableObject);
+  }
+
+  public async delete (dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+    await this.init();
+    await this.checkDoc(dbDocArg);
+    const identifiableObject = await dbDocArg.createIdentifiableObject();
+    this.mongoDbCollection.deleteOne(identifiableObject);
   }
 
   /**
@@ -129,7 +136,7 @@ export class SmartdataCollection<T> {
    * if this.objectValidation is not set it passes.
    */
   private checkDoc(docArg: T): Promise<void> {
-    let done = plugins.smartq.defer<void>();
+    const done = plugins.smartq.defer<void>();
     let validationResult = true;
     if (this.objectValidation) {
       validationResult = this.objectValidation(docArg);

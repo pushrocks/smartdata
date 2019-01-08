@@ -140,6 +140,13 @@ export class SmartDataDbDoc<T> {
   }
 
   /**
+   * deletes a document from the database
+   */
+  async delete() {
+
+  }
+
+  /**
    * also store any referenced objects to DB
    * better for data consistency
    */
@@ -157,11 +164,25 @@ export class SmartDataDbDoc<T> {
     }
   }
 
-  async createSavableObject() {
-    let saveableObject: any = {}; // is not exposed to outside, so any is ok here
-    for (let propertyNameString of this.saveableProperties) {
+  /**
+   * creates a saveable object so the instance can be persisted as json in the database
+   */
+  public async createSavableObject() {
+    const saveableObject: any = {}; // is not exposed to outside, so any is ok here
+    for (const propertyNameString of this.saveableProperties) {
       saveableObject[propertyNameString] = this[propertyNameString];
     }
     return saveableObject;
+  }
+
+  /**
+   * creates an identifiable object for operations that require filtering
+   */
+  public async createIdentifiableObject() {
+    const identifiableObject: any = {}; // is not exposed to outside, so any is ok here
+    for (const propertyNameString of this.uniqueIndexes) {
+      identifiableObject[propertyNameString] = this[propertyNameString];
+    }
+    return identifiableObject;
   }
 }
