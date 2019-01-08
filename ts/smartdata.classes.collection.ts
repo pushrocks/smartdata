@@ -25,7 +25,7 @@ export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
       // tslint:disable-next-line: no-string-literal
       constructor['smartdataCollection'] = new SmartdataCollection(constructor, dbArg);
     } else {
-      constructor['smartdataDelayedDatabase'] = () => {
+      constructor['smartdataDelayedCollection'] = () => {
         return new SmartdataCollection(constructor, dbArg()); 
       };
     }

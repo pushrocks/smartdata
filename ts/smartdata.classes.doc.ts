@@ -81,9 +81,9 @@ export class SmartDataDbDoc<T> {
       // tslint:disable-next-line: no-string-literal
       this.collection = this.constructor['smartdataCollection'];
       // tslint:disable-next-line: no-string-literal
-    } else if (typeof this.constructor['smartdataDelayedDatabase'] === 'function') {
+    } else if (typeof this.constructor['smartdataDelayedCollection'] === 'function') {
       // tslint:disable-next-line: no-string-literal
-      this.collection = this.constructor['smartdataDelayedDatabase']();
+      this.collection = this.constructor['smartdataDelayedCollection']();
     } else {
       console.error('Could not determine collection for DbDoc');
     }
@@ -91,7 +91,13 @@ export class SmartDataDbDoc<T> {
 
   static async getInstances<T>(filterArg): Promise<T[]> {
     let self: any = this; // fool typesystem
-    let referenceMongoDBCollection: SmartdataCollection<T> = self.smartdataCollection;
+    let referenceMongoDBCollection: SmartdataCollection<T>;
+    
+    if (self.smartdataCollection) {
+      referenceMongoDBCollection = self.smartdataCollection;
+    } else if (self.smartdataDelayedCollection) {
+      referenceMongoDBCollection = self.smartdataDelayedCollection();
+    };
     const foundDocs = await referenceMongoDBCollection.find(filterArg);
     const returnArray = [];
     for (let item of foundDocs) {
