@@ -13,13 +13,23 @@ export interface IDocValidationFunc<T> {
   (doc: T): boolean;
 }
 
+export type TDelayedDbCreation = () => SmartdataDb;
+
 /**
  * This is a decorator that will tell the decorated class what dbTable to use
- * @param db
+ * @param dbArg
  */
-export function Collection(db: SmartdataDb) {
+export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
   return function(constructor) {
-    constructor['smartdataCollection'] = new SmartdataCollection(constructor, db);
+    if (dbArg instanceof SmartdataDb) {
+      // tslint:disable-next-line: no-string-literal
+      constructor['smartdataCollection'] = new SmartdataCollection(constructor, dbArg);
+    } else {
+      constructor['smartdataDelayedDatabase'] = () => {
+        return new SmartdataCollection(constructor, dbArg()); 
+      };
+    }
+    
   };
 }
 

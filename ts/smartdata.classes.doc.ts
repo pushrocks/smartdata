@@ -77,7 +77,16 @@ export class SmartDataDbDoc<T> {
    */
   constructor() {
     this.name = this.constructor['name'];
-    this.collection = this.constructor['smartdataCollection'];
+    if(this.constructor['smartdataCollection']) {
+      // tslint:disable-next-line: no-string-literal
+      this.collection = this.constructor['smartdataCollection'];
+      // tslint:disable-next-line: no-string-literal
+    } else if (typeof this.constructor['smartdataDelayedDatabase'] === 'function') {
+      // tslint:disable-next-line: no-string-literal
+      this.collection = this.constructor['smartdataDelayedDatabase']();
+    } else {
+      console.error('Could not determine collection for DbDoc');
+    }
   }
 
   static async getInstances<T>(filterArg): Promise<T[]> {
@@ -109,6 +118,7 @@ export class SmartDataDbDoc<T> {
    * may lead to data inconsistencies, but is faster
    */
   async save() {
+    // tslint:disable-next-line: no-this-assignment
     let self: any = this;
     switch (this.creationStatus) {
       case 'db':
