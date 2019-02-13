@@ -26,10 +26,9 @@ export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
       constructor['smartdataCollection'] = new SmartdataCollection(constructor, dbArg);
     } else {
       constructor['smartdataDelayedCollection'] = () => {
-        return new SmartdataCollection(constructor, dbArg()); 
+        return new SmartdataCollection(constructor, dbArg());
       };
     }
-    
   };
 }
 
@@ -124,7 +123,7 @@ export class SmartdataCollection<T> {
     this.mongoDbCollection.updateOne(identifiableObject, saveableObject);
   }
 
-  public async delete (dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+  public async delete(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();

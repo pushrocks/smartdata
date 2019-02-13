@@ -77,7 +77,7 @@ export class SmartDataDbDoc<T> {
    */
   constructor() {
     this.name = this.constructor['name'];
-    if(this.constructor['smartdataCollection']) {
+    if (this.constructor['smartdataCollection']) {
       // tslint:disable-next-line: no-string-literal
       this.collection = this.constructor['smartdataCollection'];
       // tslint:disable-next-line: no-string-literal
@@ -92,12 +92,12 @@ export class SmartDataDbDoc<T> {
   static async getInstances<T>(filterArg): Promise<T[]> {
     let self: any = this; // fool typesystem
     let referenceMongoDBCollection: SmartdataCollection<T>;
-    
+
     if (self.smartdataCollection) {
       referenceMongoDBCollection = self.smartdataCollection;
     } else if (self.smartdataDelayedCollection) {
       referenceMongoDBCollection = self.smartdataDelayedCollection();
-    };
+    }
     const foundDocs = await referenceMongoDBCollection.find(filterArg);
     const returnArray = [];
     for (let item of foundDocs) {
@@ -142,9 +142,7 @@ export class SmartDataDbDoc<T> {
   /**
    * deletes a document from the database
    */
-  async delete() {
-
-  }
+  async delete() {}
 
   /**
    * also store any referenced objects to DB

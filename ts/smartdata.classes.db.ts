@@ -53,12 +53,9 @@ export class SmartdataDb {
       );
     }
     console.log(finalConnectionUrl);
-    this.mongoDbClient = await plugins.mongodb.MongoClient.connect(
-      finalConnectionUrl,
-      {
-        useNewUrlParser: true
-      }
-    );
+    this.mongoDbClient = await plugins.mongodb.MongoClient.connect(finalConnectionUrl, {
+      useNewUrlParser: true
+    });
     this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
     this.status = 'connected';
     console.log(`Connected to database ${this.smartdataOptions.mongoDbName}`);

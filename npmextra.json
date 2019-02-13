@@ -8,5 +8,15 @@
     "npmGlobalTools": [],
     "npmAccessLevel": "public",
     "npmRegistryUrl": "registry.npmjs.org"
+  },
+  "gitzone": {
+    "module": {
+      "githost": "gitlab.com",
+      "gitscope": "pushrocks",
+      "gitrepo": "smartdata",
+      "shortDescription": "do more with data",
+      "npmPackagename": "@pushrocks/smartdata",
+      "license": "MIT"
+    }
   }
 }
