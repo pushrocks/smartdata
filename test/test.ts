@@ -26,9 +26,10 @@ tap.test('should create a testinstance as database', async () => {
     mongoDbUrl: await mongod.getConnectionString()
   };
   console.log(smartdataOptions);
+  testDb = new smartdata.SmartdataDb(smartdataOptions);
 });
 
-tap.test('should create a smartdb', async () => {
+tap.skip.test('should create a smartdb', async () => {
   testDb = new smartdata.SmartdataDb({
     mongoDbName: testQenv.getEnvVarOnDemand('MONGO_DBNAME'),
     mongoDbUrl: testQenv.getEnvVarOnDemand('MONGO_URL'),
