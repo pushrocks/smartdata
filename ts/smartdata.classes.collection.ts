@@ -36,11 +36,11 @@ export class SmartdataCollection<T> {
   /**
    * the collection that is used
    */
-  mongoDbCollection: plugins.mongodb.Collection;
-  objectValidation: IDocValidationFunc<T> = null;
-  collectionName: string;
-  smartdataDb: SmartdataDb;
-  uniqueIndexes: string[] = [];
+  public mongoDbCollection: plugins.mongodb.Collection;
+  public objectValidation: IDocValidationFunc<T> = null;
+  public collectionName: string;
+  public smartdataDb: SmartdataDb;
+  public uniqueIndexes: string[] = [];
 
   constructor(collectedClassArg: T & SmartDataDbDoc<T>, smartDataDbArg: SmartdataDb) {
     // tell the collection where it belongs
@@ -54,7 +54,7 @@ export class SmartdataCollection<T> {
   /**
    * makes sure a collection exists within MongoDb that maps to the SmartdataCollection
    */
-  async init() {
+  public async init() {
     if (!this.mongoDbCollection) {
       // connect this instance to a MongoDB collection
       const availableMongoDbCollections = await this.smartdataDb.mongoDb.collections();
@@ -65,15 +65,15 @@ export class SmartdataCollection<T> {
         await this.smartdataDb.mongoDb.createCollection(this.collectionName);
       }
       this.mongoDbCollection = await this.smartdataDb.mongoDb.collection(this.collectionName);
-      console.log(`Successfully initiated Collection ${this.collectionName}`);
+      // console.log(`Successfully initiated Collection ${this.collectionName}`);
     }
   }
 
   /**
    * mark unique index
    */
-  markUniqueIndexes(keyArrayArg: string[] = []) {
-    for (let key of keyArrayArg) {
+  public markUniqueIndexes(keyArrayArg: string[] = []) {
+    for (const key of keyArrayArg) {
       if (!this.uniqueIndexes.includes(key)) {
         this.mongoDbCollection.createIndex(key, {
           unique: true
@@ -87,14 +87,14 @@ export class SmartdataCollection<T> {
   /**
    * adds a validation function that all newly inserted and updated objects have to pass
    */
-  addDocValidation(funcArg: IDocValidationFunc<T>) {
+  public addDocValidation(funcArg: IDocValidationFunc<T>) {
     this.objectValidation = funcArg;
   }
 
   /**
    * finds an object in the DbCollection
    */
-  async find(filterObject: any): Promise<any> {
+  public async find(filterObject: any): Promise<any> {
     await this.init();
     const result = await this.mongoDbCollection.find(filterObject).toArray();
     return result;
@@ -103,7 +103,7 @@ export class SmartdataCollection<T> {
   /**
    * create an object in the database
    */
-  async insert(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+  public async insert(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     this.markUniqueIndexes(dbDocArg.uniqueIndexes);
@@ -120,7 +120,17 @@ export class SmartdataCollection<T> {
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();
     const saveableObject = await dbDocArg.createSavableObject();
-    this.mongoDbCollection.updateOne(identifiableObject, saveableObject);
+    console.log(identifiableObject);
+    console.log(saveableObject);
+    const updateableObject: any = {};
+    for (const key of Object.keys(saveableObject)) {
+      if (identifiableObject[key]) {
+        continue;
+      }
+      updateableObject[key] = saveableObject[key];
+    }
+    console.log(updateableObject);
+    this.mongoDbCollection.updateOne(identifiableObject, { $set: updateableObject }, {upsert: true});
   }
 
   public async delete(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {

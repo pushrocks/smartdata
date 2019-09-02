@@ -44,7 +44,7 @@ export class SmartdataDb {
   /**
    * connects to the database that was specified during instance creation
    */
-  async init(): Promise<any> {
+  public async init(): Promise<any> {
     let finalConnectionUrl = this.smartdataOptions.mongoDbUrl;
     if (this.smartdataOptions.mongoDbPass) {
       finalConnectionUrl = mongoHelpers.addPassword(
@@ -52,7 +52,7 @@ export class SmartdataDb {
         this.smartdataOptions.mongoDbPass
       );
     }
-    console.log(finalConnectionUrl);
+    console.log(`connection Url: ${finalConnectionUrl}`);
     this.mongoDbClient = await plugins.mongodb.MongoClient.connect(finalConnectionUrl, {
       useNewUrlParser: true
     });
@@ -64,7 +64,7 @@ export class SmartdataDb {
   /**
    * closes the connection to the databse
    */
-  async close(): Promise<any> {
+  public async close(): Promise<any> {
     await this.mongoDbClient.close();
     this.status = 'disconnected';
     plugins.smartlog.defaultLogger.log(
@@ -75,7 +75,7 @@ export class SmartdataDb {
 
   // handle table to class distribution
 
-  addTable(SmartdataCollectionArg: SmartdataCollection<any>) {
+  public addTable(SmartdataCollectionArg: SmartdataCollection<any>) {
     this.smartdataCollectionMap.add(SmartdataCollectionArg);
   }
 
@@ -84,8 +84,8 @@ export class SmartdataDb {
    * @param nameArg
    * @returns DbTable
    */
-  async getSmartdataCollectionByName<T>(nameArg: string): Promise<SmartdataCollection<T>> {
-    let resultCollection = this.smartdataCollectionMap.find(dbTableArg => {
+  public async getSmartdataCollectionByName<T>(nameArg: string): Promise<SmartdataCollection<T>> {
+    const resultCollection = this.smartdataCollectionMap.find(dbTableArg => {
       return dbTableArg.collectionName === nameArg;
     });
     return resultCollection;

@@ -45,32 +45,32 @@ export class SmartDataDbDoc<T> {
   /**
    * the collection object an Doc belongs to
    */
-  collection: SmartdataCollection<T>;
+  public collection: SmartdataCollection<T>;
 
   /**
    * how the Doc in memory was created, may prove useful later.
    */
-  creationStatus: TDocCreation = 'new';
+  public creationStatus: TDocCreation = 'new';
 
   /**
    * unique indexes
    */
-  uniqueIndexes: string[];
+  public uniqueIndexes: string[];
 
   /**
    * an array of saveable properties of a doc
    */
-  saveableProperties: string[];
+  public saveableProperties: string[];
 
   /**
    * name
    */
-  name: string;
+  public name: string;
 
   /**
    * primary id in the database
    */
-  dbDocUniqueId: string;
+  public dbDocUniqueId: string;
 
   /**
    * class constructor
@@ -89,8 +89,8 @@ export class SmartDataDbDoc<T> {
     }
   }
 
-  static async getInstances<T>(filterArg): Promise<T[]> {
-    let self: any = this; // fool typesystem
+  public static async getInstances<T>(filterArg): Promise<T[]> {
+    const self: any = this; // fool typesystem
     let referenceMongoDBCollection: SmartdataCollection<T>;
 
     if (self.smartdataCollection) {
@@ -100,9 +100,10 @@ export class SmartDataDbDoc<T> {
     }
     const foundDocs = await referenceMongoDBCollection.find(filterArg);
     const returnArray = [];
-    for (let item of foundDocs) {
-      let newInstance = new this();
-      for (let key in item) {
+    for (const item of foundDocs) {
+      const newInstance = new this();
+      newInstance.creationStatus = 'db';
+      for (const key in item) {
         if (key !== 'id') {
           newInstance[key] = item[key];
         }
@@ -113,7 +114,7 @@ export class SmartDataDbDoc<T> {
   }
 
   static async getInstance<T>(filterArg): Promise<T> {
-    let result = await this.getInstances<T>(filterArg);
+    const result = await this.getInstances<T>(filterArg);
     if (result && result.length > 0) {
       return result[0];
     }
@@ -123,15 +124,15 @@ export class SmartDataDbDoc<T> {
    * saves this instance but not any connected items
    * may lead to data inconsistencies, but is faster
    */
-  async save() {
+  public async save() {
     // tslint:disable-next-line: no-this-assignment
-    let self: any = this;
+    const self: any = this;
     switch (this.creationStatus) {
       case 'db':
         await this.collection.update(self);
         break;
       case 'new':
-        let writeResult = await this.collection.insert(self);
+        const writeResult = await this.collection.insert(self);
         this.creationStatus = 'db';
         break;
       default:
@@ -142,20 +143,20 @@ export class SmartDataDbDoc<T> {
   /**
    * deletes a document from the database
    */
-  async delete() {}
+  public async delete() {}
 
   /**
    * also store any referenced objects to DB
    * better for data consistency
    */
-  saveDeep(savedMapArg: Objectmap<SmartDataDbDoc<any>> = null) {
+  public saveDeep(savedMapArg: Objectmap<SmartDataDbDoc<any>> = null) {
     if (!savedMapArg) {
       savedMapArg = new Objectmap<SmartDataDbDoc<any>>();
     }
     savedMapArg.add(this);
     this.save();
-    for (let propertyKey in this) {
-      let property: any = this[propertyKey];
+    for (const propertyKey of Object.keys(this)) {
+      const property: any = this[propertyKey];
       if (property instanceof SmartDataDbDoc && !savedMapArg.checkForObject(property)) {
         property.saveDeep(savedMapArg);
       }
