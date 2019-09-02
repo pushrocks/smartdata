@@ -143,7 +143,10 @@ export class SmartDataDbDoc<T> {
   /**
    * deletes a document from the database
    */
-  public async delete() {}
+  public async delete() {
+    const self: any = this;
+    await this.collection.delete(self);
+  }
 
   /**
    * also store any referenced objects to DB

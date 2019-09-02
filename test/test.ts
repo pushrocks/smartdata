@@ -73,8 +73,11 @@ tap.test('should save the car to the db', async () => {
   const myCar = new Car('red', 'Volvo');
   await myCar.save();
 
-  const myCar2 = new Car('red', 'Renault');
+  const myCar2 = new Car('red', 'Volvo');
   await myCar2.save();
+
+  const myCar3 = new Car('red', 'Renault');
+  await myCar3.save();
 });
 
 tap.test('expect to get instance of Car', async () => {
@@ -93,9 +96,18 @@ tap.test('expect to get instance of Car and update it', async () => {
   await myCar.save();
 });
 
-tap.test('should be able to update an instance of car', async () => {});
+tap.test('should be able to delete an instance of car', async () => {
+  const myCar = await Car.getInstance<Car>({
+    brand: 'Volvo'
+  });
+  expect(myCar.color).to.equal('blue');
+  await myCar.delete();
 
-tap.test('should be able to delete an instance of car', async () => {});
+  const myCar2 = await Car.getInstance<Car>({
+    brand: 'Volvo'
+  });
+  expect(myCar2.color).to.equal('red');
+});
 
 // =======================================
 // close the database connection
