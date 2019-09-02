@@ -55,10 +55,10 @@ tap.test('should establish a connection to the rethink Db cluster', async () => 
 class Car extends smartdata.SmartDataDbDoc<Car> {
   @smartdata.unI()
   public index: string = smartunique.shortId();
-  
+
   @smartdata.svDb()
   public color: string;
-  
+
   @smartdata.svDb()
   public brand: string;
 
@@ -91,7 +91,6 @@ tap.test('expect to get instance of Car and update it', async () => {
   expect(myCar.color).to.equal('red');
   myCar.color = 'blue';
   await myCar.save();
-
 });
 
 tap.test('should be able to update an instance of car', async () => {});
