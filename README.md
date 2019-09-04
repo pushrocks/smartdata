@@ -66,16 +66,19 @@ So to get to get access to a specific collection you document
 @smartdata.Collection(smartdataDb)
 class MyObject extends smartdata.DbDoc<MyObject> {
   // read the next block about DbDoc
-  @smartdata.svDb() property1: string; // @smartdata.svDb() marks the property for db save
+  @smartdata.svDb()
+  property1: string; // @smartdata.svDb() marks the property for db save
+  
   property2: number; // this one is not marked, so it won't be save upon calling this.save()
-  constructor(optionsArg: { property1: string; property2: number }) {
-    super();
+  
+  constructor() {
+    super(); // the super call is important ;) But you probably know that.
   }
 }
 
 // start to instantiate instances of classes from scratch or database
 
-let localObject = new MyObject({
+const localObject = new MyObject({
   property1: 'hi',
   property2: 2
 });
