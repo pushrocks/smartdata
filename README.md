@@ -93,27 +93,38 @@ MyObject.getInstance<MyObject>({
 represents a individual document in a collection
 and thereby is ideally suited to extend the class you want to actually store.
 
-**sStore** instances of classes to Db:
+### CRUD operations
+smartdata supports full CRUD operations 
+
+**Store** or **Update** instances of classes to MongoDB:
 DbDoc extends your class with the following methods:
 
-- `.save()` will save (or update) the object you call it on only. Any referenced non-savable objects will not get stored.
-- `.saveDeep()` does the same like `.save()`.
+- async `.save()` will save (or update) the object you call it on only. Any referenced non-savable objects will not get stored.
+- async `.saveDeep()` does the same like `.save()`.
   In addition it will look for properties that reference an object
   that extends DbDoc as well and call .saveDeep() on them as well.
   Loops are prevented
 
-**Get** a new class instance from a Doc in the DB:
-DbDoc exposes a static method that allows you specify a filter to retrieve a cloned class of the one you used to that doc at some point later in time. Yes, let that sink in a minute :)
+**Get** a new class instance from MongoDB:
+DbDoc exposes a static method that allows you specify a filter to retrieve a cloned class of the one you used to that doc at some point later in time:
 
-So you can just call `.getInstance({ /* filter props here */ })`.
+* static async `.getInstance({ /* filter props here */ })` gets you an instance that has the data of the first matched document as properties.
+* static async `getInstances({ /* filter props here */ })` get you an array instances (one instance for every matched document).
+
+**Delete** instances from MongoDb:
+smartdata extends your class with a method to easily delete the doucment from DB:
+
+* async `.delete()`will delete the document from DB. 
+
+
+
 
 ## TypeScript
 
 How does TypeScript play into this?
 Since you define your classes in TypeScript and types flow through smartdata in a generic way
 you should get all the Intellisense and type checking you love when using smartdata.
-smartdata itself also bundles typings.
-So you don't need to install any additional types when importing smartdata.
+smartdata itself also bundles typings. You don't need to install any additional types for smartdata.
 
 For further information read the linked docs at the top of this readme.
 
