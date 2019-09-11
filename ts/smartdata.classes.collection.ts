@@ -120,8 +120,6 @@ export class SmartdataCollection<T> {
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();
     const saveableObject = await dbDocArg.createSavableObject();
-    console.log(identifiableObject);
-    console.log(saveableObject);
     const updateableObject: any = {};
     for (const key of Object.keys(saveableObject)) {
       if (identifiableObject[key]) {
@@ -129,7 +127,6 @@ export class SmartdataCollection<T> {
       }
       updateableObject[key] = saveableObject[key];
     }
-    console.log(updateableObject);
     this.mongoDbCollection.updateOne(
       identifiableObject,
       { $set: updateableObject },
@@ -141,7 +138,9 @@ export class SmartdataCollection<T> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();
-    await this.mongoDbCollection.deleteOne(identifiableObject);
+    await this.mongoDbCollection.deleteOne(identifiableObject, {
+      w: 1
+    });
   }
 
   /**
