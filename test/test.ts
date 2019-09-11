@@ -109,6 +109,38 @@ tap.test('should be able to delete an instance of car', async () => {
   expect(myCar2.color).to.equal('red');
 });
 
+
+
+// tslint:disable-next-line: max-classes-per-file
+@smartdata.Collection(() => {
+  return testDb;
+})
+class Truck extends smartdata.SmartDataDbDoc<Car> {
+  @smartdata.unI()
+  public id: string = smartunique.shortId();
+
+  @smartdata.svDb()
+  public color: string;
+
+  @smartdata.svDb()
+  public brand: string;
+
+  constructor(colorArg: string, brandArg: string) {
+    super();
+    this.color = colorArg;
+    this.brand = brandArg;
+  }
+}
+
+tap.test('should store a new Truck', async () => {
+  const truck = new Truck('blue', 'MAN');
+  await truck.save();
+  const myTruck = await Truck.getInstance<Truck>({color: 'blue'});
+  console.log(myTruck);
+
+});
+
+
 // =======================================
 // close the database connection
 // =======================================

@@ -113,7 +113,7 @@ export class SmartDataDbDoc<T> {
     return returnArray;
   }
 
-  static async getInstance<T>(filterArg): Promise<T> {
+  public static async getInstance<T>(filterArg): Promise<T> {
     const result = await this.getInstances<T>(filterArg);
     if (result && result.length > 0) {
       return result[0];
