@@ -136,7 +136,10 @@ tap.test('should store a new Truck', async () => {
   const truck = new Truck('blue', 'MAN');
   await truck.save();
   const myTruck = await Truck.getInstance<Truck>({color: 'blue'});
-  console.log(myTruck);
+  myTruck.id = 'foo';
+  await myTruck.save();
+  const myTruck2 = await Truck.getInstance<Truck>({color: 'blue'});
+  console.log(myTruck2);
 
 });
 

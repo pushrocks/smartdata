@@ -141,7 +141,7 @@ export class SmartdataCollection<T> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();
-    this.mongoDbCollection.deleteOne(identifiableObject);
+    await this.mongoDbCollection.deleteOne(identifiableObject);
   }
 
   /**

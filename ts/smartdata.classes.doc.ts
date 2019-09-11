@@ -103,10 +103,8 @@ export class SmartDataDbDoc<T> {
     for (const item of foundDocs) {
       const newInstance = new this();
       newInstance.creationStatus = 'db';
-      for (const key in item) {
-        if (key !== 'id') {
-          newInstance[key] = item[key];
-        }
+      for (const key of Object.keys(item)) {
+        newInstance[key] = item[key];
       }
       returnArray.push(newInstance);
     }
