@@ -54,7 +54,8 @@ export class SmartdataDb {
     }
     console.log(`connection Url: ${finalConnectionUrl}`);
     this.mongoDbClient = await plugins.mongodb.MongoClient.connect(finalConnectionUrl, {
-      useNewUrlParser: true
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     });
     this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
     this.status = 'connected';
