@@ -29,14 +29,6 @@ tap.test('should create a testinstance as database', async () => {
   testDb = new smartdata.SmartdataDb(smartdataOptions);
 });
 
-tap.skip.test('should create a smartdb', async () => {
-  testDb = new smartdata.SmartdataDb({
-    mongoDbName: testQenv.getEnvVarOnDemand('MONGO_DBNAME'),
-    mongoDbUrl: testQenv.getEnvVarOnDemand('MONGO_URL'),
-    mongoDbPass: testQenv.getEnvVarOnDemand('MONGO_PASS')
-  });
-});
-
 tap.test('should establish a connection to the rethink Db cluster', async () => {
   await testDb.init();
 });
