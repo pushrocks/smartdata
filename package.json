@@ -21,15 +21,15 @@
   },
   "homepage": "https://gitlab.com/pushrocks/smartdata#README",
   "dependencies": {
-    "@pushrocks/lik": "^3.0.17",
+    "@pushrocks/lik": "^3.0.19",
     "@pushrocks/smartlog": "^2.0.21",
     "@pushrocks/smartpromise": "^3.0.6",
     "@pushrocks/smartstring": "^3.0.18",
     "@pushrocks/smartunique": "^3.0.1",
     "@types/lodash": "^4.14.149",
-    "@types/mongodb": "^3.3.15",
+    "@types/mongodb": "^3.3.16",
     "lodash": "^4.17.15",
-    "mongodb": "^3.5.2",
+    "mongodb": "^3.5.3",
     "runtime-type-checks": "0.0.4"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@pushrocks/qenv": "^4.0.6",
     "@pushrocks/tapbundle": "^3.2.0",
     "@types/mongodb-memory-server": "^2.3.0",
-    "@types/node": "^13.7.0",
+    "@types/node": "^13.7.2",
     "@types/shortid": "0.0.29",
     "mongodb-memory-server": "^6.2.4",
     "tslint": "^6.0.0",

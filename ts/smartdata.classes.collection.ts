@@ -42,7 +42,7 @@ export class SmartdataCollection<T> {
   public smartdataDb: SmartdataDb;
   public uniqueIndexes: string[] = [];
 
-  constructor(collectedClassArg: T & SmartDataDbDoc<T>, smartDataDbArg: SmartdataDb) {
+  constructor(collectedClassArg: T & SmartDataDbDoc<T, unknown>, smartDataDbArg: SmartdataDb) {
     // tell the collection where it belongs
     this.collectionName = collectedClassArg.name;
     this.smartdataDb = smartDataDbArg;
@@ -103,7 +103,7 @@ export class SmartdataCollection<T> {
   /**
    * create an object in the database
    */
-  public async insert(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+  public async insert(dbDocArg: T & SmartDataDbDoc<T, unknown>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     this.markUniqueIndexes(dbDocArg.uniqueIndexes);
@@ -115,7 +115,7 @@ export class SmartdataCollection<T> {
   /**
    * inserts object into the DbCollection
    */
-  public async update(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+  public async update(dbDocArg: T & SmartDataDbDoc<T, unknown>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();
@@ -134,7 +134,7 @@ export class SmartdataCollection<T> {
     );
   }
 
-  public async delete(dbDocArg: T & SmartDataDbDoc<T>): Promise<any> {
+  public async delete(dbDocArg: T & SmartDataDbDoc<T, unknown>): Promise<any> {
     await this.init();
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();

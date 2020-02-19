@@ -44,7 +44,7 @@ tap.test('should establish a connection to the rethink Db cluster', async () => 
 @smartdata.Collection(() => {
   return testDb;
 })
-class Car extends smartdata.SmartDataDbDoc<Car> {
+class Car extends smartdata.SmartDataDbDoc<Car, Car> {
   @smartdata.unI()
   public index: string = smartunique.shortId();
 
@@ -107,7 +107,7 @@ tap.test('should be able to delete an instance of car', async () => {
 @smartdata.Collection(() => {
   return testDb;
 })
-class Truck extends smartdata.SmartDataDbDoc<Car> {
+class Truck extends smartdata.SmartDataDbDoc<Car, Car> {
   @smartdata.unI()
   public id: string = smartunique.shortId();
 

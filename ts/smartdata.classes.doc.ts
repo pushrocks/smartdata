@@ -11,7 +11,7 @@ export type TDocCreation = 'db' | 'new' | 'mixed';
  * saveable - saveable decorator to be used on class properties
  */
 export function svDb() {
-  return (target: SmartDataDbDoc<any>, key: string) => {
+  return (target: SmartDataDbDoc<unknown, unknown>, key: string) => {
     console.log(`called svDb() on ${key}`);
     if (!target.saveableProperties) {
       target.saveableProperties = [];
@@ -24,7 +24,7 @@ export function svDb() {
  * unique index - decorator to mark a unique index
  */
 export function unI() {
-  return (target: SmartDataDbDoc<any>, key: string) => {
+  return (target: SmartDataDbDoc<unknown, unknown>, key: string) => {
     console.log('called unI');
 
     // mark the index as unique
@@ -41,7 +41,7 @@ export function unI() {
   };
 }
 
-export class SmartDataDbDoc<T> {
+export class SmartDataDbDoc<T, TImplements> {
   /**
    * the collection object an Doc belongs to
    */
@@ -150,9 +150,9 @@ export class SmartDataDbDoc<T> {
    * also store any referenced objects to DB
    * better for data consistency
    */
-  public saveDeep(savedMapArg: Objectmap<SmartDataDbDoc<any>> = null) {
+  public saveDeep(savedMapArg: Objectmap<SmartDataDbDoc<any, any>> = null) {
     if (!savedMapArg) {
-      savedMapArg = new Objectmap<SmartDataDbDoc<any>>();
+      savedMapArg = new Objectmap<SmartDataDbDoc<any, any>>();
     }
     savedMapArg.add(this);
     this.save();
@@ -167,12 +167,12 @@ export class SmartDataDbDoc<T> {
   /**
    * creates a saveable object so the instance can be persisted as json in the database
    */
-  public async createSavableObject() {
-    const saveableObject: any = {}; // is not exposed to outside, so any is ok here
+  public async createSavableObject(): Promise<TImplements> {
+    const saveableObject: unknown = {}; // is not exposed to outside, so any is ok here
     for (const propertyNameString of this.saveableProperties) {
       saveableObject[propertyNameString] = this[propertyNameString];
     }
-    return saveableObject;
+    return saveableObject as TImplements;
   }
 
   /**
