@@ -1,9 +1,10 @@
 import * as plugins from './smartdata.plugins';
-import { Objectmap } from '@pushrocks/lik';
+import { ObjectMap } from '@pushrocks/lik';
 
 import { SmartdataCollection } from './smartdata.classes.collection';
 
 import * as mongoHelpers from './smartdata.mongohelpers';
+import { logger } from './smartdata.logging';
 
 /**
  * interface - indicates the connection status of the db
@@ -32,7 +33,7 @@ export class SmartdataDb {
   mongoDbClient: plugins.mongodb.MongoClient;
   mongoDb: plugins.mongodb.Db;
   status: TConnectionStatus;
-  smartdataCollectionMap = new Objectmap<SmartdataCollection<any>>();
+  smartdataCollectionMap = new ObjectMap<SmartdataCollection<any>>();
 
   constructor(smartdataOptions: ISmartdataOptions) {
     this.smartdataOptions = smartdataOptions;
@@ -68,10 +69,7 @@ export class SmartdataDb {
   public async close(): Promise<any> {
     await this.mongoDbClient.close();
     this.status = 'disconnected';
-    plugins.smartlog.defaultLogger.log(
-      'info',
-      `disconnected from database ${this.smartdataOptions.mongoDbName}`
-    );
+    logger.log('info', `disconnected from database ${this.smartdataOptions.mongoDbName}`);
   }
 
   // handle table to class distribution

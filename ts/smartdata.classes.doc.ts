@@ -1,6 +1,6 @@
 import * as plugins from './smartdata.plugins';
 
-import { Objectmap } from '@pushrocks/lik';
+import { ObjectMap } from '@pushrocks/lik';
 
 import { SmartdataDb } from './smartdata.classes.db';
 import { SmartdataCollection } from './smartdata.classes.collection';
@@ -150,9 +150,9 @@ export class SmartDataDbDoc<T, TImplements> {
    * also store any referenced objects to DB
    * better for data consistency
    */
-  public saveDeep(savedMapArg: Objectmap<SmartDataDbDoc<any, any>> = null) {
+  public saveDeep(savedMapArg: ObjectMap<SmartDataDbDoc<any, any>> = null) {
     if (!savedMapArg) {
-      savedMapArg = new Objectmap<SmartDataDbDoc<any, any>>();
+      savedMapArg = new ObjectMap<SmartDataDbDoc<any, any>>();
     }
     savedMapArg.add(this);
     this.save();
