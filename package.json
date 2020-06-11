@@ -8,7 +8,7 @@
   "scripts": {
     "test": "(tstest test/)",
     "testLocal": "(npmdocker)",
-    "build": "(tsbuild)"
+    "build": "(tsbuild --web)"
   },
   "repository": {
     "type": "git",
