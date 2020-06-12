@@ -8,13 +8,20 @@ do more with data
 * [docs (typedoc)](https://pushrocks.gitlab.io/smartdata/)
 
 ## Status for master
-[![build status](https://gitlab.com/pushrocks/smartdata/badges/master/build.svg)](https://gitlab.com/pushrocks/smartdata/commits/master)
-[![coverage report](https://gitlab.com/pushrocks/smartdata/badges/master/coverage.svg)](https://gitlab.com/pushrocks/smartdata/commits/master)
-[![npm downloads per month](https://img.shields.io/npm/dm/@pushrocks/smartdata.svg)](https://www.npmjs.com/package/@pushrocks/smartdata)
-[![Known Vulnerabilities](https://snyk.io/test/npm/@pushrocks/smartdata/badge.svg)](https://snyk.io/test/npm/@pushrocks/smartdata)
-[![TypeScript](https://img.shields.io/badge/TypeScript->=%203.x-blue.svg)](https://nodejs.org/dist/latest-v10.x/docs/api/)
-[![node](https://img.shields.io/badge/node->=%2010.x.x-blue.svg)](https://nodejs.org/dist/latest-v10.x/docs/api/)
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)](https://prettier.io/)
+
+Status Category | Status Badge
+-- | --
+GitLab Pipelines | [![pipeline status](https://gitlab.com/pushrocks/smartdata/badges/master/pipeline.svg)](https://lossless.cloud)
+GitLab Pipline Test Coverage | [![coverage report](https://gitlab.com/pushrocks/smartdata/badges/master/coverage.svg)](https://lossless.cloud)
+npm | [![npm downloads per month](https://badgen.net/npm/dy/@pushrocks/smartdata)](https://lossless.cloud)
+Snyk | [![Known Vulnerabilities](https://badgen.net/snyk/pushrocks/smartdata)](https://lossless.cloud)
+TypeScript Support | [![TypeScript](https://badgen.net/badge/TypeScript/>=%203.x/blue?icon=typescript)](https://lossless.cloud)
+node Support | [![node](https://img.shields.io/badge/node->=%2010.x.x-blue.svg)](https://nodejs.org/dist/latest-v10.x/docs/api/)
+Code Style | [![Code Style](https://badgen.net/badge/style/prettier/purple)](https://lossless.cloud)
+PackagePhobia (total standalone install weight) | [![PackagePhobia](https://badgen.net/packagephobia/install/@pushrocks/smartdata)](https://lossless.cloud)
+PackagePhobia (package size on registry) | [![PackagePhobia](https://badgen.net/packagephobia/publish/@pushrocks/smartdata)](https://lossless.cloud)
+BundlePhobia (total size when bundled) | [![BundlePhobia](https://badgen.net/bundlephobia/minzip/@pushrocks/smartdata)](https://lossless.cloud)
+Platform support | [![Supports Windows 10](https://badgen.net/badge/supports%20Windows%2010/yes/green?icon=windows)](https://lossless.cloud) [![Supports Mac OS X](https://badgen.net/badge/supports%20Mac%20OS%20X/yes/green?icon=apple)](https://lossless.cloud)
 
 ## Usage
 
@@ -68,9 +75,9 @@ class MyObject extends smartdata.DbDoc<MyObject> {
   // read the next block about DbDoc
   @smartdata.svDb()
   property1: string; // @smartdata.svDb() marks the property for db save
-  
+
   property2: number; // this one is not marked, so it won't be save upon calling this.save()
-  
+
   constructor() {
     super(); // the super call is important ;) But you probably know that.
   }
@@ -97,7 +104,8 @@ represents a individual document in a collection
 and thereby is ideally suited to extend the class you want to actually store.
 
 ### CRUD operations
-smartdata supports full CRUD operations 
+
+smartdata supports full CRUD operations
 
 **Store** or **Update** instances of classes to MongoDB:
 DbDoc extends your class with the following methods:
@@ -111,16 +119,13 @@ DbDoc extends your class with the following methods:
 **Get** a new class instance from MongoDB:
 DbDoc exposes a static method that allows you specify a filter to retrieve a cloned class of the one you used to that doc at some point later in time:
 
-* static async `.getInstance({ /* filter props here */ })` gets you an instance that has the data of the first matched document as properties.
-* static async `getInstances({ /* filter props here */ })` get you an array instances (one instance for every matched document).
+- static async `.getInstance({ /* filter props here */ })` gets you an instance that has the data of the first matched document as properties.
+- static async `getInstances({ /* filter props here */ })` get you an array instances (one instance for every matched document).
 
 **Delete** instances from MongoDb:
 smartdata extends your class with a method to easily delete the doucment from DB:
 
-* async `.delete()`will delete the document from DB. 
-
-
-
+- async `.delete()`will delete the document from DB.
 
 ## TypeScript
 
@@ -128,6 +133,11 @@ How does TypeScript play into this?
 Since you define your classes in TypeScript and types flow through smartdata in a generic way
 you should get all the Intellisense and type checking you love when using smartdata.
 smartdata itself also bundles typings. You don't need to install any additional types for smartdata.
+
+
+## Contribution
+
+We are always happy for code contributions. If you are not the code contributing type that is ok. Still, maintaining Open Source repositories takes considerable time and thought. If you like the quality of what we do and our modules are useful to you we would appreciate a little monthly contribution: You can [contribute one time](https://lossless.link/contribute-onetime) or [contribute monthly](https://lossless.link/contribute). :)
 
 For further information read the linked docs at the top of this readme.
 
