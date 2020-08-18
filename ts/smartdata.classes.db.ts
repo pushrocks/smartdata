@@ -4,43 +4,21 @@ import { ObjectMap } from '@pushrocks/lik';
 import { SmartdataCollection } from './smartdata.classes.collection';
 
 import { logger } from './smartdata.logging';
+import { IMongoDescriptor } from './interfaces';
 
 /**
  * interface - indicates the connection status of the db
  */
 export type TConnectionStatus = 'initial' | 'disconnected' | 'connected' | 'failed';
 
-export interface ISmartdataOptions {
-  /**
-   * the URL to connect to
-   */
-  mongoDbUrl: string;
-
-  /**
-   * the db to use for the project
-   */
-  mongoDbName?: string;
-
-  /**
-   * a username to use to connect to the database
-   */
-
-  mongoDbUser?: string;
-
-  /**
-   * an optional password that will be replace <PASSWORD> in the connection string
-   */
-  mongoDbPass?: string;
-}
-
 export class SmartdataDb {
-  smartdataOptions: ISmartdataOptions;
+  smartdataOptions: IMongoDescriptor;
   mongoDbClient: plugins.mongodb.MongoClient;
   mongoDb: plugins.mongodb.Db;
   status: TConnectionStatus;
   smartdataCollectionMap = new ObjectMap<SmartdataCollection<any>>();
 
-  constructor(smartdataOptions: ISmartdataOptions) {
+  constructor(smartdataOptions: IMongoDescriptor) {
     this.smartdataOptions = smartdataOptions;
     this.status = 'initial';
   }

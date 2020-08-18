@@ -15,7 +15,7 @@ import * as mongoPlugin from 'mongodb-memory-server';
 // =======================================
 
 let testDb: smartdata.SmartdataDb;
-let smartdataOptions: smartdata.ISmartdataOptions;
+let smartdataOptions: smartdata.IMongoDescriptor;
 let mongod: mongoPlugin.MongoMemoryServer;
 
 tap.test('should create a testinstance as database', async () => {
