@@ -89,7 +89,9 @@ export class SmartDataDbDoc<T, TImplements> {
     }
   }
 
-  public static async getInstances<T>(filterArg: Partial<T>): Promise<T[]> {
+  public static async getInstances<T>(
+    filterArg: plugins.tsclass.typeFest.PartialDeep<T>
+  ): Promise<T[]> {
     const self: any = this; // fool typesystem
     let referenceMongoDBCollection: SmartdataCollection<T>;
 
@@ -111,7 +113,9 @@ export class SmartDataDbDoc<T, TImplements> {
     return returnArray;
   }
 
-  public static async getInstance<T>(filterArg: Partial<T>): Promise<T> {
+  public static async getInstance<T>(
+    filterArg: plugins.tsclass.typeFest.PartialDeep<T>
+  ): Promise<T> {
     const result = await this.getInstances<T>(filterArg);
     if (result && result.length > 0) {
       return result[0];

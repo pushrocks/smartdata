@@ -18,10 +18,9 @@ let smartdataOptions: smartdata.IMongoDescriptor;
 let mongod: mongoPlugin.MongoMemoryServer;
 
 tap.skip.test('should create a testinstance as database', async () => {
-  mongod = new mongoPlugin.MongoMemoryServer({
-  });
+  mongod = new mongoPlugin.MongoMemoryServer({});
   console.log('created mongod instance');
-  await mongod._startUpInstance().catch(err => {
+  await mongod._startUpInstance().catch((err) => {
     console.log(err);
   });
   console.log('mongod started');
@@ -38,7 +37,7 @@ tap.test('should connect to atlas', async (tools) => {
   const databaseName = `test-smartdata-${smartunique.shortId()}`;
   testDb = new smartdata.SmartdataDb({
     mongoDbUrl: testQenv.getEnvVarOnDemand('MONGO_URL'),
-    mongoDbName: databaseName
+    mongoDbName: databaseName,
   });
 });
 
@@ -151,7 +150,6 @@ tap.test('should store a new Truck', async () => {
 tap.test('should close the database connection', async (tools) => {
   await testDb.close();
   try {
-    
     await mongod.stop();
   } catch (e) {}
 });
