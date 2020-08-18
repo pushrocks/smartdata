@@ -19,9 +19,10 @@ let smartdataOptions: smartdata.IMongoDescriptor;
 let mongod: mongoPlugin.MongoMemoryServer;
 
 tap.test('should create a testinstance as database', async () => {
-  mongod = new mongoPlugin.MongoMemoryServer({
-    autoStart: true,
-  });
+  mongod = new mongoPlugin.MongoMemoryServer();
+  console.log('created mongod instance');
+  await mongod._startUpInstance();
+  console.log('mongod started');
   smartdataOptions = {
     mongoDbName: await mongod.getDbName(),
     mongoDbPass: '',
