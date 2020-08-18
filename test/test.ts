@@ -5,10 +5,9 @@ const testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/');
 
 // the tested module
 import * as smartdata from '../ts/index';
-import { smartstring } from '../ts/smartdata.plugins';
-import * as smartunique from '@pushrocks/smartunique';
 
 import * as mongoPlugin from 'mongodb-memory-server';
+import { smartunique } from '../ts/smartdata.plugins';
 
 // =======================================
 // Connecting to the database server
@@ -18,8 +17,9 @@ let testDb: smartdata.SmartdataDb;
 let smartdataOptions: smartdata.IMongoDescriptor;
 let mongod: mongoPlugin.MongoMemoryServer;
 
-tap.test('should create a testinstance as database', async () => {
-  mongod = new mongoPlugin.MongoMemoryServer();
+tap.skip.test('should create a testinstance as database', async () => {
+  mongod = new mongoPlugin.MongoMemoryServer({
+  });
   console.log('created mongod instance');
   await mongod._startUpInstance().catch(err => {
     console.log(err);
@@ -32,6 +32,14 @@ tap.test('should create a testinstance as database', async () => {
   };
   console.log(smartdataOptions);
   testDb = new smartdata.SmartdataDb(smartdataOptions);
+});
+
+tap.test('should connect to atlas', async (tools) => {
+  const databaseName = `test-smartdata-${smartunique.shortId()}`;
+  testDb = new smartdata.SmartdataDb({
+    mongoDbUrl: testQenv.getEnvVarOnDemand('MONGO_URL'),
+    mongoDbName: databaseName
+  });
 });
 
 tap.test('should establish a connection to mongod', async () => {
@@ -142,7 +150,10 @@ tap.test('should store a new Truck', async () => {
 // =======================================
 tap.test('should close the database connection', async (tools) => {
   await testDb.close();
-  await mongod.stop();
+  try {
+    
+    await mongod.stop();
+  } catch (e) {}
 });
 
 tap.start({ throwOnError: true });
