@@ -56,7 +56,6 @@ auditDevDependencies:
 testStable:
   stage: test
   script:
-    - apt-get update -y && apt-get install -y lsb-core
     - npmci npm prepare
     - npmci node install stable
     - npmci npm install

@@ -19,7 +19,9 @@ let smartdataOptions: smartdata.IMongoDescriptor;
 let mongod: mongoPlugin.MongoMemoryServer;
 
 tap.test('should create a testinstance as database', async () => {
-  mongod = new mongoPlugin.MongoMemoryServer();
+  mongod = new mongoPlugin.MongoMemoryServer({
+    autoStart: true,
+  });
   smartdataOptions = {
     mongoDbName: await mongod.getDbName(),
     mongoDbPass: '',
@@ -29,7 +31,7 @@ tap.test('should create a testinstance as database', async () => {
   testDb = new smartdata.SmartdataDb(smartdataOptions);
 });
 
-tap.test('should establish a connection to the rethink Db cluster', async () => {
+tap.test('should establish a connection to mongod', async () => {
   await testDb.init();
 });
 
