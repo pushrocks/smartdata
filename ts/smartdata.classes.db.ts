@@ -3,7 +3,6 @@ import { ObjectMap } from '@pushrocks/lik';
 
 import { SmartdataCollection } from './smartdata.classes.collection';
 
-import * as mongoHelpers from './smartdata.mongohelpers';
 import { logger } from './smartdata.logging';
 
 /**
@@ -20,7 +19,13 @@ export interface ISmartdataOptions {
   /**
    * the db to use for the project
    */
-  mongoDbName: string;
+  mongoDbName?: string;
+
+  /**
+   * a username to use to connect to the database
+   */
+
+  mongoDbUser?: string;
 
   /**
    * an optional password that will be replace <PASSWORD> in the connection string
@@ -46,17 +51,17 @@ export class SmartdataDb {
    * connects to the database that was specified during instance creation
    */
   public async init(): Promise<any> {
-    let finalConnectionUrl = this.smartdataOptions.mongoDbUrl;
-    if (this.smartdataOptions.mongoDbPass) {
-      finalConnectionUrl = mongoHelpers.addPassword(
-        this.smartdataOptions.mongoDbUrl,
-        this.smartdataOptions.mongoDbPass
-      );
-    }
-    console.log(`connection Url: ${finalConnectionUrl}`);
+    const finalConnectionUrl = this.smartdataOptions.mongoDbUrl
+      .replace('<USERNAME>', this.smartdataOptions.mongoDbUser)
+      .replace('<username>', this.smartdataOptions.mongoDbUser)
+      .replace('<PASSWORD>', this.smartdataOptions.mongoDbPass)
+      .replace('<password>', this.smartdataOptions.mongoDbPass)
+      .replace('<DBNAME>', this.smartdataOptions.mongoDbName)
+      .replace('<dbname>', this.smartdataOptions.mongoDbName);
+
     this.mongoDbClient = await plugins.mongodb.MongoClient.connect(finalConnectionUrl, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     });
     this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
     this.status = 'connected';
@@ -84,7 +89,7 @@ export class SmartdataDb {
    * @returns DbTable
    */
   public async getSmartdataCollectionByName<T>(nameArg: string): Promise<SmartdataCollection<T>> {
-    const resultCollection = this.smartdataCollectionMap.find(dbTableArg => {
+    const resultCollection = this.smartdataCollectionMap.find((dbTableArg) => {
       return dbTableArg.collectionName === nameArg;
     });
     return resultCollection;

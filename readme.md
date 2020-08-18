@@ -54,7 +54,7 @@ import * as smartdata from 'smartdata';
 const smartdataDb = new smartdata.SmartdataDb({
   mongoDbUrl: '//someurl',
   mongoDbName: 'myDatabase',
-  mongoDbPass: 'mypassword'
+  mongoDbPass: 'mypassword',
 });
 
 smartdataDb.connect();
@@ -87,14 +87,14 @@ class MyObject extends smartdata.DbDoc<MyObject> {
 
 const localObject = new MyObject({
   property1: 'hi',
-  property2: 2
+  property2: 2,
 });
 localObject.save(); // saves the object to the database
 
 // start retrieving instances
 
 MyObject.getInstance<MyObject>({
-  property: 'hi'
+  property: 'hi',
 }); // outputs a new instance of MyObject with the values from db assigned
 ```
 
@@ -133,7 +133,6 @@ How does TypeScript play into this?
 Since you define your classes in TypeScript and types flow through smartdata in a generic way
 you should get all the Intellisense and type checking you love when using smartdata.
 smartdata itself also bundles typings. You don't need to install any additional types for smartdata.
-
 
 ## Contribution
 

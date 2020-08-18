@@ -20,7 +20,7 @@ export type TDelayedDbCreation = () => SmartdataDb;
  * @param dbArg
  */
 export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
-  return function(constructor) {
+  return function (constructor) {
     if (dbArg instanceof SmartdataDb) {
       // tslint:disable-next-line: no-string-literal
       constructor['smartdataCollection'] = new SmartdataCollection(constructor, dbArg);
@@ -58,7 +58,7 @@ export class SmartdataCollection<T> {
     if (!this.mongoDbCollection) {
       // connect this instance to a MongoDB collection
       const availableMongoDbCollections = await this.smartdataDb.mongoDb.collections();
-      const wantedCollection = availableMongoDbCollections.find(collection => {
+      const wantedCollection = availableMongoDbCollections.find((collection) => {
         return collection.collectionName === this.collectionName;
       });
       if (!wantedCollection) {
@@ -76,7 +76,7 @@ export class SmartdataCollection<T> {
     for (const key of keyArrayArg) {
       if (!this.uniqueIndexes.includes(key)) {
         this.mongoDbCollection.createIndex(key, {
-          unique: true
+          unique: true,
         });
         // make sure we only call this once and not for every doc we create
         this.uniqueIndexes.push(key);
@@ -139,7 +139,7 @@ export class SmartdataCollection<T> {
     await this.checkDoc(dbDocArg);
     const identifiableObject = await dbDocArg.createIdentifiableObject();
     await this.mongoDbCollection.deleteOne(identifiableObject, {
-      w: 1
+      w: 1,
     });
   }
 

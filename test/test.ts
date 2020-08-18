@@ -23,7 +23,7 @@ tap.test('should create a testinstance as database', async () => {
   smartdataOptions = {
     mongoDbName: await mongod.getDbName(),
     mongoDbPass: '',
-    mongoDbUrl: await mongod.getConnectionString()
+    mongoDbUrl: await mongod.getConnectionString(),
   };
   console.log(smartdataOptions);
   testDb = new smartdata.SmartdataDb(smartdataOptions);
@@ -74,14 +74,14 @@ tap.test('should save the car to the db', async () => {
 
 tap.test('expect to get instance of Car', async () => {
   const myCars = await Car.getInstances<Car>({
-    brand: 'Volvo'
+    brand: 'Volvo',
   });
   expect(myCars[0].color).to.equal('red');
 });
 
 tap.test('expect to get instance of Car and update it', async () => {
   const myCar = await Car.getInstance<Car>({
-    brand: 'Volvo'
+    brand: 'Volvo',
   });
   expect(myCar.color).to.equal('red');
   myCar.color = 'blue';
@@ -90,13 +90,13 @@ tap.test('expect to get instance of Car and update it', async () => {
 
 tap.test('should be able to delete an instance of car', async () => {
   const myCar = await Car.getInstance<Car>({
-    brand: 'Volvo'
+    brand: 'Volvo',
   });
   expect(myCar.color).to.equal('blue');
   await myCar.delete();
 
   const myCar2 = await Car.getInstance<Car>({
-    brand: 'Volvo'
+    brand: 'Volvo',
   });
   expect(myCar2.color).to.equal('red');
 });
@@ -135,7 +135,7 @@ tap.test('should store a new Truck', async () => {
 // =======================================
 // close the database connection
 // =======================================
-tap.test('should close the database connection', async tools => {
+tap.test('should close the database connection', async (tools) => {
   await testDb.close();
   await mongod.stop();
 });
