@@ -40,7 +40,7 @@
     "@types/mongodb-memory-server": "^2.3.0",
     "@types/node": "^14.6.0",
     "@types/shortid": "0.0.29",
-    "mongodb-memory-server": "^6.6.4",
+    "mongodb-memory-server": "6.6.3",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0"
   },
