@@ -102,10 +102,18 @@ tap.test('expect to get instance of Car', async () => {
     const myCars = await Car.getInstances<Car>({
       brand: 'Volvo',
     });
+    console.log(`took ${Date.now() - timeStart}`);
+    counter++;
+  } while (counter < 2000);
+});
+
+tap.test('expect to get instance of Car', async () => {
+  let counter = 0;
+  do {
+    const timeStart = Date.now();
     const myCars2 = await Car.getInstances<Car>({
       'deepData.sodeep': 'yes',
     } as any);
-    expect(myCars[0].color).to.equal('red');
     console.log(`took ${Date.now() - timeStart}`);
     counter++;
   } while (counter < 2000);
