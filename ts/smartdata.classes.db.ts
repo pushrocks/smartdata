@@ -40,6 +40,8 @@ export class SmartdataDb {
     this.mongoDbClient = await plugins.mongodb.MongoClient.connect(finalConnectionUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      maxPoolSize: 100,
+      maxIdleTimeMS: 10
     });
     this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
     this.status = 'connected';
