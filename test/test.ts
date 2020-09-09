@@ -80,15 +80,27 @@ tap.test('should save the car to the db', async () => {
   const myCar2 = new Car('red', 'Volvo');
   await myCar2.save();
 
-  const myCar3 = new Car('red', 'Renault');
-  await myCar3.save();
+  
+
+  let counter = 0;
+  do {
+    const myCar3 = new Car('red', 'Renault');
+    await myCar3.save();
+    counter++;
+  } while (counter < 2000);
 });
 
 tap.test('expect to get instance of Car', async () => {
-  const myCars = await Car.getInstances<Car>({
-    brand: 'Volvo',
-  });
-  expect(myCars[0].color).to.equal('red');
+  let counter = 0;
+  do {
+    const timeStart = Date.now();
+    const myCars = await Car.getInstances<Car>({
+      brand: 'Volvo',
+    });
+    expect(myCars[0].color).to.equal('red');
+    console.log(`took ${Date.now() - timeStart}`);
+    counter++;
+  } while (counter < 2000);
 });
 
 tap.test('expect to get instance of Car and update it', async () => {

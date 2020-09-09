@@ -63,9 +63,9 @@ export class SmartdataCollection<T> {
       });
       if (!wantedCollection) {
         await this.smartdataDb.mongoDb.createCollection(this.collectionName);
+        console.log(`Successfully initiated Collection ${this.collectionName}`);
       }
-      this.mongoDbCollection = await this.smartdataDb.mongoDb.collection(this.collectionName);
-      // console.log(`Successfully initiated Collection ${this.collectionName}`);
+      this.mongoDbCollection = this.smartdataDb.mongoDb.collection(this.collectionName);
     }
   }
 
