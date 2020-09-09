@@ -66,6 +66,11 @@ class Car extends smartdata.SmartDataDbDoc<Car, Car> {
   @smartdata.svDb()
   public brand: string;
 
+  @smartdata.svDb()
+  deepData = {
+    sodeep: 'yes'
+  };
+
   constructor(colorArg: string, brandArg: string) {
     super();
     this.color = colorArg;
@@ -97,6 +102,9 @@ tap.test('expect to get instance of Car', async () => {
     const myCars = await Car.getInstances<Car>({
       brand: 'Volvo',
     });
+    const myCars2 = await Car.getInstances<Car>({
+      'deepData.sodeep': 'yes',
+    } as any);
     expect(myCars[0].color).to.equal('red');
     console.log(`took ${Date.now() - timeStart}`);
     counter++;
