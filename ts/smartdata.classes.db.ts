@@ -41,7 +41,7 @@ export class SmartdataDb {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       maxPoolSize: 100,
-      maxIdleTimeMS: 10
+      maxIdleTimeMS: 10,
     });
     this.mongoDb = this.mongoDbClient.db(this.smartdataOptions.mongoDbName);
     this.status = 'connected';
