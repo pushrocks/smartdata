@@ -104,7 +104,7 @@ tap.test('expect to get instance of Car', async () => {
     });
     console.log(`took ${Date.now() - timeStart}`);
     counter++;
-  } while (counter < 2000);
+  } while (counter < 30);
 });
 
 tap.test('expect to get instance of Car', async () => {
@@ -116,7 +116,7 @@ tap.test('expect to get instance of Car', async () => {
     } as any);
     console.log(`took ${Date.now() - timeStart}`);
     counter++;
-  } while (counter < 2000);
+  } while (counter < 30);
 });
 
 tap.test('expect to get instance of Car and update it', async () => {
