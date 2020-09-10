@@ -95,7 +95,7 @@ tap.test('should save the car to the db', async () => {
   } while (counter < 2000);
 });
 
-tap.test('expect to get instance of Car', async () => {
+tap.test('expect to get instance of Car with shallow match', async () => {
   let counter = 0;
   do {
     const timeStart = Date.now();
@@ -103,11 +103,13 @@ tap.test('expect to get instance of Car', async () => {
       brand: 'Renault',
     });
     console.log(`took ${Date.now() - timeStart}`);
+    expect(myCars[0].deepData.sodeep).to.equal('yes');
+    expect(myCars[0].brand).to.equal('Renault');
     counter++;
   } while (counter < 30);
 });
 
-tap.test('expect to get instance of Car', async () => {
+tap.test('expect to get instance of Car with deep match', async () => {
   let counter = 0;
   do {
     const timeStart = Date.now();
@@ -115,6 +117,8 @@ tap.test('expect to get instance of Car', async () => {
       'deepData.sodeep': 'yes',
     } as any);
     console.log(`took ${Date.now() - timeStart}`);
+    expect(myCars2[0].deepData.sodeep).to.equal('yes');
+    expect(myCars2[0].brand).to.equal('Volvo');
     counter++;
   } while (counter < 30);
 });
