@@ -100,7 +100,7 @@ tap.test('expect to get instance of Car', async () => {
   do {
     const timeStart = Date.now();
     const myCars = await Car.getInstances<Car>({
-      brand: 'Volvo',
+      brand: 'Renault',
     });
     console.log(`took ${Date.now() - timeStart}`);
     counter++;

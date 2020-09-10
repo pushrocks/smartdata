@@ -45,7 +45,8 @@ export class SmartDataDbDoc<T, TImplements> {
   /**
    * the collection object an Doc belongs to
    */
-  public collection: SmartdataCollection<T>;
+  public static collection: SmartdataCollection<any>;
+  public collection: SmartdataCollection<any>;
 
   /**
    * how the Doc in memory was created, may prove useful later.
@@ -75,32 +76,12 @@ export class SmartDataDbDoc<T, TImplements> {
   /**
    * class constructor
    */
-  constructor() {
-    this.name = this.constructor['name'];
-    if (this.constructor['smartdataCollection']) {
-      // tslint:disable-next-line: no-string-literal
-      this.collection = this.constructor['smartdataCollection'];
-      // tslint:disable-next-line: no-string-literal
-    } else if (typeof this.constructor['smartdataDelayedCollection'] === 'function') {
-      // tslint:disable-next-line: no-string-literal
-      this.collection = this.constructor['smartdataDelayedCollection']();
-    } else {
-      console.error('Could not determine collection for DbDoc');
-    }
-  }
+  constructor() {}
 
   public static async getInstances<T>(
     filterArg: plugins.tsclass.typeFest.PartialDeep<T>
   ): Promise<T[]> {
-    const self: any = this; // fool typesystem
-    let referenceMongoDBCollection: SmartdataCollection<T>;
-
-    if (self.smartdataCollection) {
-      referenceMongoDBCollection = self.smartdataCollection;
-    } else if (self.smartdataDelayedCollection) {
-      referenceMongoDBCollection = self.smartdataDelayedCollection();
-    }
-    const foundDocs = await referenceMongoDBCollection.find(filterArg);
+    const foundDocs = await this.collection.find(filterArg);
     const returnArray = [];
     for (const item of foundDocs) {
       const newInstance = new this();
@@ -146,8 +127,7 @@ export class SmartDataDbDoc<T, TImplements> {
    * deletes a document from the database
    */
   public async delete() {
-    const self: any = this;
-    await this.collection.delete(self);
+    await this.collection.delete(this);
   }
 
   /**

@@ -59,7 +59,7 @@ export class SmartdataDb {
 
   // handle table to class distribution
 
-  public addTable(SmartdataCollectionArg: SmartdataCollection<any>) {
+  public addCollection(SmartdataCollectionArg: SmartdataCollection<any>) {
     this.smartdataCollectionMap.add(SmartdataCollectionArg);
   }
 

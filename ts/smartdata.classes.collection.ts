@@ -1,6 +1,7 @@
 import * as plugins from './smartdata.plugins';
 import { SmartdataDb } from './smartdata.classes.db';
 import { SmartDataDbDoc } from './smartdata.classes.doc';
+import { CollectionFactory } from './smartdata.classes.collectionfactory';
 
 export interface IFindOptions {
   limit?: number;
@@ -15,23 +16,26 @@ export interface IDocValidationFunc<T> {
 
 export type TDelayedDbCreation = () => SmartdataDb;
 
+const collectionFactory = new CollectionFactory();
+
 /**
  * This is a decorator that will tell the decorated class what dbTable to use
  * @param dbArg
  */
 export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
-  return function (constructor) {
-    if (dbArg instanceof SmartdataDb) {
-      // tslint:disable-next-line: no-string-literal
-      constructor['smartdataCollection'] = new SmartdataCollection(constructor, dbArg);
-    } else {
-      constructor['smartdataDelayedCollection'] = () => {
-        return new SmartdataCollection(constructor, dbArg());
-      };
-    }
+  return function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
+    return class extends constructor {
+      public static get collection() {
+        return collectionFactory.getCollection(constructor.name, dbArg);
+      }
+      public get collection() {
+        return collectionFactory.getCollection(constructor.name, dbArg);
+      }
+    };
   };
 }
 
+// tslint:disable-next-line: max-classes-per-file
 export class SmartdataCollection<T> {
   /**
    * the collection that is used
@@ -42,13 +46,13 @@ export class SmartdataCollection<T> {
   public smartdataDb: SmartdataDb;
   public uniqueIndexes: string[] = [];
 
-  constructor(collectedClassArg: T & SmartDataDbDoc<T, unknown>, smartDataDbArg: SmartdataDb) {
+  constructor(classNameArg: string, smartDataDbArg: SmartdataDb) {
     // tell the collection where it belongs
-    this.collectionName = collectedClassArg.name;
+    this.collectionName = classNameArg;
     this.smartdataDb = smartDataDbArg;
 
     // tell the db class about it (important since Db uses different systems under the hood)
-    this.smartdataDb.addTable(this);
+    this.smartdataDb.addCollection(this);
   }
 
   /**
