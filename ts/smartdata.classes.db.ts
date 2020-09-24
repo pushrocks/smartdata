@@ -32,6 +32,8 @@ export class SmartdataDb {
     const finalConnectionUrl = this.smartdataOptions.mongoDbUrl
       .replace('<USERNAME>', this.smartdataOptions.mongoDbUser)
       .replace('<username>', this.smartdataOptions.mongoDbUser)
+      .replace('<USER>', this.smartdataOptions.mongoDbUser)
+      .replace('<user>', this.smartdataOptions.mongoDbUser)
       .replace('<PASSWORD>', this.smartdataOptions.mongoDbPass)
       .replace('<password>', this.smartdataOptions.mongoDbPass)
       .replace('<DBNAME>', this.smartdataOptions.mongoDbName)
