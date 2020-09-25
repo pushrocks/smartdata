@@ -12,7 +12,7 @@ export type TDocCreation = 'db' | 'new' | 'mixed';
  */
 export function svDb() {
   return (target: SmartDataDbDoc<unknown, unknown>, key: string) => {
-    console.log(`called svDb() on ${key}`);
+    console.log(`called svDb() on >${target.constructor.name}.${key}<`);
     if (!target.saveableProperties) {
       target.saveableProperties = [];
     }
@@ -25,7 +25,7 @@ export function svDb() {
  */
 export function unI() {
   return (target: SmartDataDbDoc<unknown, unknown>, key: string) => {
-    console.log('called unI');
+    console.log(`called unI on >>${target.constructor.name}.${key}<<`);
 
     // mark the index as unique
     if (!target.uniqueIndexes) {
