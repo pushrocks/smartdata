@@ -27,7 +27,7 @@ tap.skip.test('should create a testinstance as database', async () => {
   smartdataOptions = {
     mongoDbName: await mongod.getDbName(),
     mongoDbPass: '',
-    mongoDbUrl: await mongod.getConnectionString(),
+    mongoDbUrl: await mongod.getUri(),
   };
   console.log(smartdataOptions);
   testDb = new smartdata.SmartdataDb(smartdataOptions);
@@ -88,11 +88,15 @@ tap.test('should save the car to the db', async () => {
   
 
   let counter = 0;
+  const totalCars = 2000;
   do {
     const myCar3 = new Car('red', 'Renault');
     await myCar3.save();
     counter++;
-  } while (counter < 2000);
+    if (counter%100 === 0) {
+      console.log(`Filled database with ${counter} of ${totalCars} Cars`);
+    }
+  } while (counter < totalCars);
 });
 
 tap.test('expect to get instance of Car with shallow match', async () => {
@@ -102,7 +106,7 @@ tap.test('expect to get instance of Car with shallow match', async () => {
     const myCars = await Car.getInstances<Car>({
       brand: 'Renault',
     });
-    console.log(`took ${Date.now() - timeStart}`);
+    console.log(`took ${Date.now() - timeStart}ms to query a set of 2000`);
     expect(myCars[0].deepData.sodeep).to.equal('yes');
     expect(myCars[0].brand).to.equal('Renault');
     counter++;
@@ -116,7 +120,7 @@ tap.test('expect to get instance of Car with deep match', async () => {
     const myCars2 = await Car.getInstances<Car>({
       'deepData.sodeep': 'yes',
     } as any);
-    console.log(`took ${Date.now() - timeStart}`);
+    console.log(`took ${Date.now() - timeStart}ms to query a set of 2000`);
     expect(myCars2[0].deepData.sodeep).to.equal('yes');
     expect(myCars2[0].brand).to.equal('Volvo');
     counter++;
@@ -133,11 +137,15 @@ tap.test('expect to get instance of Car and update it', async () => {
 });
 
 tap.test('should be able to delete an instance of car', async () => {
-  const myCar = await Car.getInstance<Car>({
+  const myCars = await Car.getInstances<Car>({
     brand: 'Volvo',
+    color: 'blue'
   });
-  expect(myCar.color).to.equal('blue');
-  await myCar.delete();
+  console.log(myCars);
+  expect(myCars[0].color).to.equal('blue');
+  for (const myCar of myCars) {
+    await myCar.delete();
+  }
 
   const myCar2 = await Car.getInstance<Car>({
     brand: 'Volvo',

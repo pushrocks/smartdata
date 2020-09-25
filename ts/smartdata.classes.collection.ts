@@ -131,11 +131,12 @@ export class SmartdataCollection<T> {
       }
       updateableObject[key] = saveableObject[key];
     }
-    this.mongoDbCollection.updateOne(
+    const result = await this.mongoDbCollection.updateOne(
       identifiableObject,
       { $set: updateableObject },
       { upsert: true }
     );
+    return result;
   }
 
   public async delete(dbDocArg: T & SmartDataDbDoc<T, unknown>): Promise<any> {

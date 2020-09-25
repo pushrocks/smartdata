@@ -110,17 +110,19 @@ export class SmartDataDbDoc<T, TImplements> {
   public async save() {
     // tslint:disable-next-line: no-this-assignment
     const self: any = this;
+    let dbResult: any;
     switch (this.creationStatus) {
       case 'db':
-        await this.collection.update(self);
+        dbResult = await this.collection.update(self);
         break;
       case 'new':
-        const writeResult = await this.collection.insert(self);
+        dbResult = await this.collection.insert(self);
         this.creationStatus = 'db';
         break;
       default:
         console.error('neither new nor in db?');
     }
+    return dbResult;
   }
 
   /**
