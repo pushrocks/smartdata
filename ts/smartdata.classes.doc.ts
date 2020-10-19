@@ -41,7 +41,7 @@ export function unI() {
   };
 }
 
-export class SmartDataDbDoc<T, TImplements> {
+export class SmartDataDbDoc<T extends TImplements, TImplements> {
   /**
    * the collection object an Doc belongs to
    */
