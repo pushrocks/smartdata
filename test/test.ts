@@ -68,7 +68,7 @@ class Car extends smartdata.SmartDataDbDoc<Car, Car> {
 
   @smartdata.svDb()
   deepData = {
-    sodeep: 'yes'
+    sodeep: 'yes',
   };
 
   constructor(colorArg: string, brandArg: string) {
@@ -85,15 +85,13 @@ tap.test('should save the car to the db', async () => {
   const myCar2 = new Car('red', 'Volvo');
   await myCar2.save();
 
-  
-
   let counter = 0;
   const totalCars = 2000;
   do {
     const myCar3 = new Car('red', 'Renault');
     await myCar3.save();
     counter++;
-    if (counter%100 === 0) {
+    if (counter % 100 === 0) {
       console.log(`Filled database with ${counter} of ${totalCars} Cars`);
     }
   } while (counter < totalCars);
@@ -139,7 +137,7 @@ tap.test('expect to get instance of Car and update it', async () => {
 tap.test('should be able to delete an instance of car', async () => {
   const myCars = await Car.getInstances<Car>({
     brand: 'Volvo',
-    color: 'blue'
+    color: 'blue',
   });
   console.log(myCars);
   expect(myCars[0].color).to.equal('blue');

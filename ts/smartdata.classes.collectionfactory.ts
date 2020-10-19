@@ -3,9 +3,12 @@ import { SmartdataCollection } from './smartdata.classes.collection';
 import { SmartdataDb } from './smartdata.classes.db';
 
 export class CollectionFactory {
-  public collections: {[key: string]: SmartdataCollection<any>} = {};
+  public collections: { [key: string]: SmartdataCollection<any> } = {};
 
-  public getCollection = (nameArg: string, dbArg: SmartdataDb | (() => SmartdataDb)): SmartdataCollection<any> => {
+  public getCollection = (
+    nameArg: string,
+    dbArg: SmartdataDb | (() => SmartdataDb)
+  ): SmartdataCollection<any> => {
     if (!this.collections[nameArg]) {
       this.collections[nameArg] = (() => {
         if (dbArg instanceof SmartdataDb) {
@@ -18,5 +21,5 @@ export class CollectionFactory {
       })();
     }
     return this.collections[nameArg];
-  }
+  };
 }
