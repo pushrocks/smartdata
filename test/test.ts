@@ -3,6 +3,8 @@ import { Qenv } from '@pushrocks/qenv';
 
 const testQenv = new Qenv(process.cwd(), process.cwd() + '/.nogit/');
 
+console.log(process.memoryUsage());
+
 // the tested module
 import * as smartdata from '../ts/index';
 
@@ -16,6 +18,8 @@ import { smartunique } from '../ts/smartdata.plugins';
 let testDb: smartdata.SmartdataDb;
 let smartdataOptions: smartdata.IMongoDescriptor;
 let mongod: mongoPlugin.MongoMemoryServer;
+
+const totalCars = 2000;
 
 tap.skip.test('should create a testinstance as database', async () => {
   mongod = new mongoPlugin.MongoMemoryServer({});
@@ -86,43 +90,62 @@ tap.test('should save the car to the db', async () => {
   await myCar2.save();
 
   let counter = 0;
-  const totalCars = 2000;
+  process.memoryUsage();
   do {
     const myCar3 = new Car('red', 'Renault');
     await myCar3.save();
     counter++;
     if (counter % 100 === 0) {
-      console.log(`Filled database with ${counter} of ${totalCars} Cars`);
+      console.log(
+        `Filled database with ${counter} of ${totalCars} Cars and memory usage ${
+          process.memoryUsage().rss / 1e6
+        } MB`
+      );
     }
   } while (counter < totalCars);
+  console.log(process.memoryUsage());
 });
 
 tap.test('expect to get instance of Car with shallow match', async () => {
+  const totalQueryCycles = totalCars / 4;
   let counter = 0;
   do {
     const timeStart = Date.now();
     const myCars = await Car.getInstances<Car>({
       brand: 'Renault',
     });
-    console.log(`took ${Date.now() - timeStart}ms to query a set of 2000`);
+    if (counter % 10 === 0) {
+      console.log(
+        `performed ${counter} of ${totalQueryCycles} total query cycles: took ${
+          Date.now() - timeStart
+        }ms to query a set of 2000 with memory footprint ${process.memoryUsage().rss / 1e6} MB`
+      );
+    }
     expect(myCars[0].deepData.sodeep).to.equal('yes');
     expect(myCars[0].brand).to.equal('Renault');
     counter++;
-  } while (counter < 30);
+  } while (counter < totalQueryCycles);
 });
 
 tap.test('expect to get instance of Car with deep match', async () => {
+  const totalQueryCycles = totalCars / 4;
   let counter = 0;
   do {
     const timeStart = Date.now();
     const myCars2 = await Car.getInstances<Car>({
       'deepData.sodeep': 'yes',
     } as any);
-    console.log(`took ${Date.now() - timeStart}ms to query a set of 2000`);
+    if (counter % 10 === 0) {
+      console.log(
+        `performed ${counter} of ${totalQueryCycles} total query cycles: took ${
+          Date.now() - timeStart
+        }ms to deep query a set of 2000 with memory footprint ${process.memoryUsage().rss / 1e6} MB`
+      );
+    }
     expect(myCars2[0].deepData.sodeep).to.equal('yes');
     expect(myCars2[0].brand).to.equal('Volvo');
     counter++;
-  } while (counter < 30);
+  } while (counter < totalQueryCycles);
 });
 
 tap.test('expect to get instance of Car and update it', async () => {
