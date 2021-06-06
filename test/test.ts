@@ -111,7 +111,7 @@ tap.test('expect to get instance of Car with shallow match', async () => {
   let counter = 0;
   do {
     const timeStart = Date.now();
-    const myCars = await Car.getInstances<Car>({
+    const myCars = await Car.getInstances({
       brand: 'Renault',
     });
     if (counter % 10 === 0) {
@@ -132,9 +132,11 @@ tap.test('expect to get instance of Car with deep match', async () => {
   let counter = 0;
   do {
     const timeStart = Date.now();
-    const myCars2 = await Car.getInstances<Car>({
-      'deepData.sodeep': 'yes',
-    } as any);
+    const myCars2 = await Car.getInstances({
+      deepData: {
+        sodeep: 'yes'
+      },
+    });
     if (counter % 10 === 0) {
       console.log(
         `performed ${counter} of ${totalQueryCycles} total query cycles: took ${
@@ -158,7 +160,7 @@ tap.test('expect to get instance of Car and update it', async () => {
 });
 
 tap.test('should be able to delete an instance of car', async () => {
-  const myCars = await Car.getInstances<Car>({
+  const myCars = await Car.getInstances({
     brand: 'Volvo',
     color: 'blue',
   });
@@ -198,12 +200,14 @@ class Truck extends smartdata.SmartDataDbDoc<Car, Car> {
 tap.test('should store a new Truck', async () => {
   const truck = new Truck('blue', 'MAN');
   await truck.save();
-  const myTruck = await Truck.getInstance<Truck>({ color: 'blue' });
+  const myTruck = await Truck.getInstance({ color: 'blue' });
   myTruck.id = 'foo';
   await myTruck.save();
-  const myTruck2 = await Truck.getInstance<Truck>({ color: 'blue' });
+  const myTruck2 = await Truck.getInstance({ color: 'blue' });
   console.log(myTruck2);
 });
+
+tap.test('should ', async () => {})
 
 // =======================================
 // close the database connection

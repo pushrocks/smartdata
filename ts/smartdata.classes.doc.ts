@@ -79,13 +79,35 @@ export class SmartDataDbDoc<T extends TImplements, TImplements> {
   constructor() {}
 
   public static async getInstances<T>(
+    this: plugins.tsclass.typeFest.Class<T>,
     filterArg: plugins.tsclass.typeFest.PartialDeep<T>
   ): Promise<T[]> {
-    const foundDocs = await this.collection.find(filterArg);
+    const convertedFilter: any = {};
+    const convertFilterArgument = (keyPathArg: string, filterArg2: any) => {
+      if (typeof filterArg2 === 'object') {
+        for (const key of Object.keys(filterArg2)) {
+          if (key.startsWith('$')) {
+            convertedFilter[keyPathArg] = filterArg2;
+            return;
+          } else if (key.includes('.')) {
+            throw new Error('keys cannot contain dots');
+          }
+        }
+        for (const key of Object.keys(filterArg2)) {
+          convertFilterArgument(`${keyPathArg}.${key}`, filterArg2[key]);
+        } 
+      } else {
+        convertedFilter[keyPathArg] = filterArg2
+      }
+    }
+    for (const key of Object.keys(filterArg)) {
+      convertFilterArgument(key, filterArg[key]);
+    }
+    const foundDocs = await (this as any).collection.find(convertedFilter);
     const returnArray = [];
     for (const item of foundDocs) {
       const newInstance = new this();
-      newInstance.creationStatus = 'db';
+      (newInstance as any).creationStatus = 'db';
       for (const key of Object.keys(item)) {
         newInstance[key] = item[key];
       }
@@ -95,9 +117,10 @@ export class SmartDataDbDoc<T extends TImplements, TImplements> {
   }
 
   public static async getInstance<T>(
+    this: plugins.tsclass.typeFest.Class<T>,
     filterArg: plugins.tsclass.typeFest.PartialDeep<T>
   ): Promise<T> {
-    const result = await this.getInstances<T>(filterArg);
+    const result = await (this as any).getInstances(filterArg);
     if (result && result.length > 0) {
       return result[0];
     }
