@@ -49,6 +49,7 @@ How RethinkDB's terms map to the ones of smartdata:
 represents a Database. Naturally it has .connect() etc. methods on it.
 
 ```typescript
+// Assuming toplevel await
 import * as smartdata from 'smartdata';
 
 const smartdataDb = new smartdata.SmartdataDb({
@@ -57,7 +58,7 @@ const smartdataDb = new smartdata.SmartdataDb({
   mongoDbPass: 'mypassword',
 });
 
-smartdataDb.connect();
+await smartdataDb.connect();
 ```
 
 ### class DbCollection
@@ -68,10 +69,11 @@ A collection is defined by the object class (that is extending smartdata.dbdoc) 
 So to get to get access to a specific collection you document
 
 ```typescript
+// Assuming toplevel await
 // continues from the block before...
 
 @smartdata.Collection(smartdataDb)
-class MyObject extends smartdata.DbDoc<MyObject> {
+class MyObject extends smartdata.DbDoc<MyObject /* ,[an optional interface to implement] */> {
   // read the next block about DbDoc
   @smartdata.svDb()
   property1: string; // @smartdata.svDb() marks the property for db save
@@ -87,14 +89,22 @@ class MyObject extends smartdata.DbDoc<MyObject> {
 
 const localObject = new MyObject({
   property1: 'hi',
-  property2: 2,
+  property2: {
+    deep: 3
+  },
 });
-localObject.save(); // saves the object to the database
+await localObject.save(); // saves the object to the database
 
 // start retrieving instances
 
-MyObject.getInstance<MyObject>({
-  property: 'hi',
+// .getInstance is staticly inheritied, yet fully typed static function to get instances with fully typed filters
+const myInstance = await MyObject.getInstance({
+  property1: 'hi',
+  property2: {
+    deep: {
+      $gt: 2
+    } as any
+  }
 }); // outputs a new instance of MyObject with the values from db assigned
 ```
 
