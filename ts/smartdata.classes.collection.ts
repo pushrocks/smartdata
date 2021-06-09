@@ -22,19 +22,62 @@ const collectionFactory = new CollectionFactory();
  * This is a decorator that will tell the decorated class what dbTable to use
  * @param dbArg
  */
-export function Collection<TManager>(dbArg: SmartdataDb | TDelayed<SmartdataDb>, managerArg?: TDelayed<TManager>) {
+export function Collection(dbArg: SmartdataDb | TDelayed<SmartdataDb>) {
   return function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
       public static get collection() {
+        if (!(dbArg instanceof SmartdataDb)) {
+          dbArg = dbArg();
+        }
         return collectionFactory.getCollection(constructor.name, dbArg);
       }
       public get collection() {
+        if (!(dbArg instanceof SmartdataDb)) {
+          dbArg = dbArg();
+        }
+        return collectionFactory.getCollection(constructor.name, dbArg);
+      }
+    };
+  };
+}
+
+interface IManager {
+  db: SmartdataDb
+}
+
+/**
+ * This is a decorator that will tell the decorated class what dbTable to use
+ * @param dbArg
+ */
+ export function Manager<TManager extends IManager>(managerArg?: TManager | TDelayed<TManager>) {
+  return function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
+    return class extends constructor {
+      public static get collection() {
+        let dbArg: SmartdataDb;
+        if (managerArg['db']) {
+          dbArg = (managerArg as TManager).db
+        } else {
+          dbArg = (managerArg as TDelayed<TManager>)().db;
+        }
+        return collectionFactory.getCollection(constructor.name, dbArg);
+      }
+      public get collection() {
+        let dbArg: SmartdataDb;
+        if (managerArg['db']) {
+          dbArg = (managerArg as TManager).db
+        } else {
+          dbArg = (managerArg as TDelayed<TManager>)().db;
+        }
         return collectionFactory.getCollection(constructor.name, dbArg);
       }
       public get manager() {
-        if (managerArg) {
-          return managerArg();
+        let manager: TManager;
+        if (managerArg['db']) {
+          manager = (managerArg as TManager);
+        } else {
+          manager = (managerArg as TDelayed<TManager>)();
         }
+        return manager;
       }
     };
   };

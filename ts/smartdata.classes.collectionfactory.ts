@@ -7,15 +7,12 @@ export class CollectionFactory {
 
   public getCollection = (
     nameArg: string,
-    dbArg: SmartdataDb | (() => SmartdataDb)
+    dbArg: SmartdataDb
   ): SmartdataCollection<any> => {
     if (!this.collections[nameArg]) {
       this.collections[nameArg] = (() => {
         if (dbArg instanceof SmartdataDb) {
           // tslint:disable-next-line: no-string-literal
-          return new SmartdataCollection(nameArg, dbArg);
-        } else {
-          dbArg = dbArg();
           return new SmartdataCollection(nameArg, dbArg);
         }
       })();
