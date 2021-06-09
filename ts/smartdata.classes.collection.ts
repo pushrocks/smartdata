@@ -70,6 +70,15 @@ export interface IManager {
         }
         return collectionFactory.getCollection(constructor.name, dbArg);
       }
+      public static get manager() {
+        let manager: TManager;
+        if (managerArg['db']) {
+          manager = (managerArg as TManager);
+        } else {
+          manager = (managerArg as TDelayed<TManager>)();
+        }
+        return manager;
+      }
       public get manager() {
         let manager: TManager;
         if (managerArg['db']) {

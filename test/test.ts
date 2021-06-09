@@ -213,6 +213,7 @@ tap.test('should ', async () => {})
 // close the database connection
 // =======================================
 tap.test('should close the database connection', async (tools) => {
+  await testDb.mongoDb.dropDatabase();
   await testDb.close();
   try {
     await mongod.stop();
