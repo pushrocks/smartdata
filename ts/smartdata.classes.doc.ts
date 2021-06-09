@@ -3,7 +3,7 @@ import * as plugins from './smartdata.plugins';
 import { ObjectMap } from '@pushrocks/lik';
 
 import { SmartdataDb } from './smartdata.classes.db';
-import { SmartdataCollection } from './smartdata.classes.collection';
+import { IManager, SmartdataCollection } from './smartdata.classes.collection';
 
 export type TDocCreation = 'db' | 'new' | 'mixed';
 
@@ -41,12 +41,13 @@ export function unI() {
   };
 }
 
-export class SmartDataDbDoc<T extends TImplements, TImplements> {
+export class SmartDataDbDoc<T extends TImplements, TImplements, TManager extends IManager = any> {
   /**
    * the collection object an Doc belongs to
    */
   public static collection: SmartdataCollection<any>;
   public collection: SmartdataCollection<any>;
+  public manager: TManager;
 
   /**
    * how the Doc in memory was created, may prove useful later.

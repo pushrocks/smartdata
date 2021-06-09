@@ -41,7 +41,7 @@ export function Collection(dbArg: SmartdataDb | TDelayed<SmartdataDb>) {
   };
 }
 
-interface IManager {
+export interface IManager {
   db: SmartdataDb
 }
 
