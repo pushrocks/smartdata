@@ -14,7 +14,7 @@ export interface IDocValidationFunc<T> {
   (doc: T): boolean;
 }
 
-export type TDelayedDbCreation = () => SmartdataDb;
+export type TDelayed<TDelayedArg> = () => TDelayedArg;
 
 const collectionFactory = new CollectionFactory();
 
@@ -22,7 +22,7 @@ const collectionFactory = new CollectionFactory();
  * This is a decorator that will tell the decorated class what dbTable to use
  * @param dbArg
  */
-export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
+export function Collection<TManager>(dbArg: SmartdataDb | TDelayed<SmartdataDb>, managerArg?: TDelayed<TManager>) {
   return function classDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
       public static get collection() {
@@ -30,6 +30,11 @@ export function Collection(dbArg: SmartdataDb | TDelayedDbCreation) {
       }
       public get collection() {
         return collectionFactory.getCollection(constructor.name, dbArg);
+      }
+      public get manager() {
+        if (managerArg) {
+          return managerArg();
+        }
       }
     };
   };
