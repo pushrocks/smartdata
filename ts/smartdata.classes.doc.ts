@@ -47,7 +47,7 @@ export class SmartDataDbDoc<T extends TImplements, TImplements, TManager extends
    */
   public static collection: SmartdataCollection<any>;
   public collection: SmartdataCollection<any>;
-  public static manager;;
+  public static manager;
   public manager: TManager;
 
   /**
